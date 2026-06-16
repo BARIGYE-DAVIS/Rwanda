@@ -114,7 +114,7 @@
 
         <p class="rbs-fade-3 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8 opacity-0"
            style="color:rgba(255,255,255,.85)">
-            We are a locally owned budget safari company in Kampala. We purchase gorilla permits
+            We are a locally owned budget safari company in Africa. We purchase gorilla permits
             directly from Uganda Wildlife Authority and Rwanda Development Board — no agents,
             no mark-ups, no surprises. Packages all-inclusive from <strong class="text-white">$1,300&nbsp;per&nbsp;person</strong>.
         </p>
@@ -128,6 +128,12 @@
                class="border-2 border-white/70 hover:border-white text-white hover:bg-white/10 font-bold px-8 py-4 rounded-xl text-base sm:text-lg transition-all text-center scroll-to">
                 Uganda vs Rwanda — Which Suits Me?
             </a>
+
+            <a href="<?php echo e(route('contact')); ?>"
+               class="border-2 border-white/70 hover:border-white text-white hover:bg-white/10 font-bold px-8 py-4 rounded-xl text-base sm:text-lg transition-all text-center">
+                Request a quote for a trip
+            </a>
+
         </div>
     </div>
 
@@ -237,20 +243,20 @@
                     Who We Are
                 </span>
                 <h2 class="mt-3 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 leading-tight">
-                    A Ugandan Team That Knows<br class="hidden md:block"> Every Gorilla Trail
+                    An African Team That Knows<br class="hidden md:block"> Every Gorilla Trail
                 </h2>
                 <p class="mt-5 text-gray-600 text-base sm:text-lg leading-relaxed">
-                    Rwanda Budget Safaris was founded in Kampala by a team of Ugandan and Rwandan
-                    naturalists who believed great wildlife experiences should not be locked behind
-                    luxury price tags. We have been taking small groups into Bwindi Impenetrable Forest
-                    and Rwanda's Volcanoes National Park since 2010 — that's over 15 years of gorilla
-                    treks, chimp tracking sessions and Nile River adventures.
+                    Rwanda and Uganda Budget Safaris was founded in Africa, Kampala  Uganda (EAST AFRICA) by a passionate Tourism African Team
+                    naturalists who believe great wildlife experiences shouldn't be locked behind
+                    luxury price tags. We've been leading small groups into Bwindi Impenetrable Forest
+                    and Rwanda's Volcanoes National Park since 2021 that's over 5 years of gorilla
+                    treks, chimpanzee tracking, and Nile River adventures.
                 </p>
                 <p class="mt-4 text-gray-600 text-base sm:text-lg leading-relaxed">
-                    We are not a booking platform. We employ our own UWA-certified guides, own the
+                    We're not a booking platform. We employ our own UWA-certified guides, own the
                     4WD vehicles that pick you up from Entebbe or Kigali, and purchase gorilla permits
-                    directly from the authorities — which means no agent mark-up is added to your quote.
-                    Every shilling we save on overheads goes into a better lodge, a better meal or a
+                    directly from the authorities which means no agent mark-up is added to your quote.
+                    Every shilling we save on overheads goes into a better lodge, a better meal, or a
                     longer hour with the gorillas.
                 </p>
                 <div class="mt-8 flex flex-wrap gap-4">
@@ -259,7 +265,7 @@
                         Browse Packages
                     </a>
                     <a href="<?php echo e(route('custom-tour-requests.create')); ?>"
-                       class="border-2 border-green-600 text-green-700 hover:bg-green-50 font-bold px-7 py-3.5 rounded-xl text-base transition-all">
+                       class=" hidden border-2 border-green-600 text-green-700 hover:bg-green-50 font-bold px-7 py-3.5 rounded-xl text-base transition-all">
                         Plan a Custom Trip
                     </a>
                 </div>
@@ -320,7 +326,7 @@
 
         <div class="text-center mb-12 sm:mb-16 max-w-3xl mx-auto">
             <span class="text-green-600 font-bold text-xs sm:text-sm uppercase tracking-[.2em]">
-                2026 Packages
+                2026-2030 Packages
             </span>
             <h2 class="mt-3 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 leading-tight">
                 Uganda &amp; Rwanda Safari Packages

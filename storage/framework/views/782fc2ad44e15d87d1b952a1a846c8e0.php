@@ -6,7 +6,7 @@
             <!-- Company Info -->
             <div class="space-y-4">
                 <div class="flex items-center space-x-2">
-                    <img class="h-8 w-auto" src="<?php echo e(asset('images/logo.jpg')); ?>" alt="Logo">
+                    <img class="h-8 w-auto" src="<?php echo e(asset('images/logo.jpeg')); ?>" alt="Logo">
                     <span class="text-xl font-bold text-green-400">Rwanda Buget Safaris</span>
                 </div>
                 <p class="text-gray-300 text-sm leading-relaxed">

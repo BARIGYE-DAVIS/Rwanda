@@ -37,7 +37,7 @@
         <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white
                    leading-tight mb-4 drop-shadow-lg max-w-4xl">
             Uganda &amp; Rwanda Safari Packages
-            <span class="text-green-400">2026</span>
+            <span class="text-green-400">2026 -20230</span>
         </h1>
 
         <p class="text-white/80 text-sm sm:text-base md:text-lg max-w-2xl mb-6 leading-relaxed">
@@ -99,7 +99,7 @@
                     Every Package Includes Permits,<br class="hidden sm:block"> Lodges, Meals &amp; Local Guides
                 </h2>
                 <p class="mt-4 text-gray-600 text-base sm:text-lg leading-relaxed">
-                    Rwanda Budget Safaris is a Kampala-based operator — not an aggregator. We purchase
+                    Rwanda Budget Safaris is a Kampala-based operator  not an aggregator. We purchase
                     Uganda gorilla permits (<strong>$800 p/p</strong>) and Rwanda Volcanoes permits
                     (<strong>$1,500 p/p</strong>) directly from the authorities, employ our own guides and
                     run our own 4WD fleet. Browse our packages below, then
@@ -139,9 +139,8 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="font-bold text-gray-900 text-sm">Direct Permit Purchase</p>
                         <p class="text-gray-500 text-xs mt-1 leading-relaxed">
-                            We buy gorilla permits directly from UWA and RDB — no reseller fee added to your quote.
+                            We buy gorilla permits directly from UWA and RDB  no reseller fee added to your quote.
                         </p>
                     </div>
                 </div>
@@ -734,10 +733,10 @@
 
             <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
                 <a href="{{ route('contact') }}"
-                   class="w-full sm:w-auto bg-white hover:bg-green-50 text-green-900 font-black
+                   class="w-full sm:w-auto bg-red-500 hover:bg-green-50 text-white font-black
                           px-8 py-4 rounded-xl text-base sm:text-lg transition-all hover:scale-[1.02]
                           shadow-2xl text-center">
-                    Request for a Custom Package
+                    Request for a tour 
                 </a>
                 <a href="tel:+256781282344"
                    class="w-full sm:w-auto border-2 border-white/60 hover:border-white
