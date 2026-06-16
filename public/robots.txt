@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /safaris/public/
+
+Sitemap: https://calmafricasafaris.com/sitemap.xml
