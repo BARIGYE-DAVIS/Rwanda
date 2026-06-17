@@ -43,7 +43,7 @@ Route::get('tours-luxury', [TourController::class, 'luxury'])->name('tours.luxur
 Route::get('/budget-safaris', [BudgetTourController::class, 'index'])->name('budget-tours.index');
 // Gallery
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
-Route::get('/gallery/{slug}', [GalleryController::class, 'show'])->name('gallery.show');
+Route::get('/gallery/{gallery:slug}', [GalleryController::class, 'show'])->name('gallery.show');
 
 // Blog
 Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');

@@ -59,16 +59,18 @@
                     <div class="bg-gray-50 rounded-xl p-6 mb-8">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4 text-center">Need Immediate Assistance?</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <a href="https://wa.me/256700000000" target="_blank" 
+                            <a href="https://wa.me/256781282344" target="_blank" 
                                class="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg transition-colors duration-300">
                                 <i class="fab fa-whatsapp mr-2 text-xl"></i>
                                 <span class="font-semibold">WhatsApp Us</span>
                             </a>
-                            <a href="tel:+256700000000" 
+                            <a href="tel:+256781282344" 
                                class="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors duration-300">
                                 <i class="fas fa-phone mr-2"></i>
                                 <span class="font-semibold">Call Now</span>
                             </a>
+                            
+                            
                         </div>
                     </div>
 

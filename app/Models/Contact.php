@@ -14,18 +14,24 @@ class Contact extends Model
     /**
      * The table associated with the model.
      */
-    protected $table = 'contact_messages';
+    protected $table = 'booking_requests';
 
     /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
-        'phone',
-        'subject',
-        'message',
-        'inquiry_type',
+        'whatsapp_number',
+        'nationality',
+        'destination',
+        'number_of_people',
+        'number_of_days',
+        'accommodation_type',
+        'preferred_travel_date',
+        'estimated_budget',
+        'additional_comments',
         'status',
         'ip_address',
         'user_agent',
@@ -36,6 +42,8 @@ class Contact extends Model
      * The attributes that should be cast.
      */
     protected $casts = [
+        'accommodation_type' => 'array',
+        'estimated_budget' => 'decimal:2',
         'read_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -51,26 +59,14 @@ class Contact extends Model
     ];
 
     /**
-     * Inquiry types available
-     */
-    public const INQUIRY_TYPES = [
-        'general' => 'General Inquiry',
-        'tour_booking' => 'Tour Booking',
-        'custom_safari' => 'Custom Safari',
-        'group_booking' => 'Group Booking',
-        'pricing' => 'Pricing Information',
-        'technical_support' => 'Technical Support',
-    ];
-
-    /**
      * Status options available
      */
     public const STATUSES = [
         'pending' => 'Pending',
-        'read' => 'Read',
-        'replied' => 'Replied',
-        'resolved' => 'Resolved',
-        'spam' => 'Spam',
+        'processing' => 'Processing',
+        'quoted' => 'Quoted',
+        'confirmed' => 'Confirmed',
+        'cancelled' => 'Cancelled',
     ];
 
     /**
@@ -78,18 +74,27 @@ class Contact extends Model
      */
     public const STATUS_COLORS = [
         'pending' => 'yellow',
-        'read' => 'blue',
-        'replied' => 'green',
-        'resolved' => 'green',
-        'spam' => 'red',
+        'processing' => 'blue',
+        'quoted' => 'purple',
+        'confirmed' => 'green',
+        'cancelled' => 'red',
     ];
 
     /**
-     * Get the inquiry type label
+     * Accommodation types
      */
-    public function getInquiryTypeLabelAttribute()
+    public const ACCOMMODATION_TYPES = [
+        'budget' => 'Budget',
+        'mid_range' => 'Mid range',
+        'luxury' => 'Luxury',
+    ];
+
+    /**
+     * Get the full name
+     */
+    public function getFullNameAttribute()
     {
-        return self::INQUIRY_TYPES[$this->inquiry_type] ?? ucfirst($this->inquiry_type);
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     /**
@@ -109,50 +114,50 @@ class Contact extends Model
     }
 
     /**
-     * Check if contact is unread
+     * Get accommodation types as array
      */
-    public function getIsUnreadAttribute()
+    public function getAccommodationTypesAttribute()
     {
-        return $this->status === 'pending' && is_null($this->read_at);
+        return is_array($this->accommodation_type) 
+            ? $this->accommodation_type 
+            : json_decode($this->accommodation_type ?? '[]', true);
     }
 
     /**
-     * Check if contact needs attention
+     * Get accommodation types as labels
      */
-    public function getNeedsAttentionAttribute()
+    public function getAccommodationLabelsAttribute()
     {
-        return in_array($this->status, ['pending', 'read']);
+        $types = $this->accommodation_types;
+        $labels = [];
+
+        foreach ($types as $type) {
+            if (isset(self::ACCOMMODATION_TYPES[$type])) {
+                $labels[] = self::ACCOMMODATION_TYPES[$type];
+            }
+        }
+
+        return $labels;
     }
 
     /**
-     * Get truncated message for listing
+     * Get accommodation types as comma-separated string
      */
-    public function getTruncatedMessageAttribute()
+    public function getAccommodationListAttribute()
     {
-        return \Str::limit($this->message, 150);
+        return implode(', ', $this->accommodation_labels);
     }
 
     /**
-     * Get formatted phone number
+     * Get formatted budget
      */
-    public function getFormattedPhoneAttribute()
+    public function getFormattedBudgetAttribute()
     {
-        if (!$this->phone) {
+        if (!$this->estimated_budget) {
             return null;
         }
 
-        // Basic phone formatting - customize based on your needs
-        $phone = preg_replace('/[^0-9+]/', '', $this->phone);
-        
-        if (strlen($phone) === 10) {
-            return sprintf('(%s) %s-%s', 
-                substr($phone, 0, 3), 
-                substr($phone, 3, 3), 
-                substr($phone, 6)
-            );
-        }
-        
-        return $this->phone;
+        return '$' . number_format($this->estimated_budget, 0);
     }
 
     /**
@@ -164,84 +169,86 @@ class Contact extends Model
     }
 
     /**
-     * Get response time if replied
+     * Check if booking is pending
      */
-    public function getResponseTimeAttribute()
+    public function getIsPendingAttribute()
     {
-        if ($this->status === 'replied' && $this->read_at) {
-            return $this->read_at->diffForHumans($this->created_at, true);
-        }
-        return null;
+        return $this->status === 'pending';
     }
 
     /**
-     * Mark contact as read
+     * Check if booking needs attention
      */
-    public function markAsRead()
+    public function getNeedsAttentionAttribute()
     {
-        if ($this->status === 'pending') {
-            $this->update([
-                'status' => 'read',
-                'read_at' => now(),
-            ]);
-        }
-        return $this;
+        return in_array($this->status, ['pending', 'processing']);
     }
 
     /**
-     * Mark contact as replied
+     * Mark booking as processing
      */
-    public function markAsReplied()
+    public function markAsProcessing()
     {
         $this->update([
-            'status' => 'replied',
+            'status' => 'processing',
             'read_at' => $this->read_at ?? now(),
         ]);
         return $this;
     }
 
     /**
-     * Mark contact as resolved
+     * Mark booking as quoted
      */
-    public function markAsResolved()
+    public function markAsQuoted()
     {
         $this->update([
-            'status' => 'resolved',
+            'status' => 'quoted',
             'read_at' => $this->read_at ?? now(),
         ]);
         return $this;
     }
 
     /**
-     * Mark contact as spam
+     * Mark booking as confirmed
      */
-    public function markAsSpam()
+    public function markAsConfirmed()
     {
         $this->update([
-            'status' => 'spam',
+            'status' => 'confirmed',
+            'read_at' => $this->read_at ?? now(),
         ]);
         return $this;
     }
 
     /**
-     * Scope: Get unread contacts
+     * Mark booking as cancelled
      */
-    public function scopeUnread($query)
+    public function markAsCancelled()
     {
-        return $query->where('status', 'pending')
-                    ->whereNull('read_at');
+        $this->update([
+            'status' => 'cancelled',
+        ]);
+        return $this;
     }
 
     /**
-     * Scope: Get contacts needing attention
+     * Scope: Get pending bookings
+     */
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    /**
+     * Scope: Get bookings needing attention
      */
     public function scopeNeedsAttention($query)
     {
-        return $query->whereIn('status', ['pending', 'read']);
+        return $query->whereIn('status', ['pending', 'processing']);
     }
 
     /**
-     * Scope: Get contacts by status
+     * Scope: Get bookings by status
      */
     public function scopeByStatus($query, $status)
     {
@@ -249,15 +256,7 @@ class Contact extends Model
     }
 
     /**
-     * Scope: Get contacts by inquiry type
-     */
-    public function scopeByInquiryType($query, $type)
-    {
-        return $query->where('inquiry_type', $type);
-    }
-
-    /**
-     * Scope: Get recent contacts
+     * Scope: Get recent bookings
      */
     public function scopeRecent($query, $days = 7)
     {
@@ -265,7 +264,7 @@ class Contact extends Model
     }
 
     /**
-     * Scope: Get contacts from this month
+     * Scope: Get bookings from this month
      */
     public function scopeThisMonth($query)
     {
@@ -274,7 +273,7 @@ class Contact extends Model
     }
 
     /**
-     * Scope: Get contacts from this week
+     * Scope: Get bookings from this week
      */
     public function scopeThisWeek($query)
     {
@@ -285,7 +284,7 @@ class Contact extends Model
     }
 
     /**
-     * Scope: Get contacts from today
+     * Scope: Get bookings from today
      */
     public function scopeToday($query)
     {
@@ -293,7 +292,7 @@ class Contact extends Model
     }
 
     /**
-     * Scope: Search contacts
+     * Scope: Search bookings
      */
     public function scopeSearch($query, $search)
     {
@@ -302,10 +301,11 @@ class Contact extends Model
         }
 
         return $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
+            $q->where('first_name', 'like', "%{$search}%")
+              ->orWhere('last_name', 'like', "%{$search}%")
               ->orWhere('email', 'like', "%{$search}%")
-              ->orWhere('subject', 'like', "%{$search}%")
-              ->orWhere('message', 'like', "%{$search}%");
+              ->orWhere('whatsapp_number', 'like', "%{$search}%")
+              ->orWhere('destination', 'like', "%{$search}%");
         });
     }
 
@@ -329,44 +329,64 @@ class Contact extends Model
     }
 
     /**
-     * Get contact statistics
+     * Scope: Filter by accommodation type
+     */
+    public function scopeWithAccommodation($query, $type)
+    {
+        return $query->whereJsonContains('accommodation_type', $type);
+    }
+
+    /**
+     * Scope: Filter by budget range
+     */
+    public function scopeBudgetRange($query, $min, $max)
+    {
+        if ($min && $max) {
+            return $query->whereBetween('estimated_budget', [$min, $max]);
+        } elseif ($min) {
+            return $query->where('estimated_budget', '>=', $min);
+        } elseif ($max) {
+            return $query->where('estimated_budget', '<=', $max);
+        }
+
+        return $query;
+    }
+
+    /**
+     * Get booking statistics
      */
     public static function getStats()
     {
         return [
             'total' => self::count(),
             'pending' => self::where('status', 'pending')->count(),
-            'read' => self::where('status', 'read')->count(),
-            'replied' => self::where('status', 'replied')->count(),
-            'resolved' => self::where('status', 'resolved')->count(),
-            'spam' => self::where('status', 'spam')->count(),
-            'unread' => self::unread()->count(),
+            'processing' => self::where('status', 'processing')->count(),
+            'quoted' => self::where('status', 'quoted')->count(),
+            'confirmed' => self::where('status', 'confirmed')->count(),
+            'cancelled' => self::where('status', 'cancelled')->count(),
             'needs_attention' => self::needsAttention()->count(),
             'this_month' => self::thisMonth()->count(),
             'this_week' => self::thisWeek()->count(),
             'today' => self::today()->count(),
-            'avg_response_time' => self::where('status', 'replied')
-                                      ->whereNotNull('read_at')
-                                      ->get()
-                                      ->avg(function ($contact) {
-                                          return $contact->created_at->diffInHours($contact->read_at);
-                                      }),
         ];
     }
 
     /**
-     * Get inquiry type statistics
+     * Get accommodation type statistics
      */
-    public static function getInquiryTypeStats()
+    public static function getAccommodationStats()
     {
-        return self::selectRaw('inquiry_type, COUNT(*) as count')
-                   ->groupBy('inquiry_type')
-                   ->pluck('count', 'inquiry_type')
-                   ->toArray();
+        $stats = [];
+
+        foreach (self::ACCOMMODATION_TYPES as $key => $label) {
+            $stats[$key] = self::withAccommodation($key)->count();
+        }
+
+        return $stats;
     }
 
     /**
-     * Get monthly contact trends
+     * Get monthly booking trends
      */
     public static function getMonthlyTrends($months = 12)
     {
@@ -385,18 +405,31 @@ class Contact extends Model
     }
 
     /**
+     * Get top destinations
+     */
+    public static function getTopDestinations($limit = 5)
+    {
+        return self::whereNotNull('destination')
+                   ->selectRaw('destination, COUNT(*) as count')
+                   ->groupBy('destination')
+                   ->orderByDesc('count')
+                   ->limit($limit)
+                   ->get();
+    }
+
+    /**
      * Boot the model
      */
     protected static function boot()
     {
         parent::boot();
 
-        // Auto-set read_at when status changes to read or higher
-        static::updating(function ($contact) {
-            if ($contact->isDirty('status') && 
-                in_array($contact->status, ['read', 'replied', 'resolved']) && 
-                !$contact->read_at) {
-                $contact->read_at = now();
+        // Auto-set read_at when status changes from pending
+        static::updating(function ($booking) {
+            if ($booking->isDirty('status') && 
+                $booking->status !== 'pending' && 
+                !$booking->read_at) {
+                $booking->read_at = now();
             }
         });
     }
@@ -416,20 +449,28 @@ class Contact extends Model
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'full_name' => $this->full_name,
             'email' => $this->email,
-            'phone' => $this->phone,
-            'subject' => $this->subject,
-            'message' => $this->message,
-            'inquiry_type' => $this->inquiry_type,
-            'inquiry_type_label' => $this->inquiry_type_label,
+            'whatsapp_number' => $this->whatsapp_number,
+            'nationality' => $this->nationality,
+            'destination' => $this->destination,
+            'number_of_people' => $this->number_of_people,
+            'number_of_days' => $this->number_of_days,
+            'accommodation_type' => $this->accommodation_types,
+            'accommodation_labels' => $this->accommodation_labels,
+            'accommodation_list' => $this->accommodation_list,
+            'preferred_travel_date' => $this->preferred_travel_date,
+            'estimated_budget' => $this->estimated_budget,
+            'formatted_budget' => $this->formatted_budget,
+            'additional_comments' => $this->additional_comments,
             'status' => $this->status,
             'status_label' => $this->status_label,
             'status_color' => $this->status_color,
-            'is_unread' => $this->is_unread,
+            'is_pending' => $this->is_pending,
             'needs_attention' => $this->needs_attention,
             'time_since' => $this->time_since,
-            'response_time' => $this->response_time,
             'created_at' => $this->created_at->toISOString(),
             'read_at' => $this->read_at?->toISOString(),
         ];

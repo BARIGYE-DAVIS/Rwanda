@@ -5,12 +5,12 @@
      SEO META
      ============================================================ --}}
 
-@section('title', 'Uganda & Rwanda Budget Safaris 2026 | Gorilla Trekking from $1,300')
+@section('title', 'Rwanda & Uganda Budget Safaris | Affordable Gorilla Trekking & East Africa Safari Tours')
 @section('meta_description', 'Affordable gorilla trekking in Uganda and Rwanda. Bwindi permits from $800, Volcanoes NP permits from $1,500. Small groups, local guides, no hidden fees. Book your 2026 safari today.')
 @section('meta_keywords', 'Uganda Rwanda budget safari, affordable gorilla trekking Uganda, gorilla trekking Rwanda budget, Bwindi Impenetrable Forest trekking permit, Volcanoes National Park gorilla trek, cheap gorilla safari Uganda 2026, budget safari Kampala, Rwanda gorilla tour from Kigali, Uganda wildlife budget tour, small group gorilla trekking Africa')
 @section('canonical', 'https://rwandabudgetsafaris.com/')
 
-@section('twitter_title', 'Uganda & Rwanda Budget Safaris 2026 | Gorilla Permits from $800')
+@section('twitter_title', 'Uganda & Rwanda Budget Safaris 2026-2030 | Gorilla Permits from $800')
 @section('og_title', 'Uganda & Rwanda Budget Safaris — Gorilla Trekking Without the Premium Price Tag')
 @section('og_description', 'We are Kampala-based safari specialists running affordable gorilla treks in Uganda and Rwanda since 2010. Permits secured directly, local guides, honest all-inclusive prices.')
 @section('og_image', asset('images/GORILLA.jpg'))
@@ -141,7 +141,7 @@
             </a>
 
             <a href="{{ route('contact') }}"
-               class="border-2 border-white/70 hover:border-white text-white hover:bg-white/10 font-bold px-8 py-4 rounded-xl text-base sm:text-lg transition-all text-center">
+               class="bg-red-600 hover:bg-red-500 text-white font-bold px-8 py-4 rounded-xl text-base sm:text-lg transition-all text-center">
                 Request a quote for a trip
             </a>
 

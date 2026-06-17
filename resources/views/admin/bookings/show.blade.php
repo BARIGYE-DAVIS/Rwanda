@@ -351,9 +351,7 @@
                     <!-- Status Update -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Update Status</label>
-                        <form id="statusUpdateForm" class="flex space-x-2">
-                            @csrf
-                            @method('PUT')
+                        <div class="flex space-x-2">
                             <select name="status" id="statusSelect" class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 text-sm">
                                 <option value="pending" {{ $booking->status === 'pending' ? 'selected' : '' }}>Pending</option>
                                 <option value="confirmed" {{ $booking->status === 'confirmed' ? 'selected' : '' }}>Confirmed</option>
@@ -363,7 +361,7 @@
                             <button type="button" id="updateStatusBtn" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                 Update
                             </button>
-                        </form>
+                        </div>
                     </div>
 
                     <!-- Delete Booking -->
@@ -385,16 +383,32 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Status update functionality
-    const updateStatusBtn = document.getElementById('updateStatusBtn');
-    const statusSelect = document.getElementById('statusSelect');
-    const originalStatus = '{{ $booking->status }}';
+(function () {
+    console.log('[status-update] script loaded');
 
-    if (updateStatusBtn && statusSelect) {
-        updateStatusBtn.addEventListener('click', function() {
+    function init() {
+        console.log('[status-update] init running');
+
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '{{ csrf_token() }}';
+
+        const updateStatusBtn = document.getElementById('updateStatusBtn');
+        const statusSelect = document.getElementById('statusSelect');
+        const originalStatus = '{{ $booking->status }}';
+        const bookingId = {{ $booking->id }};
+
+        console.log('[status-update] button found?', !!updateStatusBtn, 'select found?', !!statusSelect);
+
+        if (!updateStatusBtn || !statusSelect) {
+            console.error('[status-update] missing elements, aborting setup');
+            return;
+        }
+
+        updateStatusBtn.addEventListener('click', function () {
+            console.log('[status-update] button clicked');
+
             const newStatus = statusSelect.value;
-            
+
             if (newStatus === originalStatus) {
                 alert('Status is already set to ' + newStatus);
                 return;
@@ -405,41 +419,53 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Show loading state
             updateStatusBtn.disabled = true;
             updateStatusBtn.textContent = 'Updating...';
 
-            fetch(`/admin/bookings/{{ $booking->id }}/status`, {
+            fetch('/admin/bookings/' + bookingId + '/status', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
                 },
-                body: JSON.stringify({
-                    status: newStatus
-                })
+                body: JSON.stringify({ status: newStatus })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+            .then(function (response) {
+                console.log('[status-update] response status', response.status);
+                return response.json().catch(function () {
+                    throw new Error('Response was not valid JSON (status ' + response.status + ')');
+                });
+            })
+            .then(function (data) {
+                console.log('[status-update] response data', data);
+                if (data && data.success) {
                     location.reload();
                 } else {
                     alert('Failed to update status. Please try again.');
                     statusSelect.value = originalStatus;
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+            .catch(function (error) {
+                console.error('[status-update] error', error);
+                alert('An error occurred while updating status: ' + error.message);
                 statusSelect.value = originalStatus;
             })
-            .finally(() => {
+            .finally(function () {
                 updateStatusBtn.disabled = false;
                 updateStatusBtn.textContent = 'Update';
             });
         });
+
+        console.log('[status-update] click listener attached');
     }
-});
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
 </script>
 @endpush
 @endsection

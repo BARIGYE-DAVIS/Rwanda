@@ -196,6 +196,7 @@
                 <select id="bulkAction" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
                     <option value="">Bulk Actions</option>
                     <option value="confirm">Confirm Bookings</option>
+
                     <option value="cancel">Cancel Bookings</option>
                     <option value="delete">Delete</option>
                 </select>
@@ -357,15 +358,7 @@
                                     </svg>
                                 </a>
 
-                                @if($booking->status === 'pending')
-                                <button type="button" 
-                                        class="text-blue-600 hover:text-blue-900 transition-colors confirm-booking" 
-                                        data-id="{{ $booking->id }}" title="Confirm Booking">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </button>
-                                @endif
+                               
 
                                 <a href="mailto:{{ $booking->email }}?subject=Re: Your Safari Booking&body=Dear {{ $booking->name }},%0D%0A%0D%0AThank you for your safari booking inquiry.%0D%0A%0D%0A"
                                    class="text-purple-600 hover:text-purple-900 transition-colors" title="Send Email">

@@ -638,14 +638,14 @@
                                placeholder="Enter your email">
                     </div>
                     <div>
-                        <label for="country" class="block text-sm font-medium text-gray-700 mb-2">Country <span class="text-red-500">*</span></label>
+                        <label for="country" class="block text-sm font-medium text-gray-700 mb-2">Nationality <span class="text-red-500">*</span></label>
                         <input type="text" id="country" name="country" required
                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-sm sm:text-base"
                                placeholder="Where are you from?">
                     </div>
                     <div>
-                        <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-2">WhatsApp Number <span class="text-red-500">*</span></label>
-                        <input type="tel" id="whatsapp" name="whatsapp" required
+                        <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-2">WhatsApp Number </label>
+                        <input type="tel" id="whatsapp" name="whatsapp" 
                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-sm sm:text-base"
                                placeholder="e.g., +1 234 567 8900">
                     </div>
@@ -653,7 +653,7 @@
 
                 @if($tour->prices && $tour->prices->count() > 0)
                 <div>
-                    <label for="group_size" class="block text-sm font-medium text-gray-700 mb-2">Group Size <span class="text-red-500">*</span></label>
+                    <label for="group_size" class="block text-sm font-medium text-gray-700 mb-2">Number of people <span class="text-red-500">*</span></label>
                     <select id="group_size" name="group_size" required onchange="calculateTotal()"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition text-sm sm:text-base">
                         <option value="">Select group size</option>
@@ -681,7 +681,7 @@
                 </div>
 
                 <div>
-                    <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Additional Requirements <span class="text-gray-400">(Optional)</span></label>
+                    <label for="message" class="block text-sm font-medium text-gray-700 mb-2">More Information </label>
                     <textarea id="message" name="message" rows="4"
                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition resize-y text-sm sm:text-base"
                               placeholder="Any special requirements or questions?"></textarea>

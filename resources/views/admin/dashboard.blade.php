@@ -75,7 +75,7 @@
         </div>
 
         <!-- Pending Approvals -->
-        <div class="stat-card bg-white rounded-lg shadow-md p-6 cursor-pointer" onclick="window.location.href='#pending-bookings'">
+        <div class=" hidden stat-card bg-white rounded-lg shadow-md p-6 cursor-pointer" onclick="window.location.href='#pending-bookings'">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-gray-500 text-sm font-medium mb-1">Pending Approvals</p>
@@ -247,12 +247,10 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                            <a href="#" class="text-indigo-600 hover:text-indigo-900" title="View">
+                            <a href="{{ route('admin.bookings.show', $booking->id) }}" class="text-indigo-600 hover:text-indigo-900" title="View">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="#" class="text-blue-600 hover:text-blue-900" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                           
                         </td>
                     </tr>
                     @empty
@@ -270,7 +268,7 @@
 
     <!-- Pending Actions Section -->
     @if($pendingBookings->count() > 0)
-    <div id="pending-bookings" class="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-orange-500">
+    <div id="pending-bookings" class="bg-white rounded-lg shadow-md p-6 mb-8 border-l-4 border-orange-500 hidden">
         <div class="flex items-center mb-4">
             <div class="bg-orange-100 rounded-full p-3 mr-4">
                 <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>

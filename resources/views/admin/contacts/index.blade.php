@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Contact Messages - Admin Dashboard')
+@section('title', 'Booking Requests - Admin Dashboard')
 
 @section('content')
 <div class="container-fluid px-4 py-6">
@@ -8,15 +8,13 @@
     <div class="mb-6">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900 mb-2">Contact Messages</h1>
-                <p class="text-gray-600">Manage and respond to customer inquiries</p>
+                <h1 class="text-2xl font-bold text-gray-900 mb-2">Booking Requests</h1>
+                <p class="text-gray-600">Manage and respond to customer booking inquiries</p>
             </div>
             <div class="mt-4 sm:mt-0 flex space-x-3">
                 <a href="{{ route('admin.contacts.export') }}" 
                    class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 transition ease-in-out duration-150">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
+                    <i class="fas fa-download mr-2"></i>
                     Export CSV
                 </a>
             </div>
@@ -33,14 +31,12 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
+                            <i class="fas fa-ticket-alt text-blue-600"></i>
                         </div>
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Total Messages</dt>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Total Bookings</dt>
                             <dd class="text-lg font-medium text-gray-900">{{ number_format($stats['total']) }}</dd>
                         </dl>
                     </div>
@@ -53,35 +49,13 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                            <i class="fas fa-clock text-yellow-600"></i>
                         </div>
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Unread</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ number_format($stats['unread']) }}</dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Read</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ number_format($stats['read']) }}</dd>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Pending</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ number_format($stats['pending']) }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -93,9 +67,25 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
+                            <i class="fas fa-check-circle text-purple-600"></i>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Confirmed</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ number_format($stats['confirmed']) }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-calendar-alt text-green-600"></i>
                         </div>
                     </div>
                     <div class="ml-5 w-0 flex-1">
@@ -119,32 +109,47 @@
                 <!-- Search -->
                 <div>
                     <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
-                    <input type="text" 
-                           name="search" 
-                           id="search"
-                           value="{{ request('search') }}"
-                           placeholder="Name, email, subject..."
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                    <div class="relative">
+                        <input type="text" 
+                               name="search" 
+                               id="search"
+                               value="{{ request('search') }}"
+                               placeholder="Name, email, destination..."
+                               class="w-full px-3 py-2 pl-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Status Filter -->
                 <div>
-                    <label for="is_read" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                    <select name="is_read" id="is_read" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
-                        <option value="">All Messages</option>
-                        <option value="0" {{ request('is_read') === '0' ? 'selected' : '' }}>Unread</option>
-                        <option value="1" {{ request('is_read') === '1' ? 'selected' : '' }}>Read</option>
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select name="status" id="status" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                        <option value="">All Statuses</option>
+                        <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="processing" {{ request('status') === 'processing' ? 'selected' : '' }}>Processing</option>
+                        <option value="quoted" {{ request('status') === 'quoted' ? 'selected' : '' }}>Quoted</option>
+                        <option value="confirmed" {{ request('status') === 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                        <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                     </select>
                 </div>
 
-                <!-- Country Filter -->
+                <!-- Destination Filter -->
                 <div>
-                    <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
-                    <select name="country" id="country" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
-                        <option value="">All Countries</option>
-                        @foreach(App\Models\ContactMessage::getCountryStats() as $countryName => $count)
-                            <option value="{{ $countryName }}" {{ request('country') === $countryName ? 'selected' : '' }}>
-                                {{ $countryName }} ({{ $count }})
+                    <label for="destination" class="block text-sm font-medium text-gray-700 mb-1">Destination</label>
+                    <select name="destination" id="destination" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                        <option value="">All Destinations</option>
+                        @php
+                            $destinations = App\Models\ContactMessage::whereNotNull('destination')
+                                ->selectRaw('destination, COUNT(*) as count')
+                                ->groupBy('destination')
+                                ->orderBy('count', 'desc')
+                                ->get();
+                        @endphp
+                        @foreach($destinations as $dest)
+                            <option value="{{ $dest->destination }}" {{ request('destination') === $dest->destination ? 'selected' : '' }}>
+                                {{ $dest->destination }} ({{ $dest->count }})
                             </option>
                         @endforeach
                     </select>
@@ -153,22 +158,22 @@
                 <!-- Actions -->
                 <div class="flex items-end space-x-2">
                     <button type="submit" class="px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 transition ease-in-out duration-150">
-                        Filter
+                        <i class="fas fa-filter mr-1"></i> Filter
                     </button>
                     <a href="{{ route('admin.contacts.index') }}" class="px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-400 transition ease-in-out duration-150">
-                        Clear
+                        <i class="fas fa-times mr-1"></i> Clear
                     </a>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Messages Table -->
+    <!-- Bookings Table -->
     <div class="bg-white shadow overflow-hidden rounded-md">
         <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
             <h3 class="text-lg font-medium text-gray-900">
-                Contact Messages 
-                @if(request()->hasAny(['search', 'is_read', 'country']))
+                Booking Requests 
+                @if(request()->hasAny(['search', 'status', 'destination']))
                     <span class="text-sm text-gray-500">(Filtered Results)</span>
                 @endif
             </h3>
@@ -178,19 +183,21 @@
             <div class="flex items-center space-x-3">
                 <select id="bulkAction" class="px-3 py-2 border border-gray-300 rounded-md text-sm">
                     <option value="">Bulk Actions</option>
-                    <option value="mark_read">Mark as Read</option>
-                    <option value="mark_unread">Mark as Unread</option>
+                    <option value="mark_processing">Mark as Processing</option>
+                    <option value="mark_quoted">Mark as Quoted</option>
+                    <option value="mark_confirmed">Mark as Confirmed</option>
+                    <option value="mark_cancelled">Mark as Cancelled</option>
                     <option value="delete">Delete</option>
                 </select>
                 <button type="button" id="applyBulkAction" class="px-3 py-2 bg-gray-600 text-white text-sm rounded-md hover:bg-gray-700">
-                    Apply
+                    <i class="fas fa-check mr-1"></i> Apply
                 </button>
             </div>
             @endif
         </div>
 
         @if($contacts->count() > 0)
-        <!-- Messages List -->
+        <!-- Bookings List -->
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -202,7 +209,7 @@
                             Contact Info
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Subject & Message
+                            Trip Details
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Status
@@ -217,7 +224,7 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach($contacts as $contact)
-                    <tr class="hover:bg-gray-50 {{ !$contact->is_read ? 'bg-blue-50 border-l-4 border-blue-400' : '' }}">
+                    <tr class="hover:bg-gray-50 {{ $contact->status === 'pending' ? 'bg-blue-50 border-l-4 border-blue-400' : '' }}">
                         <!-- Checkbox -->
                         <td class="px-6 py-4 whitespace-nowrap">
                             <input type="checkbox" name="selected_contacts[]" value="{{ $contact->id }}" class="contact-checkbox rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50">
@@ -227,29 +234,26 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10">
-                                    <div class="h-10 w-10 rounded-full bg-{{ $contact->is_read ? 'gray' : 'blue' }}-100 flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-{{ $contact->is_read ? 'gray' : 'blue' }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                        </svg>
+                                    <div class="h-10 w-10 rounded-full bg-{{ $contact->status === 'pending' ? 'blue' : 'gray' }}-100 flex items-center justify-center">
+                                        <i class="fas fa-user text-{{ $contact->status === 'pending' ? 'blue' : 'gray' }}-600"></i>
                                     </div>
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">{{ $contact->name }}</div>
-                                    <div class="text-sm text-gray-500">{{ $contact->email }}</div>
+                                    <div class="text-sm font-medium text-gray-900">{{ $contact->first_name }} {{ $contact->last_name }}</div>
+                                    <div class="text-sm text-gray-500">
+                                        <i class="fas fa-envelope mr-1"></i>{{ $contact->email }}
+                                    </div>
                                     <div class="text-xs text-gray-500 mt-1">
-                                        <span class="inline-flex items-center">
-                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            </svg>
-                                            {{ $contact->country }}
+                                        @if($contact->whatsapp_number)
+                                        <span class="inline-flex items-center mr-3">
+                                            <i class="fab fa-whatsapp mr-1 text-green-600"></i>
+                                            {{ $contact->whatsapp_number }}
                                         </span>
-                                        @if($contact->phone)
-                                        <span class="ml-3 inline-flex items-center">
-                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                            </svg>
-                                            {{ $contact->phone }}
+                                        @endif
+                                        @if($contact->nationality)
+                                        <span class="inline-flex items-center">
+                                            <i class="fas fa-flag mr-1"></i>
+                                            {{ $contact->nationality }}
                                         </span>
                                         @endif
                                     </div>
@@ -257,29 +261,48 @@
                             </div>
                         </td>
 
-                        <!-- Subject & Message -->
+                        <!-- Trip Details -->
                         <td class="px-6 py-4">
-                            <div class="text-sm font-medium text-gray-900 mb-1">{{ $contact->subject }}</div>
-                            <div class="text-sm text-gray-600 line-clamp-2">{{ Str::limit($contact->message, 120) }}</div>
+                            <div class="text-sm text-gray-900">
+                                <span class="font-medium">Destination:</span> {{ $contact->destination ?? 'N/A' }}
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                <span class="font-medium">People:</span> {{ $contact->number_of_people ?? 'N/A' }}
+                                | <span class="font-medium">Days:</span> {{ $contact->number_of_days ?? 'N/A' }}
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">
+                                <span class="font-medium">Budget:</span> {{ $contact->formatted_budget ?? 'N/A' }}
+                                | <span class="font-medium">Accommodation:</span> {{ $contact->accommodation_list ?? 'N/A' }}
+                            </div>
+                            @if($contact->preferred_travel_date)
+                            <div class="text-xs text-gray-500">
+                                <i class="fas fa-calendar-alt mr-1"></i> {{ $contact->preferred_travel_date }}
+                            </div>
+                            @endif
                         </td>
 
                         <!-- Status -->
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if($contact->is_read)
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Read
-                                </span>
-                            @else
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Unread
-                                </span>
-                            @endif
+                            @php
+                                $statusColors = [
+                                    'pending' => 'yellow',
+                                    'processing' => 'blue',
+                                    'quoted' => 'purple',
+                                    'confirmed' => 'green',
+                                    'cancelled' => 'red'
+                                ];
+                                $statusIcons = [
+                                    'pending' => 'fa-clock',
+                                    'processing' => 'fa-spinner',
+                                    'quoted' => 'fa-file-invoice',
+                                    'confirmed' => 'fa-check-circle',
+                                    'cancelled' => 'fa-times-circle'
+                                ];
+                            @endphp
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-{{ $statusColors[$contact->status] ?? 'gray' }}-100 text-{{ $statusColors[$contact->status] ?? 'gray' }}-800">
+                                <i class="fas {{ $statusIcons[$contact->status] ?? 'fa-circle' }} mr-1"></i>
+                                {{ ucfirst($contact->status) }}
+                            </span>
                         </td>
 
                         <!-- Date -->
@@ -293,35 +316,23 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex items-center space-x-2">
                                 <a href="{{ route('admin.contacts.show', $contact->id) }}" 
-                                   class="text-green-600 hover:text-green-900 transition-colors">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
+                                   class="text-green-600 hover:text-green-900 transition-colors" title="View">
+                                    <i class="fas fa-eye"></i>
                                 </a>
 
                                 <button type="button" 
-                                        class="text-blue-600 hover:text-blue-900 transition-colors toggle-read" 
+                                        class="text-blue-600 hover:text-blue-900 transition-colors toggle-status" 
                                         data-id="{{ $contact->id }}" 
-                                        data-read="{{ $contact->is_read }}">
-                                    @if($contact->is_read)
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                        </svg>
-                                    @else
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                    @endif
+                                        data-status="{{ $contact->status }}"
+                                        title="Change Status">
+                                    <i class="fas fa-sync-alt"></i>
                                 </button>
 
-                                <form action="{{ route('admin.contacts.destroy', $contact->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this message?')">
+                                <form action="{{ route('admin.contacts.destroy', $contact->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this booking request?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900 transition-colors">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
+                                    <button type="submit" class="text-red-600 hover:text-red-900 transition-colors" title="Delete">
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
                             </div>
@@ -339,21 +350,19 @@
         @else
         <!-- Empty State -->
         <div class="text-center py-12">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-            </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">No contact messages</h3>
+            <i class="fas fa-inbox text-gray-400 text-5xl mb-4"></i>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No booking requests</h3>
             <p class="mt-1 text-sm text-gray-500">
-                @if(request()->hasAny(['search', 'is_read', 'country']))
-                    No messages match your current filters.
+                @if(request()->hasAny(['search', 'status', 'destination']))
+                    No bookings match your current filters.
                 @else
-                    No contact messages have been received yet.
+                    No booking requests have been received yet.
                 @endif
             </p>
-            @if(request()->hasAny(['search', 'is_read', 'country']))
+            @if(request()->hasAny(['search', 'status', 'destination']))
             <div class="mt-6">
                 <a href="{{ route('admin.contacts.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
-                    Clear Filters
+                    <i class="fas fa-times mr-2"></i> Clear Filters
                 </a>
             </div>
             @endif
@@ -380,7 +389,7 @@
 </style>
 @endpush
 
-
+@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Select All Functionality
@@ -419,13 +428,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (checkedBoxes.length === 0) {
-                alert('Please select at least one message.');
+                alert('Please select at least one booking.');
                 return;
             }
 
             // Confirm delete action
             if (selectedAction === 'delete') {
-                if (!confirm('Are you sure you want to delete the selected messages? This action cannot be undone.')) {
+                if (!confirm('Are you sure you want to delete the selected bookings? This action cannot be undone.')) {
                     return;
                 }
             }
@@ -448,36 +457,44 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Toggle Read Status
-    document.querySelectorAll('.toggle-read').forEach(button => {
+    // Toggle Status (you can implement a status dropdown or modal here)
+    document.querySelectorAll('.toggle-status').forEach(button => {
         button.addEventListener('click', function() {
             const contactId = this.dataset.id;
-            const isRead = this.dataset.read === '1';
-
-            fetch(`/admin/contacts/${contactId}/read-status`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({
-                    is_read: !isRead
+            const currentStatus = this.dataset.status;
+            
+            // Simple status update - you can replace with a modal for better UX
+            const newStatus = prompt('Enter new status (pending, processing, quoted, confirmed, cancelled):', currentStatus);
+            
+            if (newStatus && ['pending', 'processing', 'quoted', 'confirmed', 'cancelled'].includes(newStatus)) {
+                fetch(`/admin/contacts/${contactId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    alert('Failed to update status. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Failed to update status. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+            } else if (newStatus !== null) {
+                alert('Invalid status. Please use: pending, processing, quoted, confirmed, or cancelled.');
+            }
         });
     });
 });
 </script>
+@endpush
 @endsection

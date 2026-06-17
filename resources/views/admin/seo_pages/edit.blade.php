@@ -116,6 +116,7 @@
                                         <input type="hidden" name="blocks[{{ $loop->index }}][id]" value="{{ $block->id }}">
                                         <input type="hidden" name="blocks[{{ $loop->index }}][type]" value="{{ $block->block_type }}">
 
+                                        {{-- HEADING BLOCK --}}
                                         @if($block->block_type === 'heading')
                                             <div class="flex items-center justify-between mb-3">
                                                 <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Heading</span>
@@ -157,6 +158,7 @@
                                                 <{{ $level }} class="{{ $styles[$level] ?? $styles['h2'] }} not-italic">{{ $text }}</{{ $level }}>
                                             </div>
 
+                                        {{-- TEXT BLOCK --}}
                                         @elseif($block->block_type === 'text')
                                             <div class="flex items-center justify-between mb-2">
                                                 <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Paragraph</span>
@@ -178,6 +180,35 @@
                                                  oninput="syncParagraph(this, {{ $loop->index }})">{!! $block->content !!}</div>
                                             <input type="hidden" name="blocks[{{ $loop->index }}][content]" id="para-content-{{ $loop->index }}" value="{{ $block->content }}">
 
+                                        {{-- LIST BLOCK --}}
+                                        @elseif($block->block_type === 'list')
+                                            <div class="flex items-center justify-between mb-3">
+                                                <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">📋 List</span>
+                                                <button type="button" onclick="removeBlock(this)" class="text-xs text-red-500 hover:text-red-700">Remove</button>
+                                            </div>
+                                            <div class="flex gap-3 mb-3">
+                                                <div class="w-36">
+                                                    <label class="block text-xs text-gray-500 mb-1">Type</label>
+                                                    <select name="blocks[{{ $loop->index }}][list_type]" 
+                                                            class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm">
+                                                        <option value="ul" {{ ($block->list_type ?? 'ul') === 'ul' ? 'selected' : '' }}>Bullet List</option>
+                                                        <option value="ol" {{ ($block->list_type ?? 'ul') === 'ol' ? 'selected' : '' }}>Numbered List</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div contenteditable="true"
+                                                 data-block-type="list"
+                                                 data-index="{{ $loop->index }}"
+                                                 class="paragraph-editor w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 min-h-[120px]"
+                                                 onfocus="setCurrentEditor(this)"
+                                                 onclick="setCurrentEditor(this)"
+                                                 onkeyup="saveSelection()"
+                                                 onmouseup="saveSelection()"
+                                                 oninput="syncList(this, {{ $loop->index }})"
+                                                 placeholder="• Item 1&#10;• Item 2&#10;• Item 3">{!! $block->content !!}</div>
+                                            <input type="hidden" name="blocks[{{ $loop->index }}][content]" id="list-content-{{ $loop->index }}" value="{{ $block->content }}">
+
+                                        {{-- IMAGE BLOCK --}}
                                         @elseif($block->block_type === 'image')
                                             <div class="flex items-center justify-between mb-3">
                                                 <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">
@@ -212,7 +243,7 @@
                                                 </div>
                                             @endif
 
-                                            {{-- New Images Upload - Button BELOW previews --}}
+                                            {{-- New Images Upload --}}
                                             <div id="img-preview-{{ $loop->index }}" class="grid grid-cols-3 gap-2 mb-3"></div>
                                             <div id="img-transfer-{{ $loop->index }}"></div>
                                             <label class="block w-full border-2 border-dashed border-gray-300 rounded-xl p-5 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
@@ -230,6 +261,7 @@
 
                                             <script>if (!window.blockFiles) window.blockFiles = {}; window.blockFiles[{{ $loop->index }}] = window.blockFiles[{{ $loop->index }}] || [];</script>
 
+                                        {{-- LINKS BLOCK --}}
                                         @elseif($block->block_type === 'links')
                                             <div class="flex items-center justify-between mb-3">
                                                 <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Internal Links</span>
@@ -265,7 +297,8 @@
                                                     class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">¶</button>
                                             <button type="button" onclick="insertBlockAfter('image', this)" title="Images"
                                                     class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">🖼️</button>
-                                            
+                                            <button type="button" onclick="insertBlockAfter('list', this)" title="List"
+                                                    class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">📋</button>
                                         </div>
                                     </div>
                                 @endforeach
@@ -342,9 +375,9 @@
     </form>
 </div>
 
-{{-- ── FLOATING BOTTOM TOOLBAR WITH ADD LINK BUTTON ── --}}
+{{-- ── FLOATING BOTTOM TOOLBAR ── --}}
 <div class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-lg px-4 py-3">
-    <div class="max-w-7xl mx-auto flex items-center justify-center gap-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-3 flex-wrap">
         <span class="text-xs text-gray-400 mr-2 hidden sm:block">Add block:</span>
         <button type="button"
                 onclick="addBlock('heading')"
@@ -360,6 +393,11 @@
                 onclick="addBlock('image')"
                 class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition">
             🖼️ Images
+        </button>
+        <button type="button"
+                onclick="addBlock('list')"
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition">
+            📋 List
         </button>
         <button type="button"
                 id="global-add-link-btn"
@@ -461,6 +499,17 @@
 .paragraph-editor a:hover {
     text-decoration: none;
 }
+.paragraph-editor ul, .paragraph-editor ol {
+    padding-left: 2rem;
+    margin: 0.5rem 0;
+}
+.paragraph-editor li {
+    margin-bottom: 0.25rem;
+}
+.paragraph-editor li a {
+    color: #2563eb;
+    text-decoration: underline;
+}
 
 /* ── MAXIMIZED PARAGRAPH EDITOR ── */
 .paragraph-editor-maximized {
@@ -511,80 +560,9 @@
                         class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">¶</button>
                 <button type="button" onclick="insertBlockAfter('image', this)" title="Images"
                         class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">🖼️</button>
+                <button type="button" onclick="insertBlockAfter('list', this)" title="List"
+                        class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">📋</button>
             </div>`;
-    }
-
-    // Save selected text for link
-    window.saveSelection = function() {
-        const sel = window.getSelection();
-        if (sel && !sel.isCollapsed && sel.toString().trim()) {
-            savedSelectionRange = sel.getRangeAt(0).cloneRange();
-            const editor = sel.anchorNode?.nodeType === 3 ? sel.anchorNode.parentElement?.closest('[data-block-type="text"]') : sel.anchorNode?.closest('[data-block-type="text"]');
-            if (editor) currentEditorForLink = editor;
-        } else {
-            savedSelectionRange = null;
-        }
-    };
-
-    window.setCurrentEditor = function(el) {
-        currentEditorForLink = el;
-    };
-
-    window.syncParagraph = function (el, idx) {
-        const h = document.getElementById('para-content-' + idx);
-        if (h) h.value = el.innerHTML;
-    };
-
-    // ── MAXIMIZE / RESTORE PARAGRAPH EDITOR ──
-    window.toggleMaximize = function (btn) {
-        const blockItem = btn.closest('.block-item');
-        const editor = blockItem.querySelector('.paragraph-editor');
-        if (!editor) return;
-
-        if (editor.classList.contains('paragraph-editor-maximized')) {
-            restoreEditor(editor, btn);
-        } else {
-            maximizeEditor(editor, btn);
-        }
-    };
-
-    function maximizeEditor(editor, btn) {
-        editor.classList.add('paragraph-editor-maximized');
-        document.body.classList.add('overflow-hidden');
-
-        const backdrop = document.createElement('div');
-        backdrop.id = 'maximize-backdrop';
-        backdrop.addEventListener('click', () => restoreEditor(editor, btn));
-        document.body.appendChild(backdrop);
-
-        btn.innerHTML = '🗗 Collapse';
-        btn.title = 'Restore editor size';
-
-        // ESC key closes maximized editor
-        document.addEventListener('keydown', escCloseHandler);
-        editor._escHandler = escCloseHandler;
-
-        function escCloseHandler(e) {
-            if (e.key === 'Escape') restoreEditor(editor, btn);
-        }
-
-        editor.focus();
-    }
-
-    function restoreEditor(editor, btn) {
-        editor.classList.remove('paragraph-editor-maximized');
-        document.body.classList.remove('overflow-hidden');
-
-        const backdrop = document.getElementById('maximize-backdrop');
-        if (backdrop) backdrop.remove();
-
-        if (editor._escHandler) {
-            document.removeEventListener('keydown', editor._escHandler);
-            delete editor._escHandler;
-        }
-
-        btn.innerHTML = '⤢ Expand';
-        btn.title = 'Maximize editor';
     }
 
     // ── BUILD NEW BLOCK ──
@@ -639,7 +617,7 @@
             <div contenteditable="true"
                  data-block-type="text"
                  data-index="${idx}"
-                 data-placeholder="Write your paragraph here..."
+                 data-placeholder="Write your paragraph here... (bold, italic, lists, links - all supported)"
                  class="paragraph-editor w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
                  onfocus="setCurrentEditor(this)"
                  onclick="setCurrentEditor(this)"
@@ -647,6 +625,34 @@
                  onmouseup="saveSelection()"
                  oninput="syncParagraph(this, ${idx})"></div>
             <input type="hidden" name="blocks[${idx}][content]" id="para-content-${idx}">`;
+        }
+
+        if (type === 'list') {
+            inner += `
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">📋 List</span>
+                <button type="button" onclick="removeBlock(this)" class="text-xs text-red-500 hover:text-red-700">Remove</button>
+            </div>
+            <div class="flex gap-3 mb-3">
+                <div class="w-36">
+                    <label class="block text-xs text-gray-500 mb-1">Type</label>
+                    <select name="blocks[${idx}][list_type]" class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm">
+                        <option value="ul">Bullet List</option>
+                        <option value="ol">Numbered List</option>
+                    </select>
+                </div>
+            </div>
+            <div contenteditable="true"
+                 data-block-type="list"
+                 data-index="${idx}"
+                 class="paragraph-editor w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 min-h-[120px]"
+                 onfocus="setCurrentEditor(this)"
+                 onclick="setCurrentEditor(this)"
+                 onkeyup="saveSelection()"
+                 onmouseup="saveSelection()"
+                 oninput="syncList(this, ${idx})"
+                 placeholder="• Item 1&#10;• Item 2&#10;• Item 3"></div>
+            <input type="hidden" name="blocks[${idx}][content]" id="list-content-${idx}">`;
         }
 
         if (type === 'image') {
@@ -679,6 +685,17 @@
         return div;
     }
 
+    // ── SYNC FUNCTIONS ──
+    window.syncParagraph = function (el, idx) {
+        const h = document.getElementById('para-content-' + idx);
+        if (h) h.value = el.innerHTML;
+    };
+
+    window.syncList = function (el, idx) {
+        const h = document.getElementById('list-content-' + idx);
+        if (h) h.value = el.innerHTML;
+    };
+
     // ── ADD / INSERT / REMOVE BLOCKS ──
     window.addBlock = function (type) {
         const emptyMsg = document.getElementById('blocks-empty-msg');
@@ -688,7 +705,7 @@
         const div = buildBlock(type, blockIndex);
         container.appendChild(div);
         
-        if (type === 'text') {
+        if (type === 'text' || type === 'list') {
             const editor = div.querySelector('.paragraph-editor');
             if (editor) {
                 editor.focus();
@@ -712,7 +729,7 @@
             document.getElementById('blocks-container').appendChild(div);
         }
 
-        if (type === 'text') {
+        if (type === 'text' || type === 'list') {
             const editor = div.querySelector('.paragraph-editor');
             if (editor) editor.focus();
         }
@@ -754,6 +771,57 @@
 
         preview.innerHTML = `<${level} class="${styles[level]} not-italic">${escapeHtml(text)}</${level}>`;
     };
+
+    // ── MAXIMIZE / RESTORE PARAGRAPH EDITOR ──
+    window.toggleMaximize = function (btn) {
+        const blockItem = btn.closest('.block-item');
+        const editor = blockItem.querySelector('.paragraph-editor');
+        if (!editor) return;
+
+        if (editor.classList.contains('paragraph-editor-maximized')) {
+            restoreEditor(editor, btn);
+        } else {
+            maximizeEditor(editor, btn);
+        }
+    };
+
+    function maximizeEditor(editor, btn) {
+        editor.classList.add('paragraph-editor-maximized');
+        document.body.classList.add('overflow-hidden');
+
+        const backdrop = document.createElement('div');
+        backdrop.id = 'maximize-backdrop';
+        backdrop.addEventListener('click', () => restoreEditor(editor, btn));
+        document.body.appendChild(backdrop);
+
+        btn.innerHTML = '🗗 Collapse';
+        btn.title = 'Restore editor size';
+
+        document.addEventListener('keydown', escCloseHandler);
+        editor._escHandler = escCloseHandler;
+
+        function escCloseHandler(e) {
+            if (e.key === 'Escape') restoreEditor(editor, btn);
+        }
+
+        editor.focus();
+    }
+
+    function restoreEditor(editor, btn) {
+        editor.classList.remove('paragraph-editor-maximized');
+        document.body.classList.remove('overflow-hidden');
+
+        const backdrop = document.getElementById('maximize-backdrop');
+        if (backdrop) backdrop.remove();
+
+        if (editor._escHandler) {
+            document.removeEventListener('keydown', editor._escHandler);
+            delete editor._escHandler;
+        }
+
+        btn.innerHTML = '⤢ Expand';
+        btn.title = 'Maximize editor';
+    }
 
     // ── IMAGE FUNCTIONS ──
     window.accumulateImages = function (input, idx) {
@@ -864,10 +932,26 @@
         if (prompt) prompt.classList.remove('hidden');
     };
 
-    // ── INLINE LINK FUNCTIONS (WORDPRESS STYLE) ──
+    // ── SAVE SELECTION FOR LINKS ──
+    window.saveSelection = function() {
+        const sel = window.getSelection();
+        if (sel && !sel.isCollapsed && sel.toString().trim()) {
+            savedSelectionRange = sel.getRangeAt(0).cloneRange();
+            const editor = sel.anchorNode?.nodeType === 3 ? sel.anchorNode.parentElement?.closest('[data-block-type="text"], [data-block-type="list"]') : sel.anchorNode?.closest('[data-block-type="text"], [data-block-type="list"]');
+            if (editor) currentEditorForLink = editor;
+        } else {
+            savedSelectionRange = null;
+        }
+    };
+
+    window.setCurrentEditor = function(el) {
+        currentEditorForLink = el;
+    };
+
+    // ── INLINE LINK FUNCTIONS ──
     function openLinkModal() {
         if (!currentEditorForLink) {
-            alert('Please click inside a paragraph first, then click Add Link.');
+            alert('Please click inside a paragraph or list first, then click Add Link.');
             return;
         }
         
@@ -924,7 +1008,7 @@
         document.execCommand('insertHTML', false, linkHtml);
         
         const idx = currentEditorForLink.dataset.index;
-        const hiddenInput = document.getElementById('para-content-' + idx);
+        const hiddenInput = document.getElementById('para-content-' + idx) || document.getElementById('list-content-' + idx);
         if (hiddenInput) {
             hiddenInput.value = currentEditorForLink.innerHTML;
         }
@@ -958,7 +1042,7 @@
         
         currentEditingLink.parentNode.replaceChild(newLink, currentEditingLink);
         
-        const hiddenInput = document.getElementById('para-content-' + currentEditingEditor.dataset.index);
+        const hiddenInput = document.getElementById('para-content-' + currentEditingEditor.dataset.index) || document.getElementById('list-content-' + currentEditingEditor.dataset.index);
         if (hiddenInput) {
             hiddenInput.value = currentEditingEditor.innerHTML;
         }
@@ -972,7 +1056,7 @@
         const text = document.createTextNode(currentEditingLink.textContent);
         currentEditingLink.parentNode.replaceChild(text, currentEditingLink);
         
-        const hiddenInput = document.getElementById('para-content-' + currentEditingEditor.dataset.index);
+        const hiddenInput = document.getElementById('para-content-' + currentEditingEditor.dataset.index) || document.getElementById('list-content-' + currentEditingEditor.dataset.index);
         if (hiddenInput) {
             hiddenInput.value = currentEditingEditor.innerHTML;
         }
@@ -982,12 +1066,12 @@
     
     document.addEventListener('dblclick', function(e) {
         const link = e.target.closest('a');
-        if (link && link.closest('[data-block-type="text"]')) {
+        if (link && (link.closest('[data-block-type="text"]') || link.closest('[data-block-type="list"]'))) {
             e.preventDefault();
             e.stopPropagation();
             
             currentEditingLink = link;
-            currentEditingEditor = link.closest('[data-block-type="text"]');
+            currentEditingEditor = link.closest('[data-block-type="text"]') || link.closest('[data-block-type="list"]');
             
             document.getElementById('edit-link-text').value = link.textContent;
             document.getElementById('edit-link-url').value = link.href;
@@ -1009,7 +1093,7 @@
     // ── ADD LINK BUTTON HANDLER ──
     document.getElementById('global-add-link-btn').addEventListener('click', openLinkModal);
     
-    // ── SLUG AUTO-GENERATE ──...
+    // ── SLUG AUTO-GENERATE ──
     const titleInput = document.getElementById('title-input');
     const slugInput = document.getElementById('slug-input');
 
@@ -1038,7 +1122,7 @@
         });
     }
     
-    // Initialize existing paragraph editors for link functionality
+    // ── INITIALIZE EXISTING EDITORS ──
     document.querySelectorAll('.paragraph-editor').forEach(editor => {
         editor.addEventListener('keyup', saveSelection);
         editor.addEventListener('mouseup', saveSelection);

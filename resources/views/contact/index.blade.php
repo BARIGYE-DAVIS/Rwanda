@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Us - Get in Touch with Rwanda Buget Safaris')
-@section('meta_description', 'Contact Rwanda Buget Safaris for your dream safari adventure. Get expert advice, custom quotes, and personalized service. Call, email, or visit us today!')
-@section('meta_keywords', 'contact Rwanda Buget Safaris, safari contact, tour booking contact, East Africa safari contact, Tanzania safari contact, Kenya safari contact, Uganda safari contact, safari inquiry, custom safari quote, tour operator contact, safari expert, travel consultation')
+@section('title', 'Contact Us - Get in Touch with Rwanda Budget Safaris')
+@section('meta_description', 'Contact Rwanda Budget Safaris for your dream safari adventure. Get expert advice, custom quotes, and personalized service. Call, email, or visit us today!')
+@section('meta_keywords', 'contact Rwanda Budget Safaris, safari contact, tour booking contact, East Africa safari contact, Tanzania safari contact, Kenya safari contact, Uganda safari contact, safari inquiry, custom safari quote, tour operator contact, safari expert, travel consultation')
 
 @section('page-header')
 <!-- Contact Page Header -->
@@ -19,9 +19,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
                 <div class="bg-white/10 backdrop-blur rounded-lg p-4">
                     <div class="flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6 text-green-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
+                        <i class="fas fa-phone-alt text-green-300 mr-2 text-lg"></i>
                         <span class="font-semibold">Call Us</span>
                     </div>
                     <p class="text-green-200">+256 781282344</p>
@@ -29,9 +27,7 @@
 
                 <div class="bg-white/10 backdrop-blur rounded-lg p-4">
                     <div class="flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6 text-green-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
+                        <i class="fas fa-envelope text-green-300 mr-2 text-lg"></i>
                         <span class="font-semibold">Email Us</span>
                     </div>
                     <p class="text-green-200">info@rwandabudgetsafaris.com</p>
@@ -39,9 +35,7 @@
 
                 <div class="bg-white/10 backdrop-blur rounded-lg p-4">
                     <div class="flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6 text-green-300 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                        </svg>
+                        <i class="fab fa-whatsapp text-green-300 mr-2 text-lg"></i>
                         <span class="font-semibold">WhatsApp</span>
                     </div>
                     <p class="text-green-200">+256 781282344</p>
@@ -63,359 +57,458 @@
 
 @section('content')
 
-    <!-- Contact Form Section -->
-    <section class="py-16 bg-gradient-to-r from-green-50 to-blue-50">
-     
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Send Us a Message</h2>
-                <p class="text-lg text-gray-600">
-                    Fill out the form below and we'll get back to you within 24 hours with detailed information
-                    about your safari adventure.
-                </p>
-            </div>
+<!-- Success Message - At the VERY TOP -->
+@if(session('success'))
+    <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-start max-w-3xl mx-auto mt-8">
+        <i class="fas fa-check-circle text-green-600 mr-2 mt-0.5 text-lg"></i>
+        <div>
+            <p class="font-medium">Booking Request Sent Successfully!</p>
+            <p class="text-sm">{{ session('success') }}</p>
+        </div>
+    </div>
+@endif
 
-            <!-- Success/Error Messages -->
-            @if(session('success'))
-                <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-start">
-                    <svg class="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <div>
-                        <p class="font-medium">Message Sent Successfully!</p>
-                        <p class="text-sm">{{ session('success') }}</p>
-                    </div>
-                </div>
-            @endif
+@if(session('error'))
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start max-w-3xl mx-auto mt-8">
+        <i class="fas fa-exclamation-circle text-red-600 mr-2 mt-0.5 text-lg"></i>
+        <div>
+            <p class="font-medium">Oops! Something went wrong.</p>
+            <p class="text-sm">{{ session('error') }}</p>
+        </div>
+    </div>
+@endif
 
-            @if(session('error'))
-                <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start">
-                    <svg class="w-5 h-5 text-red-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.667-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                    </svg>
-                    <div>
-                        <p class="font-medium">Oops! Something went wrong.</p>
-                        <p class="text-sm">{{ session('error') }}</p>
-                    </div>
-                </div>
-            @endif
+<!-- Contact Form Section -->
+<section class="py-16 bg-gradient-to-r from-green-50 to-blue-50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Book Your Safari</h2>
+            <p class="text-lg text-gray-600">
+                Fill out the form below and we'll get back to you soon with detailed information
+                about your safari adventure.
+            </p>
+        </div>
 
-            <!-- Contact Form -->
-            <form action="{{ route('contact.store') }}" method="POST" class="space-y-6" id="contactForm">
-                @csrf
+        <!-- Booking Form -->
+        <form action="{{ route('contact.store') }}" method="POST" class="space-y-6" id="contactForm">
+            @csrf
 
-                <!-- Name & Email Row -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                            Full Name <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text"
-                               id="name"
-                               name="name"
-                               value="{{ old('name') }}"
-                               required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('name') border-red-500 @enderror"
-                               placeholder="Enter your full name">
-                        @error('name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email Address <span class="text-red-500">*</span>
-                        </label>
-                        <input type="email"
-                               id="email"
-                               name="email"
-                               value="{{ old('email') }}"
-                               required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('email') border-red-500 @enderror"
-                               placeholder="Enter your email address">
-                        @error('email')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <!-- Country & Phone Row -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="country" class="block text-sm font-medium text-gray-700 mb-2">
-                            Country <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text"
-                               id="country"
-                               name="country"
-                               value="{{ old('country') }}"
-                               required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('country') border-red-500 @enderror"
-                               placeholder="Enter your country">
-                        @error('country')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-                            Phone Number <span class="text-gray-400">(Optional)</span>
-                        </label>
-                        <input type="tel"
-                               id="phone"
-                               name="phone"
-                               value="{{ old('phone') }}"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('phone') border-red-500 @enderror"
-                               placeholder="e.g., +1 234 567 8900">
-                        @error('phone')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <!-- Subject -->
+            <!-- First & Last Name -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">
-                        Subject <span class="text-red-500">*</span>
+                    <label for="first_name" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user text-green-600 mr-1"></i>
+                        First Name <span class="text-red-500">*</span>
                     </label>
                     <input type="text"
-                           id="subject"
-                           name="subject"
-                           value="{{ old('subject') }}"
+                           id="first_name"
+                           name="first_name"
+                           value="{{ old('first_name') }}"
                            required
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('subject') border-red-500 @enderror"
-                           placeholder="Brief description of your inquiry">
-                    @error('subject')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('first_name') border-red-500 @enderror"
+                           placeholder="Enter your first name">
+                    @error('first_name')
+                        <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Message -->
                 <div>
-                    <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
-                        Message <span class="text-red-500">*</span>
+                    <label for="last_name" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user text-green-600 mr-1"></i>
+                        Last Name <span class="text-red-500">*</span>
                     </label>
-                    <textarea id="message"
-                              name="message"
-                              rows="6"
-                              required
-                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 resize-y @error('message') border-red-500 @enderror"
-                              placeholder="Tell us about your dream safari, preferred dates, group size, interests, or any specific requirements...">{{ old('message') }}</textarea>
-                    <p class="mt-1 text-xs text-gray-500">Please provide as much detail as possible to help us serve you better.</p>
-                    @error('message')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    <input type="text"
+                           id="last_name"
+                           name="last_name"
+                           value="{{ old('last_name') }}"
+                           required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('last_name') border-red-500 @enderror"
+                           placeholder="Enter your last name">
+                    @error('last_name')
+                        <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <!-- Email & WhatsApp -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-envelope text-green-600 mr-1"></i>
+                        Email Address <span class="text-red-500">*</span>
+                    </label>
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           value="{{ old('email') }}"
+                           required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('email') border-red-500 @enderror"
+                           placeholder="Enter your email address">
+                    @error('email')
+                        <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Submit Button -->
-                <div class="text-center">
-                    <button type="submit"
-                            id="submitBtn"
-                            class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                        <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                        </svg>
-                        <span class="btn-text">Send Message</span>
-                    </button>
-                    <p class="text-sm text-gray-500 mt-3">We'll respond within 24 hours with detailed information.</p>
+                <div>
+                    <label for="whatsapp_number" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fab fa-whatsapp text-green-600 mr-1"></i>
+                        WhatsApp Number 
+                    </label>
+                    <input type="text"
+                           id="whatsapp_number"
+                           name="whatsapp_number"
+                           value="{{ old('whatsapp_number') }}"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('whatsapp_number') border-red-500 @enderror"
+                           placeholder="e.g., +256 781282344">
+                    @error('whatsapp_number')
+                        <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                    @enderror
                 </div>
-            </form>
-        </div>
-    </section>
+            </div>
 
-    <!-- Contact Information Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Get In Touch</h2>
-                <p class="text-lg text-gray-600">
-                    Multiple ways to reach our safari experts
+            <!-- Nationality & Destination -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="nationality" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-flag text-green-600 mr-1"></i>
+                        Nationality <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text"
+                           id="nationality"
+                           name="nationality"
+                           value="{{ old('nationality') }}"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('nationality') border-red-500 @enderror"
+                           placeholder="Enter your nationality">
+                    @error('nationality')
+                        <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="destination" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-map-marker-alt text-green-600 mr-1"></i>
+                        Destination 
+                    </label>
+                    <input type="text"
+                           id="destination"
+                           name="destination"
+                           value="{{ old('destination') }}"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('destination') border-red-500 @enderror"
+                           placeholder="e.g., Uganda, Rwanda, Kenya">
+                    @error('destination')
+                        <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <!-- Number of People & Days -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="number_of_people" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-users text-green-600 mr-1"></i>
+                        Number of People 
+                    </label>
+                    <input type="number"
+                           id="number_of_people"
+                           name="number_of_people"
+                           value="{{ old('number_of_people') }}"
+                           min="1"
+                           max="100"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('number_of_people') border-red-500 @enderror"
+                           placeholder="e.g., 2">
+                    @error('number_of_people')
+                        <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="number_of_days" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-calendar-alt text-green-600 mr-1"></i>
+                        Number of Days 
+                    </label>
+                    <input type="number"
+                           id="number_of_days"
+                           name="number_of_days"
+                           value="{{ old('number_of_days') }}"
+                           min="1"
+                           max="365"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('number_of_days') border-red-500 @enderror"
+                           placeholder="e.g., 7">
+                    @error('number_of_days')
+                        <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <!-- Accommodation Type -->
+            <div>
+                <label for="accommodation_type" class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-hotel text-green-600 mr-1"></i>
+                    Accommodation Type 
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <label class="flex items-center p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer @error('accommodation_type') border-red-500 @enderror">
+                        <input type="checkbox"
+                               name="accommodation_type[]"
+                               value="budget"
+                               @if(old('accommodation_type') && in_array('budget', old('accommodation_type'))) checked @endif
+                               class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                        <span class="ml-2 text-sm text-gray-700"><i class="fas fa-coins text-yellow-600 mr-1"></i>Budget</span>
+                    </label>
+                    <label class="flex items-center p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer @error('accommodation_type') border-red-500 @enderror">
+                        <input type="checkbox"
+                               name="accommodation_type[]"
+                               value="mid_range"
+                               @if(old('accommodation_type') && in_array('mid_range', old('accommodation_type'))) checked @endif
+                               class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                        <span class="ml-2 text-sm text-gray-700"><i class="fas fa-star text-blue-600 mr-1"></i>Mid Range</span>
+                    </label>
+                    <label class="flex items-center p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer @error('accommodation_type') border-red-500 @enderror">
+                        <input type="checkbox"
+                               name="accommodation_type[]"
+                               value="luxury"
+                               @if(old('accommodation_type') && in_array('luxury', old('accommodation_type'))) checked @endif
+                               class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                        <span class="ml-2 text-sm text-gray-700"><i class="fas fa-crown text-purple-600 mr-1"></i>Luxury</span>
+                    </label>
+                </div>
+                @error('accommodation_type')
+                    <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                @enderror
+                @error('accommodation_type.*')
+                    <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Preferred Travel Date -->
+            <div>
+                <label for="preferred_travel_date" class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-calendar-check text-green-600 mr-1"></i>
+                    Preferred Travel Date 
+                </label>
+                <input type="text"
+                       id="preferred_travel_date"
+                       name="preferred_travel_date"
+                       value="{{ old('preferred_travel_date') }}"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('preferred_travel_date') border-red-500 @enderror"
+                       placeholder="e.g., June 2025">
+                @error('preferred_travel_date')
+                    <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Estimated Budget -->
+            <div>
+                <label for="estimated_budget" class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-dollar-sign text-green-600 mr-1"></i>
+                    Estimated Budget Per Person 
+                </label>
+                <input type="number"
+                       id="estimated_budget"
+                       name="estimated_budget"
+                       value="{{ old('estimated_budget') }}"
+                       step="0.01"
+                       min="0"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 @error('estimated_budget') border-red-500 @enderror"
+                       placeholder="e.g., 1500">
+                @error('estimated_budget')
+                    <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Additional Comments -->
+            <div>
+                <label for="additional_comments" class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-comment-dots text-green-600 mr-1"></i>
+                    More information 
+                </label>
+                <textarea id="additional_comments"
+                          name="additional_comments"
+                          rows="6"
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 resize-y @error('additional_comments') border-red-500 @enderror"
+                          placeholder="Tell us about your dream safari, preferred dates, group size, interests, or any specific requirements...">{{ old('additional_comments') }}</textarea>
+                <p class="mt-1 text-xs text-gray-500"><i class="fas fa-info-circle mr-1"></i>Please provide as much detail as possible to help us serve you better.</p>
+                @error('additional_comments')
+                    <p class="mt-1 text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit"
+                        id="submitBtn"
+                        class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <i class="fas fa-paper-plane mr-2"></i>
+                    <span class="btn-text">Submit Booking Request</span>
+                </button>
+                <p class="text-sm text-gray-500 mt-3"><i class="fas fa-clock mr-1"></i>We'll respond within 24 hours with detailed information.</p>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Contact Information Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Get In Touch</h2>
+            <p class="text-lg text-gray-600">
+                Multiple ways to reach our safari experts
+            </p>
+        </div>
+
+        <!-- Contact Method Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Phone -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 text-center">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-phone-alt text-green-600 text-xl"></i>
+                </div>
+                <h4 class="font-semibold text-gray-900 mb-1">Call Us</h4>
+                <p class="text-gray-600 text-sm mb-2">Speak directly with our safari experts</p>
+                <a href="tel:+256781282344" class="text-green-600 font-medium hover:text-green-700">
+                    +256 781282344
+                </a>
+                <p class="text-sm text-gray-500 mt-1"><i class="fas fa-clock mr-1"></i>24/7</p>
+            </div>
+
+            <!-- Email -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 text-center">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-envelope text-blue-600 text-xl"></i>
+                </div>
+                <h4 class="font-semibold text-gray-900 mb-1">Email Us</h4>
+                <p class="text-gray-600 text-sm mb-2">Send us your detailed safari requirements</p>
+                <a href="mailto:info@rwandabudgetsafaris.com" class="text-blue-600 font-medium hover:text-blue-700 break-all">
+                    info@rwandabudgetsafaris.com
+                </a>
+                <p class="text-sm text-gray-500 mt-1"><i class="fas fa-clock mr-1"></i>Response within 24 hours</p>
+            </div>
+
+            <!-- WhatsApp -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 text-center">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fab fa-whatsapp text-green-600 text-xl"></i>
+                </div>
+                <h4 class="font-semibold text-gray-900 mb-1">WhatsApp</h4>
+                <p class="text-gray-600 text-sm mb-2">Quick chat for instant responses</p>
+                <a href="https://wa.me/256781282344" class="text-green-600 font-medium hover:text-green-700">
+                    +256 781282344
+                </a>
+                <p class="text-sm text-gray-500 mt-1"><i class="fas fa-clock mr-1"></i>Available 24/7</p>
+            </div>
+
+            <!-- Office Address -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 text-center">
+                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-map-marker-alt text-orange-600 text-xl"></i>
+                </div>
+                <h4 class="font-semibold text-gray-900 mb-1">Visit Our Office</h4>
+                <p class="text-gray-600 text-sm mb-2">
+                    Salaam Road<br>
+                    Kampala, Central Uganda<br>
+                    East Africa
                 </p>
+                <p class="text-sm text-gray-500 mt-1"><i class="fas fa-calendar-check mr-1"></i>By appointment only</p>
             </div>
+        </div>
 
-            <!-- Contact Method Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <!-- Phone -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 text-center">
-                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
-                    </div>
-                    <h4 class="font-semibold text-gray-900 mb-1">Call Us</h4>
-                    <p class="text-gray-600 text-sm mb-2">Speak directly with our safari experts</p>
-                    <a href="tel:+256752088768" class="text-green-600 font-medium hover:text-green-700">
-                        +256 781282344
+        <!-- Social Media + Quick Response Guarantee Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Social Media -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col">
+                <h4 class="font-semibold text-gray-900 mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center text-white transition-colors">
+                        <i class="fab fa-twitter text-lg"></i>
                     </a>
-                    <p class="text-sm text-gray-500 mt-1">24/7</p>
-                </div>
-
-                <!-- Email -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 text-center">
-                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                    </div>
-                    <h4 class="font-semibold text-gray-900 mb-1">Email Us</h4>
-                    <p class="text-gray-600 text-sm mb-2">Send us your detailed safari requirements</p>
-                    <a href="mailto:info@rwandabudgetsafaris.com" class="text-blue-600 font-medium hover:text-blue-700 break-all">
-                        info@rwandabudgetsafaris.com
+                    <a href="#" class="w-10 h-10 bg-blue-800 hover:bg-blue-900 rounded-full flex items-center justify-center text-white transition-colors">
+                        <i class="fab fa-facebook-f text-lg"></i>
                     </a>
-                    <p class="text-sm text-gray-500 mt-1">Response within 24 hours</p>
-                </div>
-
-                <!-- WhatsApp -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 text-center">
-                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                        </svg>
-                    </div>
-                    <h4 class="font-semibold text-gray-900 mb-1">WhatsApp</h4>
-                    <p class="text-gray-600 text-sm mb-2">Quick chat for instant responses</p>
-                    <a href="https://wa.me/256781282344" class="text-green-600 font-medium hover:text-green-700">
-                        +256 781282344
+                    <a href="#" class="w-10 h-10 bg-pink-600 hover:bg-pink-700 rounded-full flex items-center justify-center text-white transition-colors">
+                        <i class="fab fa-instagram text-lg"></i>
                     </a>
-                    <p class="text-sm text-gray-500 mt-1">Available 24/7</p>
-                </div>
-
-                <!-- Office Address -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 text-center">
-                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                    </div>
-                    <h4 class="font-semibold text-gray-900 mb-1">Visit Our Office</h4>
-                    <p class="text-gray-600 text-sm mb-2">
-                        salaam road<br>
-                        Kampala, Central Uganda<br>
-                        East Africa
-                    </p>
-                    <p class="text-sm text-gray-500 mt-1">By appointment only</p>
+                    <a href="#" class="w-10 h-10 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center text-white transition-colors">
+                        <i class="fab fa-youtube text-lg"></i>
+                    </a>
                 </div>
             </div>
 
-            <!-- Social Media + Quick Response Guarantee Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Social Media -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 flex flex-col">
-                    <h4 class="font-semibold text-gray-900 mb-4">Follow Us</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center text-white transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-blue-800 hover:bg-blue-900 rounded-full flex items-center justify-center text-white transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-pink-600 hover:bg-pink-700 rounded-full flex items-center justify-center text-white transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.22.082.402-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z.017-.001z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center text-white transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                            </svg>
-                        </a>
+            <!-- Quick Response Guarantee -->
+            <div class="bg-green-50 border border-green-200 rounded-2xl p-6">
+                <div class="flex items-start">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                        <i class="fas fa-clock text-green-600 text-xl"></i>
                     </div>
-                </div>
-
-                <!-- Quick Response Guarantee -->
-                <div class="bg-green-50 border border-green-200 rounded-2xl p-6">
-                    <div class="flex items-start">
-                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-green-800 mb-2">24-Hour Response Guarantee</h4>
-                            <p class="text-green-700 text-sm leading-relaxed">
-                                We guarantee to respond to all inquiries within 24 hours with detailed information,
-                                custom quotes, and expert recommendations for your perfect safari adventure.
-                            </p>
-                        </div>
+                    <div>
+                        <h4 class="font-semibold text-green-800 mb-2">24-Hour Response Guarantee</h4>
+                        <p class="text-green-700 text-sm leading-relaxed">
+                            We guarantee to respond to all inquiries within 24 hours with detailed information,
+                            custom quotes, and expert recommendations for your perfect safari adventure.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-  
-    </section>
+<!-- Alternative Contact Methods -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Prefer Other Ways to Connect?</h2>
+            <p class="text-lg text-gray-600">Choose the method that works best for you</p>
+        </div>
 
-    <!-- Alternative Contact Methods -->
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Prefer Other Ways to Connect?</h2>
-                <p class="text-lg text-gray-600">Choose the method that works best for you</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- WhatsApp -->
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fab fa-whatsapp text-green-600 text-4xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">WhatsApp Chat</h3>
+                <p class="text-gray-600 mb-6">Quick responses and instant communication for urgent inquiries.</p>
+                <a href="https://wa.me/256781282344"
+                   class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fab fa-whatsapp mr-2"></i>
+                    Start Chat
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- WhatsApp -->
-                <div class="text-center group">
-                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-10 h-10 text-green-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">WhatsApp Chat</h3>
-                    <p class="text-gray-600 mb-6">Quick responses and instant communication for urgent inquiries.</p>
-                    <a href="https://wa.me/256752088768"
-                       class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                        Start Chat
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                        </svg>
-                    </a>
+            <!-- Phone Call -->
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-phone-alt text-blue-600 text-4xl"></i>
                 </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Call Our Experts</h3>
+                <p class="text-gray-600 mb-6">Speak directly with our safari specialists for personalized advice.</p>
+                <a href="tel:+256781282344"
+                   class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-phone-alt mr-2"></i>
+                    Call Now
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
 
-                <!-- Phone Call -->
-                <div class="text-center group">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Call Our Experts</h3>
-                    <p class="text-gray-600 mb-6">Speak directly with our safari specialists for personalized advice.</p>
-                    <a href="tel:+256752088768"
-                       class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                        Call Now
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                        </svg>
-                    </a>
+            <!-- Browse Tours -->
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-search text-orange-600 text-4xl"></i>
                 </div>
-
-                <!-- Browse Tours -->
-                <div class="text-center group">
-                    <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-10 h-10 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Browse Tours First</h3>
-                    <p class="text-gray-600 mb-6">Explore our safari packages and then contact us with specific questions.</p>
-                    <a href="{{ route('tours.index') }}"
-                       class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                        View Tours
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                        </svg>
-                    </a>
-                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Browse Tours First</h3>
+                <p class="text-gray-600 mb-6">Explore our safari packages and then contact us with specific questions.</p>
+                <a href="{{ route('tours.index') }}"
+                   class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-binoculars mr-2"></i>
+                    View Tours
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
 @push('styles')
 <style>
@@ -473,14 +566,12 @@ document.addEventListener('DOMContentLoaded', function() {
             btnText.textContent = 'Sending...';
 
             // Add spinner
-            const spinner = document.createElement('svg');
-            spinner.className = 'w-5 h-5 mr-2 inline animate-spin';
-            spinner.innerHTML = '<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>';
-
+            const spinner = document.createElement('i');
+            spinner.className = 'fas fa-spinner fa-spin mr-2';
             btnText.parentNode.insertBefore(spinner, btnText);
 
             // Remove existing icon
-            const existingIcon = submitBtn.querySelector('svg:not(.animate-spin)');
+            const existingIcon = submitBtn.querySelector('i:not(.fa-spinner)');
             if (existingIcon) {
                 existingIcon.remove();
             }
@@ -488,7 +579,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Auto-expand message textarea based on content
-    const messageTextarea = document.getElementById('message');
+    const messageTextarea = document.getElementById('additional_comments');
     if (messageTextarea) {
         messageTextarea.addEventListener('input', function() {
             this.style.height = 'auto';
@@ -509,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Phone number formatting (basic)
-    const phoneField = document.getElementById('phone');
+    const phoneField = document.getElementById('whatsapp_number');
     if (phoneField) {
         phoneField.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');

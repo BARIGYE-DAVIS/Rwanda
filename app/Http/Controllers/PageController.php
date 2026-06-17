@@ -55,42 +55,22 @@ class PageController extends Controller
      * Dynamic XML sitemap
      */
     public function sitemap()
-    {
-        $tours = Tour::query()
-            ->when(Schema::hasColumn('tours', 'status'), fn ($q) => $q->where('status', 'published'))
-            ->latest('updated_at')
-            ->get();
+{
+    // Get data from database - only active/published items
+    $tours = \App\Models\Tour::where('status', 'active')->get();
+    $blogs = \App\Models\Blog::where('status', 'published')->get();
+    $destinations = \App\Models\Destination::where('is_active', true)->get();  // FIXED: is_active = true
+    $activities = \App\Models\Activity::where('is_active', true)->get();
+    $countries = \App\Models\Country::where('is_active', true)->get();
+    $galleries = \App\Models\Gallery::where('is_visible', true)->get();
+    $seoPages = \App\Models\SeoPage::where('status', 'published')->get();
 
-        $blogs = Blog::query()
-            ->when(Schema::hasColumn('blogs', 'status'), fn ($q) => $q->where('status', 'published'))
-            ->when(Schema::hasColumn('blogs', 'published_at'), fn ($q) => $q->where('published_at', '<=', now()))
-            ->latest('updated_at')
-            ->get();
-
-        $destinations = Destination::query()
-            ->when(Schema::hasColumn('destinations', 'is_active'), fn ($q) => $q->where('is_active', true))
-            ->latest('updated_at')
-            ->get();
-
-        $activities = Activity::query()
-            ->when(Schema::hasColumn('activities', 'is_active'), fn ($q) => $q->where('is_active', true))
-            ->latest('updated_at')
-            ->get();
-
-        $countries = Country::query()
-            ->when(Schema::hasColumn('countries', 'is_active'), fn ($q) => $q->where('is_active', true))
-            ->latest('updated_at')
-            ->get();
-
-        $galleries = Gallery::query()
-            ->when(Schema::hasColumn('galleries', 'is_visible'), fn ($q) => $q->where('is_visible', true))
-            ->latest('updated_at')
-            ->get();
-
-        return response()
-            ->view('sitemap', compact('tours', 'blogs', 'destinations', 'activities', 'countries', 'galleries'))
-            ->header('Content-Type', 'text/xml');
-    }
+    // Return XML view
+    return response()->view('sitemap', compact(
+        'tours', 'blogs', 'destinations', 'activities', 
+        'countries', 'galleries', 'seoPages'
+    ))->header('Content-Type', 'text/xml');
+}
 
 public function downloadTouristInfoPdf()
 {

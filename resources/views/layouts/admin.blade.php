@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title', 'Admin Dashboard')</title>
-  
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('build/assets/app-lVDNHE2B.css') }}">
 <script type="module" src="{{ asset('build/assets/app-BLNZwArW.js') }}"></script>
     
@@ -146,13 +146,12 @@
                 </a>
                 <a href="{{ route('admin.contacts.index') }}" class="block py-3 px-6 hover:bg-indigo-700 flex items-center gap-3 sidebar-link">
                     <i class="fas fa-envelope"></i>
-                    Contact Messages
+                    Booking Requests
                 </a>
 
-                <a href="{{ route('admin.emails.compose') }}" class="block py-3 px-6 hover:bg-indigo-700 flex items-center gap-3 sidebar-link">
+                <a href="{{ route('admin.emails.compose') }}" class=" hidden block py-3 px-6 hover:bg-indigo-700 flex items-center gap-3 sidebar-link">
                     <i class="fas fa-paper-plane"></i>
                     Compose Email
-
                 </a>
 
                 <a href="{{ route('admin.blogs.index') }}" class="block py-3 px-6 hover:bg-indigo-700 flex items-center gap-3 sidebar-link">
@@ -168,7 +167,6 @@
                 <a href="{{ route('admin.blog-categories.index') }}" class="block py-3 px-6 hover:bg-indigo-700 flex items-center gap-3 sidebar-link">
                     <i class="fas fa-tags"></i>
                     Blog Categories
-
                 </a>
 
                 <a href="{{ route('admin.accommodations.index') }}" class="block py-3 px-6 hover:bg-indigo-700 flex items-center gap-3 sidebar-link">

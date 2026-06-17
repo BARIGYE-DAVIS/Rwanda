@@ -6,7 +6,7 @@
             <!-- Company Info -->
             <div class="space-y-4">
                 <div class="flex items-center space-x-2">
-                    <img class="h-8 w-auto" src="{{ asset('images/logo.jpeg') }}" alt="Logo">
+                    <img class="h-12 w-auto" src="{{ asset('images/logo.jpeg') }}" alt="Logo">
                     <span class="text-xl font-bold text-green-400">Rwanda Buget Safaris</span>
                 </div>
                 <p class="text-gray-300 text-sm leading-relaxed">
@@ -386,7 +386,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
                 <div class="text-gray-400 text-sm text-center lg:text-left">
-                    <p>&copy; {{ date('Y') }} Rwanda Buget Safaris. All rights reserved. | Designed with ❤️ for adventurers</p>
+                    <p>&copy; {{ date('Y') }} NextGen Safaris . All rights reserved. | Designed with ❤️ for adventurers</p>
                 </div>
                 <div class="flex flex-wrap justify-center lg:justify-end gap-x-6 gap-y-2 text-sm">
                     <a href="{{ route('privacy-policy') }}"    class="text-gray-400 hover:text-white transition-colors duration-300">Privacy Policy</a>

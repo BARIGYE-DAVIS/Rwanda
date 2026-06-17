@@ -13,37 +13,34 @@ use Illuminate\Support\Str;
 class SeoPageController extends Controller
 {
     // ── INDEX ─────────────────────────────────────────────
-public function index(Request $request)
-{
-    $query = SeoPage::query();
-    
-    if ($request->filled('search')) {
-        $search = $request->search;
-        $query->where(function($q) use ($search) {
-            $q->where('title', 'like', "%{$search}%")
-              ->orWhere('slug', 'like', "%{$search}%")
-              ->orWhere('focus_keyword', 'like', "%{$search}%");
-        });
-    }
-    
-    $pages = $query->orderBy('created_at', 'desc')->get();
-    
-    if ($request->ajax()) {
-        $html = view('admin.seo_pages.partials.pages-table', ['pages' => $pages])->render();
+    public function index(Request $request)
+    {
+        $query = SeoPage::query();
         
-        return response()->json([
-            // 'html' => $html,
-            'stats' => [
-                'total' => $pages->count(),
-                'published' => $pages->where('status', 'published')->count(),
-                'drafts' => $pages->where('status', 'draft')->count(),
-                'archived' => $pages->where('status', 'archived')->count(),
-            ]
-        ]);
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('slug', 'like', "%{$search}%")
+                  ->orWhere('focus_keyword', 'like', "%{$search}%");
+            });
+        }
+        
+        $pages = $query->orderBy('created_at', 'desc')->get();
+        
+        if ($request->ajax()) {
+            return response()->json([
+                'stats' => [
+                    'total' => $pages->count(),
+                    'published' => $pages->where('status', 'published')->count(),
+                    'drafts' => $pages->where('status', 'draft')->count(),
+                    'archived' => $pages->where('status', 'archived')->count(),
+                ]
+            ]);
+        }
+        
+        return view('admin.seo_pages.index', compact('pages'));
     }
-    
-    return view('admin.seo_pages.index', compact('pages'));
-}
 
     // ── CREATE ────────────────────────────────────────────
     public function create()
@@ -165,9 +162,10 @@ public function index(Request $request)
             'featured_image'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3048',
             'status'                    => 'required|in:draft,published,archived',
             'blocks'                    => 'nullable|array',
-            'blocks.*.type'             => 'required|in:text,heading,image,links',
+            'blocks.*.type'             => 'required|in:text,heading,image,links,list',
             'blocks.*.content'          => 'nullable|string',
             'blocks.*.heading_level'    => 'nullable|in:h1,h2,h3,h4,h5,h6',
+            'blocks.*.list_type'        => 'nullable|in:ul,ol',
             'blocks.*.images'           => 'nullable|array',
             'blocks.*.images.*'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3048',
             'blocks.*.replace_images'   => 'nullable|array',
@@ -190,7 +188,6 @@ public function index(Request $request)
             return $seoPage?->featured_image;
         }
 
-        // Delete old image if exists
         if ($seoPage && $seoPage->featured_image) {
             $this->deleteImage($seoPage->featured_image);
         }
@@ -207,7 +204,6 @@ public function index(Request $request)
 
     private function syncBlocks(SeoPage $page, array $blocksData): void
     {
-        // Get existing blocks
         $existingBlockIds = $page->blocks->pluck('id')->toArray();
         $newBlockIds = [];
 
@@ -215,17 +211,14 @@ public function index(Request $request)
             $blockId = $blockData['id'] ?? null;
 
             if ($blockId && in_array($blockId, $existingBlockIds)) {
-                // Update existing block
                 $this->updateBlock($page, $blockId, $blockData, $sortOrder);
                 $newBlockIds[] = $blockId;
             } else {
-                // Create new block
                 $block = $this->createBlock($page->id, $blockData, $sortOrder);
                 $newBlockIds[] = $block->id;
             }
         }
 
-        // Delete blocks that were not in the request
         $blocksToDelete = array_diff($existingBlockIds, $newBlockIds);
         foreach ($blocksToDelete as $blockId) {
             $block = SeoPageBlock::find($blockId);
@@ -246,7 +239,10 @@ public function index(Request $request)
             'heading_level' => $blockData['type'] === 'heading'
                                 ? ($blockData['heading_level'] ?? 'h2')
                                 : null,
-            'content'       => in_array($blockData['type'], ['text', 'heading'])
+            'list_type'     => $blockData['type'] === 'list'
+                                ? ($blockData['list_type'] ?? 'ul')
+                                : null,
+            'content'       => in_array($blockData['type'], ['text', 'heading', 'list'])
                                 ? ($blockData['content'] ?? null)
                                 : null,
             'sort_order'    => $sortOrder,
@@ -275,7 +271,10 @@ public function index(Request $request)
             'heading_level' => $blockData['type'] === 'heading'
                                 ? ($blockData['heading_level'] ?? 'h2')
                                 : null,
-            'content'       => in_array($blockData['type'], ['text', 'heading'])
+            'list_type'     => $blockData['type'] === 'list'
+                                ? ($blockData['list_type'] ?? 'ul')
+                                : null,
+            'content'       => in_array($blockData['type'], ['text', 'heading', 'list'])
                                 ? ($blockData['content'] ?? null)
                                 : null,
             'sort_order'    => $sortOrder,
@@ -292,23 +291,16 @@ public function index(Request $request)
 
     private function syncBlockImages(SeoPageBlock $block, array $blockData): void
     {
-        // Get existing image IDs
         $existingImageIds = $block->images->pluck('id')->toArray();
-
-        // Marked for deletion
         $deleteImageIds = $blockData['delete_images'] ?? [];
         $deleteImageIds = array_filter($deleteImageIds);
-
-        // Keep track of images that remain
         $remainingImageIds = [];
 
-        // Process existing images (update alt text, replace files)
         $existingImagesData = $blockData['existing_images'] ?? [];
         $replaceImagesData = $blockData['replace_images'] ?? [];
         $altTextsData = $blockData['alts'] ?? [];
 
         foreach ($existingImagesData as $imageId => $imageIdentifier) {
-            // Skip if marked for deletion
             if (in_array($imageId, $deleteImageIds)) {
                 continue;
             }
@@ -318,17 +310,13 @@ public function index(Request $request)
                 continue;
             }
 
-            // Check if this image should be replaced with a new file
             $replacementFile = $replaceImagesData[$imageId] ?? null;
             if ($replacementFile && $replacementFile instanceof UploadedFile) {
-                // Delete old file
                 $this->deleteImage($image->image_path);
-                // Store new file
                 $newPath = $this->storeImage($replacementFile, 'seo_pages/blocks');
                 $image->image_path = $newPath;
             }
 
-            // Update alt text if provided
             $altText = $altTextsData[$imageId] ?? null;
             if ($altText !== null) {
                 $image->alt_text = $altText;
@@ -338,7 +326,6 @@ public function index(Request $request)
             $remainingImageIds[] = $imageId;
         }
 
-        // Delete images marked for removal
         foreach ($deleteImageIds as $imageId) {
             $image = SeoPageImage::find($imageId);
             if ($image) {
@@ -347,7 +334,6 @@ public function index(Request $request)
             }
         }
 
-        // Add new images
         $newImages = $blockData['images'] ?? [];
         if (!empty($newImages) && is_array($newImages)) {
             $currentMaxOrder = $block->images()->max('sort_order') ?? 0;
@@ -369,7 +355,6 @@ public function index(Request $request)
 
     private function syncBlockLinks(SeoPageBlock $block, array $blockData): void
     {
-        // Delete all existing links for this block and recreate
         $block->links()->delete();
 
         $linkTexts = $blockData['link_texts'] ?? [];

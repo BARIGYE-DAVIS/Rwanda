@@ -3,12 +3,12 @@
 {{-- ============================================================
      SEO META
      ============================================================ --}}
-@section('title', 'Uganda & Rwanda Safari Packages 2026 | Budget Gorilla Trekking & Wildlife Tours')
+@section('title', 'Uganda & Rwanda Safari Packages 2026-2030 | Budget Gorilla Trekking & Wildlife Tours')
 @section('meta_description', 'Browse affordable Uganda and Rwanda safari packages from $1,300. Gorilla trekking Bwindi, chimp tracking Kibale, Nile game drives Murchison Falls. All-inclusive, small groups, local guides.')
-@section('meta_keywords', 'Uganda Rwanda safari packages 2026, budget gorilla trekking packages, affordable Uganda safari, Bwindi trekking package, Kibale chimp tracking tour, Murchison Falls safari, Queen Elizabeth NP package, Rwanda Volcanoes safari, small group Uganda safari, all-inclusive safari East Africa')
+@section('meta_keywords', 'Uganda Rwanda safari packages 2026-2030, budget gorilla trekking packages, affordable Uganda safari, Bwindi trekking package, Kibale chimp tracking tour, Murchison Falls safari, Queen Elizabeth NP package, Rwanda Volcanoes safari, small group Uganda safari, all-inclusive safari East Africa')
 @section('canonical', 'https://rwandabudgetsafaris.com/tours')
 
-@section('og_title', 'Uganda & Rwanda Safari Packages 2026 — All-Inclusive, Budget to Luxury')
+@section('og_title', 'Uganda & Rwanda Safari Packages 2026-2030 — All-Inclusive, Budget to Luxury')
 @section('og_description', 'Gorilla trekking, chimp tracking, Big Five game drives and Nile cruises across Uganda and Rwanda. Packages from $1,300 with permits, lodges and local guides included.')
 @section('og_image', asset('images/BIG FIVE.jpg'))
 @section('og_type', 'website')

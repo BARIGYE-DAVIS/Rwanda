@@ -81,7 +81,8 @@
                     <div class="px-5 py-4 border-b border-gray-100">
                         <h2 class="font-semibold text-gray-700">Page Content</h2>
                         <p class="text-xs text-gray-400 mt-0.5">
-                            Click <strong>🔗 Add Link</strong> to insert an inline link. Highlight text first to use it as link text, or just place cursor.
+                            Click <strong>🔗 Add Link</strong> to insert an inline link. Double-click any link to edit it.
+                            Use <strong>"Insert below"</strong> buttons to add content between existing blocks.
                         </p>
                     </div>
                     <div class="p-5">
@@ -153,7 +154,7 @@
 
 {{-- FLOATING TOOLBAR --}}
 <div class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-lg px-4 py-3">
-    <div class="max-w-7xl mx-auto flex items-center justify-center gap-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 flex-wrap">
         <span class="text-xs text-gray-400 mr-2 hidden sm:block">Add block:</span>
         <button type="button" onclick="addBlock('heading')"
                 class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition">
@@ -166,6 +167,10 @@
         <button type="button" onclick="addBlock('image')"
                 class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition">
             🖼️ Images
+        </button>
+        <button type="button" onclick="addBlock('list')"
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition">
+            📋 List
         </button>
         <button type="button" id="global-add-link-btn"
                 class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-blue-300 bg-blue-50 text-sm text-blue-700 hover:bg-blue-100 transition font-medium">
@@ -254,6 +259,18 @@
 .paragraph-editor a:hover {
     text-decoration: none;
 }
+.paragraph-editor ul, 
+.paragraph-editor ol {
+    padding-left: 2rem;
+    margin: 0.5rem 0;
+}
+.paragraph-editor li {
+    margin-bottom: 0.25rem;
+}
+.paragraph-editor li a {
+    color: #2563eb;
+    text-decoration: underline;
+}
 </style>
 
 <script>
@@ -314,14 +331,14 @@
             <div contenteditable="true"
                  data-block-type="text"
                  data-index="${idx}"
-                 data-placeholder="Write your paragraph here..."
+                 data-placeholder="Write your paragraph here... (bold, italic, lists, links - all supported)"
                  class="paragraph-editor w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
                  onfocus="setCurrentEditor(this)"
                  onclick="setCurrentEditor(this)"
                  onkeyup="saveSelection()"
                  onmouseup="saveSelection()"
-                 oninput="syncParagraph(this,${idx})"></div>
-            <input type="hidden" name="blocks[${idx}][content]" id="para-content-${idx}">`;
+                 oninput="syncContent(this,${idx})"></div>
+            <input type="hidden" name="blocks[${idx}][content]" id="content-${idx}">`;
         }
 
         if (type === 'image') {
@@ -333,20 +350,42 @@
                 </span>
                 <button type="button" onclick="removeBlock(this)" class="text-xs text-red-500 hover:text-red-700">Remove</button>
             </div>
-            <div id="img-preview-${idx}" class="grid grid-cols-3 gap-2 mb-3"></div>
+            <div id="img-grid-${idx}" class="grid grid-cols-3 gap-3 mb-3"></div>
             <div id="img-transfer-${idx}"></div>
             <label class="block w-full border-2 border-dashed border-gray-300 rounded-xl p-5 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
                 <input type="file" class="hidden" accept="image/jpeg,image/png,image/webp" multiple
                        onchange="accumulateImages(this,${idx})">
                 <p class="text-gray-500 text-sm">Click to add images</p>
-                <p class="text-gray-400 text-xs mt-1">Click multiple times to add more</p>
-            </label>
-            <div class="mt-3">
-                <label class="block text-xs text-gray-500 mb-1">Alt Text</label>
-                <input type="text" name="blocks[${idx}][alts][]"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                       placeholder="Describe these images for SEO">
-            </div>`;
+                <p class="text-gray-400 text-xs mt-1">Click multiple times to add more (unlimited)</p>
+            </label>`;
+        }
+
+        if (type === 'list') {
+            inner += `
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">📋 List</span>
+                <button type="button" onclick="removeBlock(this)" class="text-xs text-red-500 hover:text-red-700">Remove</button>
+            </div>
+            <div class="flex gap-3 mb-3">
+                <div class="w-36">
+                    <label class="block text-xs text-gray-500 mb-1">Type</label>
+                    <select name="blocks[${idx}][list_type]" class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm">
+                        <option value="ul">Bullet List</option>
+                        <option value="ol">Numbered List</option>
+                    </select>
+                </div>
+            </div>
+            <div contenteditable="true"
+                 data-block-type="list"
+                 data-index="${idx}"
+                 class="paragraph-editor w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 min-h-[120px]"
+                 onfocus="setCurrentEditor(this)"
+                 onclick="setCurrentEditor(this)"
+                 onkeyup="saveSelection()"
+                 onmouseup="saveSelection()"
+                 oninput="syncContent(this,${idx})"
+                 placeholder="• Item 1&#10;• Item 2&#10;• Item 3"></div>
+            <input type="hidden" name="blocks[${idx}][content]" id="content-${idx}">`;
         }
 
         // Insert block controls
@@ -359,6 +398,8 @@
                     class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">¶</button>
             <button type="button" onclick="insertBlockAfter('image',this)"
                     class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">🖼️</button>
+            <button type="button" onclick="insertBlockAfter('list',this)"
+                    class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">📋</button>
         </div>`;
 
         div.innerHTML = inner;
@@ -370,7 +411,7 @@
         const sel = window.getSelection();
         if (sel && !sel.isCollapsed && sel.toString().trim()) {
             savedSelectionRange = sel.getRangeAt(0).cloneRange();
-            const editor = sel.anchorNode?.nodeType === 3 ? sel.anchorNode.parentElement?.closest('[data-block-type="text"]') : sel.anchorNode?.closest('[data-block-type="text"]');
+            const editor = sel.anchorNode?.nodeType === 3 ? sel.anchorNode.parentElement?.closest('[data-block-type="text"], [data-block-type="list"]') : sel.anchorNode?.closest('[data-block-type="text"], [data-block-type="list"]');
             if (editor) currentEditorForLink = editor;
         } else {
             savedSelectionRange = null;
@@ -386,7 +427,7 @@
         document.getElementById('blocks-empty-msg')?.remove();
         const newBlock = buildBlock(type, blockIndex++);
         document.getElementById('blocks-container').appendChild(newBlock);
-        if (type === 'text') {
+        if (type === 'text' || type === 'list') {
             const editor = newBlock.querySelector('.paragraph-editor');
             if (editor) {
                 editor.focus();
@@ -399,9 +440,12 @@
         document.getElementById('blocks-empty-msg')?.remove();
         const ref = btn.closest('.block-item');
         const div = buildBlock(type, blockIndex++);
-        ref ? ref.insertAdjacentElement('afterend', div)
-            : document.getElementById('blocks-container').appendChild(div);
-        if (type === 'text') {
+        if (ref) {
+            ref.insertAdjacentElement('afterend', div);
+        } else {
+            document.getElementById('blocks-container').appendChild(div);
+        }
+        if (type === 'text' || type === 'list') {
             const editor = div.querySelector('.paragraph-editor');
             if (editor) editor.focus();
         }
@@ -420,15 +464,15 @@
         }
     };
 
-    // ── PARAGRAPH SYNC ───────────────────────────────────────
-    window.syncParagraph = function (el, idx) {
-        const h = document.getElementById('para-content-' + idx);
+    // ── CONTENT SYNC (works for both text and list) ──────────
+    window.syncContent = function (el, idx) {
+        const h = document.getElementById('content-' + idx);
         if (h) h.value = el.innerHTML;
     };
 
     document.getElementById('seo-page-form').addEventListener('submit', function () {
         document.querySelectorAll('.paragraph-editor').forEach(el => {
-            const h = document.getElementById('para-content-' + el.dataset.index);
+            const h = document.getElementById('content-' + el.dataset.index);
             if (h) h.value = el.innerHTML;
         });
     });
@@ -450,7 +494,7 @@
             `<${level} class="${styles[level]} not-italic">${escapeHtml(text)}</${level}>`;
     };
 
-    // ── IMAGES - UPLOAD BUTTON BELOW PREVIEWS ────────────────
+    // ── IMAGES - PER IMAGE ALT TEXT UNDER EACH IMAGE ────────
     window.accumulateImages = function (input, idx) {
         if (!blockFiles[idx]) blockFiles[idx] = [];
         Array.from(input.files).forEach(f => {
@@ -458,31 +502,57 @@
                 blockFiles[idx].push(f);
         });
         input.value = '';
-        renderPreviews(idx);
+        renderImageGrid(idx);
     };
 
-    function renderPreviews(idx) {
-        const grid = document.getElementById('img-preview-' + idx);
+    function renderImageGrid(idx) {
+        const grid = document.getElementById('img-grid-' + idx);
         const count = document.getElementById('img-count-' + idx);
-        const files = blockFiles[idx];
+        const files = blockFiles[idx] || [];
+
         if (count) count.textContent = files.length ? `(${files.length})` : '';
-        if (grid) {
-            grid.innerHTML = '';
-            files.forEach((file, i) => {
-                const w = document.createElement('div');
-                w.className = 'relative rounded-lg overflow-hidden border border-gray-200 bg-white group';
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(file);
-                img.className = 'w-full object-cover';
-                img.style.height = '90px';
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition';
-                btn.innerHTML = '&times;';
-                btn.onclick = () => { blockFiles[idx].splice(i, 1); renderPreviews(idx); };
-                w.appendChild(img); w.appendChild(btn); grid.appendChild(w);
-            });
-        }
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        files.forEach((file, i) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'border border-gray-200 rounded-lg overflow-hidden bg-white';
+
+            // Image preview
+            const imgWrapper = document.createElement('div');
+            imgWrapper.className = 'relative';
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.className = 'w-full object-cover';
+            img.style.height = '100px';
+
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center hover:bg-red-600';
+            removeBtn.innerHTML = '&times;';
+            removeBtn.onclick = () => {
+                blockFiles[idx].splice(i, 1);
+                renderImageGrid(idx);
+            };
+
+            imgWrapper.appendChild(img);
+            imgWrapper.appendChild(removeBtn);
+
+            // Alt text input - directly under the image
+            const altWrapper = document.createElement('div');
+            altWrapper.className = 'p-2 bg-gray-50';
+            const altInput = document.createElement('input');
+            altInput.type = 'text';
+            altInput.name = `blocks[${idx}][alts][${i}]`;
+            altInput.placeholder = 'Alt text for this image';
+            altInput.className = 'w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500';
+
+            altWrapper.appendChild(altInput);
+            wrapper.appendChild(imgWrapper);
+            wrapper.appendChild(altWrapper);
+            grid.appendChild(wrapper);
+        });
+
         syncFiles(idx);
     }
 
@@ -491,10 +561,13 @@
         if (t) {
             t.innerHTML = '';
             const dt = new DataTransfer();
-            blockFiles[idx].forEach(f => dt.items.add(f));
+            (blockFiles[idx] || []).forEach(f => dt.items.add(f));
             const inp = document.createElement('input');
-            inp.type = 'file'; inp.name = `blocks[${idx}][images][]`;
-            inp.multiple = true; inp.className = 'hidden'; inp.files = dt.files;
+            inp.type = 'file';
+            inp.name = `blocks[${idx}][images][]`;
+            inp.multiple = true;
+            inp.className = 'hidden';
+            inp.files = dt.files;
             t.appendChild(inp);
         }
     }
@@ -513,20 +586,18 @@
         document.getElementById('featured-upload-prompt').classList.remove('hidden');
     };
 
-    // ── ADD LINK BUTTON - WITH SELECTION DETECTION ───────────
+    // ── ADD LINK BUTTON ──────────────────────────────────────
     function openLinkModal() {
         if (!currentEditorForLink) {
-            alert('Please click inside a paragraph first, then click Add Link.');
+            alert('Please click inside a paragraph or list first, then click Add Link.');
             return;
         }
         
         currentEditorForLink.focus();
         
-        // Check if there's selected text
         const sel = window.getSelection();
         const selectedText = sel && !sel.isCollapsed ? sel.toString().trim() : '';
         
-        // Pre-fill link text if text is selected
         document.getElementById('modal-link-text').value = selectedText || '';
         document.getElementById('modal-link-url').value = '';
         document.getElementById('modal-link-error').classList.add('hidden');
@@ -535,7 +606,6 @@
         m.classList.remove('hidden');
         m.classList.add('flex');
         
-        // If no text selected, focus the link text field
         if (!selectedText) {
             document.getElementById('modal-link-text').focus();
         } else {
@@ -564,33 +634,28 @@
             return;
         }
         
-        // Focus the editor
         currentEditorForLink.focus();
         
-        // If there's a saved selection range, restore it
         if (savedSelectionRange) {
             const sel = window.getSelection();
             sel.removeAllRanges();
             sel.addRange(savedSelectionRange);
         }
         
-        // Insert the link at cursor position or replace selection
         const linkHtml = `<a href="${escapeHtml(linkUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(linkText)}</a>`;
         document.execCommand('insertHTML', false, linkHtml);
         
-        // Sync content
         const idx = currentEditorForLink.dataset.index;
-        const hiddenInput = document.getElementById('para-content-' + idx);
+        const hiddenInput = document.getElementById('content-' + idx);
         if (hiddenInput) {
             hiddenInput.value = currentEditorForLink.innerHTML;
         }
         
-        // Clear saved selection
         savedSelectionRange = null;
         closeLinkModal();
     };
     
-    // ── DOUBLE CLICK TO EDIT LINKS ───────────────────────────
+    // ── DOUBLE CLICK TO EDIT LINKS ──────────────────────────
     window.closeEditLinkModal = function () {
         const m = document.getElementById('edit-link-modal');
         m.classList.add('hidden');
@@ -615,7 +680,7 @@
         
         currentEditingLink.parentNode.replaceChild(newLink, currentEditingLink);
         
-        const hiddenInput = document.getElementById('para-content-' + currentEditingEditor.dataset.index);
+        const hiddenInput = document.getElementById('content-' + currentEditingEditor.dataset.index);
         if (hiddenInput) {
             hiddenInput.value = currentEditingEditor.innerHTML;
         }
@@ -629,7 +694,7 @@
         const text = document.createTextNode(currentEditingLink.textContent);
         currentEditingLink.parentNode.replaceChild(text, currentEditingLink);
         
-        const hiddenInput = document.getElementById('para-content-' + currentEditingEditor.dataset.index);
+        const hiddenInput = document.getElementById('content-' + currentEditingEditor.dataset.index);
         if (hiddenInput) {
             hiddenInput.value = currentEditingEditor.innerHTML;
         }
@@ -639,12 +704,12 @@
     
     document.addEventListener('dblclick', function(e) {
         const link = e.target.closest('a');
-        if (link && link.closest('[data-block-type="text"]')) {
+        if (link && link.closest('[data-block-type="text"], [data-block-type="list"]')) {
             e.preventDefault();
             e.stopPropagation();
             
             currentEditingLink = link;
-            currentEditingEditor = link.closest('[data-block-type="text"]');
+            currentEditingEditor = link.closest('[data-block-type="text"], [data-block-type="list"]');
             
             document.getElementById('edit-link-text').value = link.textContent;
             document.getElementById('edit-link-url').value = link.href;

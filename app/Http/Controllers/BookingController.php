@@ -33,7 +33,7 @@ class BookingController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
                 'country' => 'required|string|max:255',
-                'whatsapp' => 'required|string|max:20',
+                'whatsapp' => 'nullable|string|max:20',
                 'group_size' => 'required|string|max:255',
                 'travel_date' => 'required|date|after_or_equal:today',
                 'message' => 'nullable|string|max:1000' // Optional
@@ -398,7 +398,7 @@ class BookingController extends Controller
         
         $message .= "\nBooking ID: #{$booking->id}";
 
-        return "https://wa.me/256752088768?text=" . urlencode($message);
+        return "https://wa.me/256781 282344?text=" . urlencode($message);
     }
 
     /**

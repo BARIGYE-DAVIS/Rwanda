@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminTourController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\SeoPageController;
+use App\Http\Controllers\SeoPageImportController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\ActivityCategoryController;
@@ -85,6 +86,7 @@ Route::middleware(AdminAuthenticate::class)
         Route::get('/', [ContactController::class, 'admin'])->name('index');
         Route::get('/{id}', [ContactController::class, 'show'])->name('show');
         Route::put('/{id}/read-status', [ContactController::class, 'updateReadStatus'])->name('read-status');
+        Route::put('/{id}/status', [ContactController::class, 'updateStatus'])->name('status');
         Route::delete('/{id}', [ContactController::class, 'destroy'])->name('destroy');
         Route::post('/bulk-update', [ContactController::class, 'bulkUpdate'])->name('bulk');
         Route::get('/export/csv', [ContactController::class, 'export'])->name('export');
@@ -300,67 +302,54 @@ Route::middleware(AdminAuthenticate::class)
         Route::post('/{tourId}/images/reorder', [AdminSpecialToursController::class, 'updateImageOrder'])->name('images.reorder');
     });
 
-
     // ========================
-// SEO PAGES MANAGEMENT
-// ========================
-
-
-
-Route::prefix('seo-pages')->name('seo-pages.')->group(function () {
-    Route::get('/', [SeoPageController::class, 'index'])->name('index');
-    Route::get('/create', [SeoPageController::class, 'create'])->name('create');
-    Route::post('/', [SeoPageController::class, 'store'])->name('store');
-    Route::get('/{seoPage}/edit', [SeoPageController::class, 'edit'])->name('edit');
-    Route::put('/{seoPage}', [SeoPageController::class, 'update'])->name('update');
-    Route::get('/{slug}', [SeoPageController::class, 'show'])->name('show');
-    Route::delete('/{seoPage}', [SeoPageController::class, 'destroy'])->name('destroy');
-    Route::patch('/{seoPage}/toggle-status', [SeoPageController::class, 'toggleStatus'])->name('toggle-status');
-    
-    // ===== MISSING ROUTES FOR ENHANCED FUNCTIONALITY =====
-    
-    // Auto-save draft (AJAX)
-    Route::post('/auto-save', [SeoPageController::class, 'autoSave'])->name('auto-save');
-    
-    // Image upload for content blocks (AJAX)
-    Route::post('/upload-image', [SeoPageController::class, 'uploadImage'])->name('upload-image');
-    
-    // Preview page (AJAX or view)
-    Route::post('/preview', [SeoPageController::class, 'preview'])->name('preview');
-    
-    // Duplicate page
-    Route::post('/{seoPage}/duplicate', [SeoPageController::class, 'duplicate'])->name('duplicate');
-    
-    // Bulk actions
-    Route::post('/bulk-actions', [SeoPageController::class, 'bulkActions'])->name('bulk-actions');
-    
-    // Export page as JSON/PDF
-    Route::get('/{seoPage}/export/{format}', [SeoPageController::class, 'export'])->name('export');
-    
-    // Page revisions
-    Route::get('/{seoPage}/revisions', [SeoPageController::class, 'revisions'])->name('revisions');
-    Route::post('/{seoPage}/revisions/{revision}/restore', [SeoPageController::class, 'restoreRevision'])->name('revisions.restore');
-    
-    // SEO analysis (AJAX)
-    Route::post('/analyze-seo', [SeoPageController::class, 'analyzeSEO'])->name('analyze-seo');
-    
-    // Search pages for internal links (AJAX)
-    Route::get('/search', [SeoPageController::class, 'searchPages'])->name('search');
-    
-    // Get page data for edit (AJAX)
-    Route::get('/{seoPage}/data', [SeoPageController::class, 'getPageData'])->name('get-data');
-    
-    // Update block order (AJAX)
-    Route::post('/update-block-order', [SeoPageController::class, 'updateBlockOrder'])->name('update-block-order');
-    
-    // API endpoints for headless CMS (optional)
-    Route::get('/api/all', [SeoPageController::class, 'apiIndex'])->name('api.index');
-    Route::get('/api/{slug}', [SeoPageController::class, 'apiShow'])->name('api.show');
-});
-
-
-
-
+    // SEO PAGES MANAGEMENT
+    // ========================
+    Route::prefix('seo-pages')->name('seo-pages.')->group(function () {
+        // IMPORT ROUTES - MUST COME FIRST
+        Route::get('/import', [SeoPageImportController::class, 'showImportForm'])->name('import');
+        Route::post('/import', [SeoPageImportController::class, 'import'])->name('import.store');
+        
+        // CRUD ROUTES
+        Route::get('/', [SeoPageController::class, 'index'])->name('index');
+        Route::get('/create', [SeoPageController::class, 'create'])->name('create');
+        Route::post('/', [SeoPageController::class, 'store'])->name('store');
+        Route::get('/{seoPage}/edit', [SeoPageController::class, 'edit'])->name('edit');
+        Route::put('/{seoPage}', [SeoPageController::class, 'update'])->name('update');
+        Route::delete('/{seoPage}', [SeoPageController::class, 'destroy'])->name('destroy');
+        Route::patch('/{seoPage}/toggle-status', [SeoPageController::class, 'toggleStatus'])->name('toggle-status');
+        
+        // AUTO-SAVE & UPLOAD
+        Route::post('/auto-save', [SeoPageController::class, 'autoSave'])->name('auto-save');
+        Route::post('/upload-image', [SeoPageController::class, 'uploadImage'])->name('upload-image');
+        
+        // PREVIEW & DUPLICATE
+        Route::post('/preview', [SeoPageController::class, 'preview'])->name('preview');
+        Route::post('/{seoPage}/duplicate', [SeoPageController::class, 'duplicate'])->name('duplicate');
+        
+        // BULK ACTIONS & EXPORT
+        Route::post('/bulk-actions', [SeoPageController::class, 'bulkActions'])->name('bulk-actions');
+        Route::get('/{seoPage}/export/{format}', [SeoPageController::class, 'export'])->name('export');
+        
+        // REVISIONS
+        Route::get('/{seoPage}/revisions', [SeoPageController::class, 'revisions'])->name('revisions');
+        Route::post('/{seoPage}/revisions/{revision}/restore', [SeoPageController::class, 'restoreRevision'])->name('revisions.restore');
+        
+        // SEO ANALYSIS
+        Route::post('/analyze-seo', [SeoPageController::class, 'analyzeSEO'])->name('analyze-seo');
+        
+        // SEARCH & DATA
+        Route::get('/search', [SeoPageController::class, 'searchPages'])->name('search');
+        Route::get('/{seoPage}/data', [SeoPageController::class, 'getPageData'])->name('get-data');
+        Route::post('/update-block-order', [SeoPageController::class, 'updateBlockOrder'])->name('update-block-order');
+        
+        // API ENDPOINTS
+        Route::get('/api/all', [SeoPageController::class, 'apiIndex'])->name('api.index');
+        Route::get('/api/{slug}', [SeoPageController::class, 'apiShow'])->name('api.show');
+        
+        // SHOW ROUTE - MUST BE LAST (catches any slug)
+        Route::get('/{slug}', [SeoPageController::class, 'show'])->name('show');
+    });
 });
 
 // Admin Profile Routes
@@ -369,4 +358,9 @@ Route::prefix('profile')->group(function () {
     Route::put('/', [App\Http\Controllers\ProfileController::class, 'update'])->name('admin.profile.update');
 });
 
+// Public SEO Page Routes
 Route::get('/explore/{slug}', [SeoPageController::class, 'show'])->name('seo-pages.show');
+
+// Booking Status Update
+Route::put('/admin/bookings/{booking}/status', [BookingController::class, 'updateStatus'])
+    ->name('admin.bookings.updateStatus');
