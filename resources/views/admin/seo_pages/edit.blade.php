@@ -14,6 +14,14 @@
         </a>
     </div>
 
+
+    {{-- Success Message --}}
+    @if(session('success'))
+        <div class="bg-green-50 border border-green-200 text-green-700 rounded-lg p-4 mb-6">
+            {{ session('success') }}
+        </div>
+    @endif
+
     {{-- Errors --}}
     @if($errors->any())
         <div class="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4 mb-6">
@@ -68,6 +76,15 @@
                                        value="{{ old('slug', $seoPage->slug) }}"
                                        class="flex-1 px-3 py-2 text-sm focus:outline-none">
                             </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">SEO Title</label>
+                            <input type="text"
+                                   name="seo_title"
+                                   value="{{ old('seo_title', $seoPage->seo_title) }}"
+                                   placeholder="e.g. Best Time to Visit Bwindi Impenetrable Forest"
+                                   class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
 
                         <div>
@@ -252,12 +269,12 @@
                                                 <p class="text-gray-500 text-sm">Click to add images</p>
                                                 <p class="text-gray-400 text-xs mt-1">Click multiple times to add more</p>
                                             </label>
-                                            <div class="mt-3">
-                                                <label class="block text-xs text-gray-500 mb-1">Alt Text (applies to all new images above)</label>
-                                                <input type="text" name="blocks[{{ $loop->index }}][alts][]"
-                                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                                                       placeholder="Describe these images for SEO">
-                                            </div>
+<div class="mt-3">
+    <label class="block text-xs text-gray-500 mb-1">Alt Text (applies to all new images above)</label>
+    <input type="text" name="blocks[{{ $loop->index }}][new_images_alt]"
+           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+           placeholder="Describe these images for SEO">
+</div>
 
                                             <script>if (!window.blockFiles) window.blockFiles = {}; window.blockFiles[{{ $loop->index }}] = window.blockFiles[{{ $loop->index }}] || [];</script>
 
@@ -674,9 +691,9 @@
             </label>
             <div class="mt-3">
                 <label class="block text-xs text-gray-500 mb-1">Alt Text</label>
-                <input type="text" name="blocks[${idx}][alts][]"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                       placeholder="Describe these images for SEO">
+                    <input type="text" name="blocks[${idx}][new_images_alt]"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                    placeholder="Describe these images for SEO">
             </div>`;
         }
 
@@ -836,40 +853,55 @@
         renderImagePreviews(idx);
     };
 
-    function renderImagePreviews(idx) {
-        const grid = document.getElementById(`img-preview-${idx}`);
-        const count = document.getElementById(`img-count-${idx}`);
-        const files = window.blockFiles[idx] || [];
+function renderImagePreviews(idx) {
+    const grid = document.getElementById(`img-preview-${idx}`);
+    const count = document.getElementById(`img-count-${idx}`);
+    const files = window.blockFiles[idx] || [];
 
-        if (count) count.textContent = files.length > 0 ? `(${files.length})` : '';
-        if (!grid) return;
-        grid.innerHTML = '';
+    if (count) count.textContent = files.length > 0 ? `(${files.length})` : '';
+    if (!grid) return;
+    grid.innerHTML = '';
 
-        files.forEach((file, i) => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'relative rounded-lg overflow-hidden border border-gray-200 bg-white group';
+    files.forEach((file, i) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'border border-gray-200 rounded-lg overflow-hidden bg-white';
 
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            img.className = 'w-full object-cover';
-            img.style = 'height: 90px;';
+        const imgWrapper = document.createElement('div');
+        imgWrapper.className = 'relative';
 
-            const removeBtn = document.createElement('button');
-            removeBtn.type = 'button';
-            removeBtn.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition';
-            removeBtn.innerHTML = '&times;';
-            removeBtn.onclick = () => {
-                window.blockFiles[idx].splice(i, 1);
-                renderImagePreviews(idx);
-            };
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.className = 'w-full object-cover';
+        img.style = 'height: 90px;';
 
-            wrapper.appendChild(img);
-            wrapper.appendChild(removeBtn);
-            grid.appendChild(wrapper);
-        });
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center hover:bg-red-600';
+        removeBtn.innerHTML = '&times;';
+        removeBtn.onclick = () => {
+            window.blockFiles[idx].splice(i, 1);
+            renderImagePreviews(idx);
+        };
 
-        syncFilesToInput(idx);
-    }
+        imgWrapper.appendChild(img);
+        imgWrapper.appendChild(removeBtn);
+
+        const altWrapper = document.createElement('div');
+        altWrapper.className = 'p-1.5 bg-gray-50';
+        const altInput = document.createElement('input');
+        altInput.type = 'text';
+        altInput.name = `blocks[${idx}][alts][new_${i}]`;
+        altInput.placeholder = 'Alt text';
+        altInput.className = 'w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500';
+
+        altWrapper.appendChild(altInput);
+        wrapper.appendChild(imgWrapper);
+        wrapper.appendChild(altWrapper);
+        grid.appendChild(wrapper);
+    });
+
+    syncFilesToInput(idx);
+}
 
     function syncFilesToInput(idx) {
         const transfer = document.getElementById(`img-transfer-${idx}`);
@@ -1129,6 +1161,55 @@
         editor.addEventListener('click', () => setCurrentEditor(editor));
         editor.addEventListener('focus', () => setCurrentEditor(editor));
     });
+
+    function sanitizeHtml(html) {
+    if (!html) return html;
+    const div = document.createElement('div');
+    div.innerHTML = html;
+
+    div.querySelectorAll('o\\:p').forEach(el => el.remove());
+
+    div.querySelectorAll('*').forEach(el => {
+        el.removeAttribute('style');
+        el.removeAttribute('lang');
+        Array.from(el.attributes).forEach(attr => {
+            if (attr.name.toLowerCase().startsWith('mso') || attr.name.includes(':')) {
+                el.removeAttribute(attr.name);
+            }
+        });
+        const cls = el.getAttribute('class');
+        if (cls && cls.toLowerCase().includes('mso')) {
+            el.removeAttribute('class');
+        }
+    });
+
+    div.querySelectorAll('span').forEach(span => {
+        const parent = span.parentNode;
+        while (span.firstChild) parent.insertBefore(span.firstChild, span);
+        parent.removeChild(span);
+    });
+
+    return div.innerHTML;
+}
+
+document.getElementById('seo-page-form').addEventListener('submit', function () {
+    document.querySelectorAll('.paragraph-editor').forEach(el => {
+        const cleaned = sanitizeHtml(el.innerHTML);
+        el.innerHTML = cleaned;
+        const idx = el.dataset.index;
+        const h = document.getElementById('para-content-' + idx) || document.getElementById('list-content-' + idx) || document.getElementById('content-' + idx);
+        if (h) h.value = cleaned;
+    });
+});
+
+document.addEventListener('paste', function (e) {
+    const target = e.target;
+    if (target && target.matches && target.matches('[data-block-type="text"], [data-block-type="list"]')) {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
+    }
+});
     
 })();
 </script>

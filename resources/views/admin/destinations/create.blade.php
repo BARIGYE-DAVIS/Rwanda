@@ -3,23 +3,20 @@
 @section('title', 'Create Destination')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <!-- Page Header -->
-    <div class="flex justify-between items-center mb-6">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-800">Create New Destination</h1>
-            <p class="text-gray-600 mt-1">Add a new safari destination with comprehensive details</p>
-        </div>
-        <a href="{{ route('admin.destinations.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center transition">
-            <i class="fas fa-arrow-left mr-2"></i> Back to List
+<div class="max-w-7xl mx-auto px-4 py-6 pb-28">
+
+    {{-- Header --}}
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Create Destination</h1>
+        <a href="{{ route('admin.destinations.index') }}"
+           class="text-sm text-gray-500 hover:text-gray-800">
+            &larr; Back to Destinations
         </a>
     </div>
 
-    <!-- Error Messages -->
     @if($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            <p class="font-bold mb-2">Please fix the following errors:</p>
-            <ul class="list-disc list-inside">
+        <div class="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4 mb-6">
+            <ul class="list-disc list-inside text-sm space-y-1">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -27,677 +24,846 @@
         </div>
     @endif
 
-    <form id="destinationCreateForm" action="{{ route('admin.destinations.store') }}" method="POST" enctype="multipart/form-data" class="bg-white shadow-lg rounded-lg">
+    <form action="{{ route('admin.destinations.store') }}"
+          method="POST"
+          enctype="multipart/form-data"
+          id="destination-form">
         @csrf
 
-        <div class="border-b border-gray-200">
-            <nav class="flex -mb-px overflow-x-auto">
-                <button type="button" class="tab-button active px-6 py-3 border-b-2 font-medium text-sm whitespace-nowrap" data-tab="basic">Basic Info</button>
-                <button type="button" class="tab-button px-6 py-3 border-b-2 font-medium text-sm whitespace-nowrap" data-tab="overview">Overview</button>
-                <button type="button" class="tab-button px-6 py-3 border-b-2 font-medium text-sm whitespace-nowrap" data-tab="activities">Activities</button>
-                <button type="button" class="tab-button px-6 py-3 border-b-2 font-medium text-sm whitespace-nowrap" data-tab="wildlife">Wildlife</button>
-                <button type="button" class="tab-button px-6 py-3 border-b-2 font-medium text-sm whitespace-nowrap" data-tab="geography">Geography</button>
-                <button type="button" class="tab-button px-6 py-3 border-b-2 font-medium text-sm whitespace-nowrap" data-tab="practical">Practical Info</button>
-                <button type="button" class="tab-button px-6 py-3 border-b-2 font-medium text-sm whitespace-nowrap" data-tab="accommodation">Accommodation</button>
-                <button type="button" class="tab-button px-6 py-3 border-b-2 font-medium text-sm whitespace-nowrap" data-tab="extras">Extras</button>
-                <button type="button" class="tab-button px-6 py-3 border-b-2 font-medium text-sm whitespace-nowrap" data-tab="images">Images</button>
-                <button type="button" class="tab-button px-6 py-3 border-b-2 font-medium text-sm whitespace-nowrap" data-tab="seo">SEO</button>
-            </nav>
-        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        <div class="p-6">
-            <!-- Basic Info -->
-            <div id="tab-basic" class="tab-content">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Basic Information</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="country_id" class="block text-sm font-medium text-gray-700 mb-2">Country <span class="text-red-500">*</span></label>
-                        <select name="country_id" id="country_id" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                            <option value="">Select Country</option>
-                            @foreach($countries as $country)
-                                <option value="{{ $country->id }}" {!! old('country_id') == $country->id ? 'selected' : '' !!}>{!! $country->flag_icon !!} {{ $country->name }}</option>
-                            @endforeach
-                        </select>
+            {{-- MAIN CONTENT COLUMN --}}
+            <div class="lg:col-span-2 space-y-6">
+
+                {{-- Basic Info --}}
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="px-5 py-4 border-b border-gray-100">
+                        <h2 class="font-semibold text-gray-700">Basic Information</h2>
                     </div>
+                    <div class="p-5 space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                                Country <span class="text-red-500">*</span>
+                            </label>
+                            <select name="country_id" id="country_id" required
+                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select Country</option>
+                                @foreach($countries as $country)
+                                    <option value="{{ $country->id }}" {{ old('country_id') == $country->id ? 'selected' : '' }}>
+                                        {!! $country->flag_icon ?? '' !!} {{ $country->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Destination Name <span class="text-red-500">*</span></label>
-                        <input type="text" name="name" id="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg" value="{{ old('name') }}" placeholder="e.g., Murchison Falls National Park">
-                    </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                                Destination Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="name" id="name-input"
+                                   value="{{ old('name') }}"
+                                   placeholder="e.g., Murchison Falls National Park"
+                                   class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   required>
+                        </div>
 
-                    <div>
-                        <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">URL Slug</label>
-                        <input type="text" name="slug" id="slug" class="w-full px-4 py-2 border border-gray-300 rounded-lg" value="{{ old('slug') }}" placeholder="murchison-falls-national-park">
-                        <p class="text-gray-500 text-xs mt-1">Leave empty to auto-generate from name</p>
-                    </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Slug</label>
+                            <div class="flex rounded-lg border border-gray-300 overflow-hidden focus-within:ring-2 focus:ring-blue-500">
+                                <span class="bg-gray-100 px-3 py-2 text-sm text-gray-500 border-r border-gray-300 whitespace-nowrap">/destinations/</span>
+                                <input type="text" name="slug" id="slug-input"
+                                       value="{{ old('slug') }}"
+                                       placeholder="auto-generated from name"
+                                       class="flex-1 px-3 py-2 text-sm focus:outline-none">
+                            </div>
+                        </div>
 
-                    <div>
-                        <label for="type" class="block text-sm font-medium text-gray-700 mb-2">Destination Type</label>
-                        <select name="type" id="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                            <option value="">Select Type</option>
-                            @foreach(['National Park','Wildlife Reserve','Forest Reserve','Game Reserve','Conservation Area','Wildlife Sanctuary','City','Lake','Mountain','Island'] as $t)
-                                <option value="{{ $t }}" {!! old('type') == $t ? 'selected' : '' !!}>{{ $t }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="sort_order" class="block text-sm font-medium text-gray-700 mb-2">Sort Order</label>
-                        <input type="number" name="sort_order" id="sort_order" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg" value="{{ old('sort_order', 0) }}">
-                        <p class="text-gray-500 text-xs mt-1">Lower numbers appear first</p>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Destination Type</label>
+                            <select name="type" id="type"
+                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select Type</option>
+                                @foreach(['National Park','Wildlife Reserve','Forest Reserve','Game Reserve','Conservation Area','Wildlife Sanctuary','City','Lake','Mountain','Island'] as $t)
+                                    <option value="{{ $t }}" {{ old('type') == $t ? 'selected' : '' }}>{{ $t }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mt-6">
-                    <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Short Description</label>
-                    <textarea name="description" id="description" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Short overview...">{{ old('description') }}</textarea>
+                {{-- SEO Fields --}}
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="px-5 py-4 border-b border-gray-100">
+                        <h2 class="font-semibold text-gray-700">SEO Information</h2>
+                    </div>
+                    <div class="p-5 space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">SEO Title</label>
+                            <input type="text" name="meta_title"
+                                   value="{{ old('meta_title') }}"
+                                   placeholder="e.g., Murchison Falls National Park - Uganda Safari Guide"
+                                   class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
+                            <textarea name="meta_description" rows="2" maxlength="320"
+                                      placeholder="160–320 characters shown in Google search results"
+                                      class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('meta_description') }}</textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Focus Keyword</label>
+                            <input type="text" name="focus_keyword"
+                                   value="{{ old('focus_keyword') }}"
+                                   placeholder="e.g., Murchison Falls National Park"
+                                   class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mt-6 space-y-3">
-                    <label class="flex items-center space-x-3 cursor-pointer">
-                        <input type="checkbox" name="is_active" value="1" class="w-5 h-5 rounded border-gray-300 text-green-600" {{ old('is_active', true) ? 'checked' : '' }}>
-                        <div><span class="text-sm font-medium text-gray-700">Active</span><p class="text-xs text-gray-500">Visible on site</p></div>
-                    </label>
+                {{-- Content Builder --}}
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="px-5 py-4 border-b border-gray-100">
+                        <h2 class="font-semibold text-gray-700">Page Content</h2>
+                        <p class="text-xs text-gray-400 mt-0.5">
+                            Click <strong>🔗 Add Link</strong> to insert an inline link. Double-click any link to edit it.
+                            Use <strong>"Insert below"</strong> buttons to add content between existing blocks.
+                        </p>
+                    </div>
+                    <div class="p-5">
+                        <div id="blocks-container">
+                            <div id="blocks-empty-msg"
+                                 class="text-center py-10 text-gray-400 border-2 border-dashed border-gray-200 rounded-lg">
+                                <p class="text-sm">Your page is empty.</p>
+                                <p class="text-xs mt-1">Use the toolbar at the bottom to add content blocks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                    <label class="flex items-center space-x-3 cursor-pointer">
-                        <input type="checkbox" name="is_popular" value="1" class="w-5 h-5 rounded border-gray-300 text-green-600" {{ old('is_popular') ? 'checked' : '' }}>
-                        <div><span class="text-sm font-medium text-gray-700">Mark as Popular</span><p class="text-xs text-gray-500">Feature on homepage</p></div>
-                    </label>
+            </div>
+
+            {{-- RIGHT SIDEBAR --}}
+            <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 sticky top-6">
+                    <div class="px-5 py-4 border-b border-gray-100">
+                        <h2 class="font-semibold text-gray-700">Publishing</h2>
+                    </div>
+                    <div class="p-5 space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                            <select name="status"
+                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="draft" {{ old('status', 'draft') === 'draft' ? 'selected' : '' }}>Draft</option>
+                                <option value="published" {{ old('status') === 'published' ? 'selected' : '' }}>Published</option>
+                            </select>
+                        </div>
+                        <button type="submit"
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg text-sm transition">
+                            Create Destination
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Featured Image --}}
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="px-5 py-4 border-b border-gray-100">
+                        <h2 class="font-semibold text-gray-700">Featured Image</h2>
+                        <p class="text-xs text-gray-400 mt-0.5">Shown in previews and social sharing</p>
+                    </div>
+                    <div class="p-5">
+                        <label id="featured-drop-zone"
+                               class="block w-full border-2 border-dashed border-gray-300 rounded-xl p-6 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                            <input type="file" name="featured_image" id="featured-image-input"
+                                   class="hidden" accept="image/jpeg,image/png,image/webp"
+                                   onchange="previewFeaturedImage(this)">
+                            <div id="featured-upload-prompt">
+                                <p class="text-gray-500 text-sm">Click to upload</p>
+                                <p class="text-gray-400 text-xs mt-1">JPG, PNG, WEBP</p>
+                            </div>
+                        </label>
+                        <div id="featured-preview" class="mt-3 hidden">
+                            <img id="featured-preview-img" src="" alt=""
+                                 class="w-full rounded-lg object-cover border border-gray-200"
+                                 style="max-height:180px;">
+                            <button type="button" onclick="removeFeaturedImage()"
+                                    class="mt-2 text-xs text-red-500 hover:text-red-700">Remove image</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Main Image --}}
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="px-5 py-4 border-b border-gray-100">
+                        <h2 class="font-semibold text-gray-700">Main Image</h2>
+                        <p class="text-xs text-gray-400 mt-0.5">Used in listings</p>
+                    </div>
+                    <div class="p-5">
+                        <label id="main-drop-zone"
+                               class="block w-full border-2 border-dashed border-gray-300 rounded-xl p-6 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                            <input type="file" name="image" id="main-image-input"
+                                   class="hidden" accept="image/jpeg,image/png,image/webp"
+                                   onchange="previewMainImage(this)">
+                            <div id="main-upload-prompt">
+                                <p class="text-gray-500 text-sm">Click to upload</p>
+                                <p class="text-gray-400 text-xs mt-1">JPG, PNG, WEBP</p>
+                            </div>
+                        </label>
+                        <div id="main-preview" class="mt-3 hidden">
+                            <img id="main-preview-img" src="" alt=""
+                                 class="w-full rounded-lg object-cover border border-gray-200"
+                                 style="max-height:180px;">
+                            <button type="button" onclick="removeMainImage()"
+                                    class="mt-2 text-xs text-red-500 hover:text-red-700">Remove image</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {{-- Sections list used for rendering repeated sections --}}
-            @php
-                $sectionsList = [
-                    'overview' => ['label'=>'Detailed Overview', 'textarea'=>'detailed_overview'],
-                    'activities' => ['label'=>'Activities', 'textarea'=>'what_to_see_do'],
-                    'wildlife' => ['label'=>'Wildlife Highlights', 'textarea'=>'wildlife_highlights'],
-                    'geography' => ['label'=>'Geography & Landscape', 'textarea'=>'geography_landscape'],
-                    'practical' => ['label'=>'Practical Information', 'textarea'=>'practical_information'],
-                    'accommodation' => ['label'=>'Accommodation Options', 'textarea'=>'accommodation_options'],
-                    'extras' => ['label'=>'Additional Information', 'textarea'=>'interesting_facts'],
-                ];
-            @endphp
-
-            {{-- Loop sections and render textarea + toolbar --}}
-            @foreach($sectionsList as $sectionKey => $cfg)
-            <div id="tab-{{ $sectionKey }}" class="tab-content {{ $sectionKey !== 'overview' ? 'hidden' : '' }}">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ $cfg['label'] }}</h2>
-
-                <div>
-                    <label for="{{ $cfg['textarea'] }}" class="block text-sm font-medium text-gray-700 mb-2">{{ $cfg['label'] }} Content</label>
-                    <textarea name="{{ $cfg['textarea'] }}" id="{{ $cfg['textarea'] }}" rows="12" class="section-textarea w-full px-4 py-2 border border-gray-300 rounded-lg font-mono text-sm" placeholder="Write content...">{{ old($cfg['textarea']) }}</textarea>
-                    <p class="text-gray-500 text-xs mt-1">Use headings (# Heading), subheadings (## Subheading), paragraphs, and insert images with the toolbar below.</p>
-                </div>
-
-                <div class="mt-4">
-                    <div class="flex flex-wrap gap-2 items-center mb-3">
-                        <button type="button" class="px-3 py-2 bg-indigo-600 text-white rounded-lg insert-heading" data-section="{{ $sectionKey }}">Add Heading</button>
-                        <button type="button" class="px-3 py-2 bg-indigo-500 text-white rounded-lg insert-subheading" data-section="{{ $sectionKey }}">Add Subheading</button>
-                        <button type="button" class="px-3 py-2 bg-gray-700 text-white rounded-lg insert-paragraph" data-section="{{ $sectionKey }}">Add Paragraph</button>
-                        <button type="button" class="px-3 py-2 bg-green-600 text-white rounded-lg insert-image" data-section="{{ $sectionKey }}">Add Image</button>
-                        <span class="text-sm text-gray-500 ml-3">Image placeholders will appear in the textarea as <code>[[image:tmp-abc123|Caption]]</code> and a file upload block is created below.</span>
-                    </div>
-
-                    <div id="section-uploads-{{ $sectionKey }}" class="space-y-3 mb-4"></div>
-
-                    {{-- Hidden content_blocks JSON input (populated before submit) --}}
-                    <input type="hidden" data-contentblock-input name="sections[{{ $sectionKey }}][content_blocks]" value="">
-                </div>
-            </div>
-            @endforeach
-
-            <!-- Images tab (top-level) -->
-            <div id="tab-images" class="tab-content hidden">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Images & Media</h2>
-
-                <div class="mb-6">
-                    <label for="image" class="block text-sm font-medium text-gray-700 mb-2">Main Thumbnail Image</label>
-                    <input type="file" name="image" id="image" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                    <p class="text-gray-500 text-xs mt-1">Used in listings. Recommended: 800x600px, Max: 2MB</p>
-                    <div id="image-preview" class="mt-3"></div>
-                </div>
-
-                <div class="mb-6">
-                    <label for="featured_image" class="block text-sm font-medium text-gray-700 mb-2">Featured Header Image</label>
-                    <input type="file" name="featured_image" id="featured_image" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                    <p class="text-gray-500 text-xs mt-1">Hero/header. Recommended: 1920x1080px, Max: 5MB</p>
-                    <div id="featured-preview" class="mt-3"></div>
-                </div>
-
-                <div class="mb-6">
-                    <label for="gallery_images" class="block text-sm font-medium text-gray-700 mb-2">Gallery Images</label>
-                    <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple class="w-full px-4 py-2 border border-gray-300 rounded-lg">
-                    <p class="text-gray-500 text-xs mt-1">Multiple images for photo gallery. Max: 2MB each</p>
-                    <div id="gallery-preview" class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-                </div>
-
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p class="text-sm text-blue-800"><i class="fas fa-info-circle mr-2"></i><strong>Note:</strong> Inline images inserted via textarea placeholders are uploaded along with the form; the controller will map temp ids to uploaded files.</p>
-                </div>
-            </div>
-
-            <!-- SEO tab -->
-            <div id="tab-seo" class="tab-content hidden">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">SEO & Meta Information</h2>
-                <div class="space-y-6">
-                    <div>
-                        <label for="meta_title" class="block text-sm font-medium text-gray-700 mb-2">Meta Title</label>
-                        <input type="text" name="meta_title" id="meta_title" maxlength="60" class="w-full px-4 py-2 border border-gray-300 rounded-lg" value="{{ old('meta_title') }}" placeholder="Murchison Falls National Park | Uganda Safari Destination">
-                        <p class="text-gray-500 text-xs mt-1">Recommended: 50-60 characters</p>
-                    </div>
-
-                    <div>
-                        <label for="meta_description" class="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
-                        <textarea name="meta_description" id="meta_description" rows="3" maxlength="160" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Visit Murchison Falls...">{{ old('meta_description') }}</textarea>
-                        <p class="text-gray-500 text-xs mt-1">Recommended: 150-160 characters</p>
-                    </div>
-
-                    <div>
-                        <label for="meta_keywords" class="block text-sm font-medium text-gray-700 mb-2">Meta Keywords</label>
-                        <input type="text" name="meta_keywords" id="meta_keywords" class="w-full px-4 py-2 border border-gray-300 rounded-lg" value="{{ old('meta_keywords') }}" placeholder="murchison falls, uganda safari">
-                        <p class="text-gray-500 text-xs mt-1">Comma-separated keywords</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="border-t bg-gray-50 px-6 py-4 flex justify-between items-center rounded-b-lg">
-            <a href="{{ route('admin.destinations.index') }}" class="text-gray-600 hover:text-gray-800 font-medium"><i class="fas fa-times mr-1"></i> Cancel</a>
-
-            <div class="flex gap-3">
-                <button type="button" id="saveDraftBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium">Save Draft</button>
-                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition flex items-center shadow-md"><i class="fas fa-save mr-2"></i> Create Destination</button>
-            </div>
         </div>
     </form>
 </div>
 
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // ---------- helpers ----------
-    function uuid(){ return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){const r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);return v.toString(16);}); }
-    function tempId(){ return 'tmp-' + Math.random().toString(36).substr(2,9); }
-    function insertAtCursor(textarea, text) {
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const val = textarea.value;
-        textarea.value = val.slice(0, start) + text + val.slice(end);
-        textarea.selectionStart = textarea.selectionEnd = start + text.length;
-        textarea.focus();
-        triggerAutoSave();
-    }
-    function slugify(v){ return v.toLowerCase().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').trim(); }
+{{-- FLOATING TOOLBAR --}}
+<div class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-lg px-4 py-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 flex-wrap">
+        <span class="text-xs text-gray-400 mr-2 hidden sm:block">Add block:</span>
+        <button type="button" onclick="addBlock('heading')"
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition">
+            <span class="font-bold">H</span> Heading
+        </button>
+        <button type="button" onclick="addBlock('text')"
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition">
+            ¶ Paragraph
+        </button>
+        <button type="button" onclick="addBlock('image')"
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition">
+            🖼️ Images
+        </button>
+        <button type="button" onclick="addBlock('list')"
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition">
+            📋 List
+        </button>
+        <button type="button" id="global-add-link-btn"
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-blue-300 bg-blue-50 text-sm text-blue-700 hover:bg-blue-100 transition font-medium">
+            🔗 Add Link
+        </button>
+    </div>
+</div>
 
-    // ---------- tabs ----------
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.addEventListener('click', function() {
-            const targetTab = this.dataset.tab;
-            document.querySelectorAll('.tab-button').forEach(btn => { btn.classList.remove('active','border-green-500','text-green-600'); btn.classList.add('border-transparent','text-gray-500'); });
-            this.classList.add('active','border-green-500','text-green-600'); this.classList.remove('border-transparent','text-gray-500');
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-            const el = document.getElementById('tab-' + targetTab);
-            if (el) el.classList.remove('hidden');
-            el && window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
-        });
-    });
-
-    // ---------- slug auto -->
-    const nameInput = document.getElementById('name'), slugInput = document.getElementById('slug');
-    if (nameInput && slugInput) {
-        nameInput.addEventListener('input', function(){ if (!slugInput.dataset.manualEdit) slugInput.value = slugify(this.value); });
-        slugInput.addEventListener('input', () => slugInput.dataset.manualEdit = 'true');
-    }
-
-    // ---------- insertion buttons (Option A) ----------
-    // Insert heading/subheading/paragraph/image tokens into textarea
-    function makeImageToken(tmpId, caption) {
-        // caption may contain ']' so escape; we'll keep it simple
-        return `[[image:${tmpId}|${caption || ''}]]`;
-    }
-
-    document.querySelectorAll('.insert-heading').forEach(btn => {
-        btn.addEventListener('click', function(){
-            const section = this.dataset.section;
-            const ta = document.getElementById(document.querySelector(`#tab-${section} .section-textarea`).id);
-            // prompt for heading text
-            const text = prompt('Enter heading text');
-            if (!text) return;
-            insertAtCursor(ta, `\n# ${text}\n\n`);
-            triggerAutoSave();
-        });
-    });
-
-    document.querySelectorAll('.insert-subheading').forEach(btn => {
-        btn.addEventListener('click', function(){
-            const section = this.dataset.section;
-            const ta = document.getElementById(document.querySelector(`#tab-${section} .section-textarea`).id);
-            const text = prompt('Enter subheading text');
-            if (!text) return;
-            insertAtCursor(ta, `\n## ${text}\n\n`);
-            triggerAutoSave();
-        });
-    });
-
-    document.querySelectorAll('.insert-paragraph').forEach(btn => {
-        btn.addEventListener('click', function(){
-            const section = this.dataset.section;
-            const ta = document.getElementById(document.querySelector(`#tab-${section} .section-textarea`).id);
-            insertAtCursor(ta, `\n\n`);
-            triggerAutoSave();
-        });
-    });
-
-    // Add image placeholder token and create a visible upload block for the tmp id
-    document.querySelectorAll('.insert-image').forEach(btn => {
-        btn.addEventListener('click', function(){
-            const section = this.dataset.section;
-            const ta = document.getElementById(document.querySelector(`#tab-${section} .section-textarea`).id);
-            const caption = prompt('Enter image caption (optional)') || '';
-            const tmp = tempId();
-            // insert placeholder token at cursor
-            const token = makeImageToken(tmp, caption);
-            insertAtCursor(ta, `\n${token}\n\n`);
-            // create upload UI
-            addUploadBlock(section, tmp, caption);
-            triggerAutoSave();
-        });
-    });
-
-    // ---------- upload blocks management ----------
-    // container: #section-uploads-<section>
-    function addUploadBlock(section, tmpId, caption) {
-        const container = document.getElementById('section-uploads-' + section);
-        if (!container) return;
-        // create wrapper
-        const wrapper = document.createElement('div');
-        wrapper.className = 'flex items-center gap-3 bg-white p-3 rounded border';
-        wrapper.dataset.tmpId = tmpId;
-        wrapper.innerHTML = `
-            <div class="w-28 h-20 bg-gray-100 rounded overflow-hidden flex items-center justify-center">
-                <img id="upload-preview-${tmpId}" src="" class="w-full h-full object-cover" style="display:none">
-                <svg id="upload-svg-${tmpId}" class="w-8 h-8 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+{{-- INLINE LINK MODAL --}}
+<div id="link-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Insert Link</h3>
+        <div class="space-y-3">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Link Text</label>
+                <input type="text" id="modal-link-text"
+                       placeholder="e.g. Click here to learn more"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
-            <div class="flex-1">
-                <label class="block text-xs text-gray-600 mb-1">Caption</label>
-                <input type="text" class="w-full px-3 py-2 border rounded caption-input" value="${caption || ''}" placeholder="Caption (optional)">
-                <div class="mt-2">
-                    <input type="file" accept="image/*" name="sections[${section}][uploads][${tmpId}]" class="upload-file-input">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">URL</label>
+                <input type="url" id="modal-link-url"
+                       placeholder="https://..."
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <p id="modal-link-error" class="text-red-500 text-xs hidden">Please fill in both fields.</p>
+        </div>
+        <div class="flex gap-3 mt-5">
+            <button type="button" onclick="closeLinkModal()"
+                    class="flex-1 border border-gray-300 text-gray-700 rounded-lg py-2 text-sm hover:bg-gray-50 transition">Cancel</button>
+            <button type="button" onclick="insertInlineLink()"
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-2 text-sm font-medium transition">Insert Link</button>
+        </div>
+    </div>
+</div>
+
+{{-- LINK EDIT MODAL --}}
+<div id="edit-link-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Edit Link</h3>
+        <div class="space-y-3">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Link Text</label>
+                <input type="text" id="edit-link-text"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">URL</label>
+                <input type="url" id="edit-link-url"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+        <div class="flex gap-3 mt-5">
+            <button type="button" onclick="closeEditLinkModal()"
+                    class="flex-1 border border-gray-300 text-gray-700 rounded-lg py-2 text-sm hover:bg-gray-50 transition">Cancel</button>
+            <button type="button" onclick="saveEditedLink()"
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-2 text-sm font-medium transition">Save</button>
+            <button type="button" onclick="removeCurrentLink()"
+                    class="flex-1 bg-red-600 hover:bg-red-700 text-white rounded-lg py-2 text-sm font-medium transition">Remove Link</button>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<style>
+.paragraph-editor {
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.7;
+    min-height: 140px;
+    outline: none;
+}
+.paragraph-editor:empty:before {
+    content: attr(data-placeholder);
+    color: #9ca3af;
+    pointer-events: none;
+    display: block;
+}
+.paragraph-editor a {
+    color: #2563eb;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.paragraph-editor a:hover {
+    text-decoration: none;
+}
+.paragraph-editor ul,
+.paragraph-editor ol {
+    padding-left: 2rem;
+    margin: 0.5rem 0;
+}
+.paragraph-editor li {
+    margin-bottom: 0.25rem;
+}
+.paragraph-editor li a {
+    color: #2563eb;
+    text-decoration: underline;
+}
+.heading-preview {
+    min-height: 40px;
+}
+</style>
+
+<script>
+(function () {
+    let blockIndex = 0;
+
+    // ✅ FIX: blockFiles stores File objects per block index.
+    // We no longer use DataTransfer to assign to hidden inputs at submit time.
+    // Instead each image block gets a REAL <input type="file"> in the DOM
+    // that the browser's native form serializer will submit correctly.
+    const blockFiles = {};
+
+    let currentEditorForLink = null;
+    let currentEditingLink   = null;
+    let currentEditingEditor = null;
+    let savedSelectionRange  = null;
+
+    // ── BUILD BLOCK ─────────────────────────────────────────
+    function buildBlock(type, idx) {
+        const div = document.createElement('div');
+        div.className   = 'block-item border border-gray-200 rounded-xl p-4 mb-3 bg-gray-50';
+        div.dataset.index = idx;
+
+        let inner = `<input type="hidden" name="blocks[${idx}][type]" value="${type}">`;
+
+        if (type === 'heading') {
+            inner += `
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Heading</span>
+                <button type="button" onclick="removeBlock(this)" class="text-xs text-red-500 hover:text-red-700">Remove</button>
+            </div>
+            <div class="flex gap-3 mb-3">
+                <div class="w-36">
+                    <label class="block text-xs text-gray-500 mb-1">Level</label>
+                    <select name="blocks[${idx}][heading_level]" onchange="updateHeadingPreview(this)"
+                            class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm">
+                        <option value="h1">H1 — Page Title</option>
+                        <option value="h2" selected>H2 — Section</option>
+                        <option value="h3">H3 — Sub-section</option>
+                        <option value="h4">H4</option>
+                        <option value="h5">H5</option>
+                        <option value="h6">H6</option>
+                    </select>
+                </div>
+                <div class="flex-1">
+                    <label class="block text-xs text-gray-500 mb-1">Heading Text</label>
+                    <input type="text" name="blocks[${idx}][content]"
+                           class="heading-text w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm"
+                           placeholder="Enter heading text" oninput="updateHeadingPreview(this)">
                 </div>
             </div>
-            <div class="flex-shrink-0 flex flex-col gap-2">
-                <button type="button" class="text-sm px-2 py-1 bg-red-600 text-white rounded remove-upload">Remove</button>
+            <div class="heading-preview px-3 py-2 bg-white rounded-lg border border-dashed border-gray-300 text-gray-400 text-sm italic">
+                Preview appears here...
+            </div>`;
+        }
+
+        if (type === 'text') {
+            inner += `
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Paragraph</span>
+                <button type="button" onclick="removeBlock(this)" class="text-xs text-red-500 hover:text-red-700">Remove</button>
             </div>
-        `;
-        container.appendChild(wrapper);
-
-        const fileInput = wrapper.querySelector('.upload-file-input');
-        const previewImg = document.getElementById('upload-preview-' + tmpId);
-        const svgPlace = document.getElementById('upload-svg-' + tmpId);
-        const captionInput = wrapper.querySelector('.caption-input');
-
-        fileInput.addEventListener('change', function(){
-            const f = this.files[0];
-            if (!f) return;
-            if (f.size > 2*1024*1024) { alert('Image exceeds 2MB'); this.value=''; return; }
-            const reader = new FileReader();
-            reader.onload = function(ev){
-                previewImg.src = ev.target.result; previewImg.style.display = 'block'; if (svgPlace) svgPlace.style.display = 'none';
-            };
-            reader.readAsDataURL(f);
-            triggerAutoSave();
-        });
-
-        captionInput.addEventListener('input', function(){ // reflect caption into textarea token if present
-            syncPlaceholdersWithUploads(section);
-            triggerAutoSave();
-        });
-
-        wrapper.querySelector('.remove-upload').addEventListener('click', function(){
-            // remove upload block
-            wrapper.remove();
-            // remove corresponding placeholder token(s) from textarea
-            removeImageTokensByTmpId(section, tmpId);
-            triggerAutoSave();
-        });
-    }
-
-    // Remove token occurrences that reference the tmp id
-    function removeImageTokensByTmpId(section, tmpId) {
-        const ta = document.querySelector(`#tab-${section} .section-textarea`);
-        if (!ta) return;
-        const re = new RegExp(`\\[\\[image:${tmpId}(?:\\|[^\\]]*)?\\]\\]`, 'g');
-        ta.value = ta.value.replace(re, '');
-    }
-
-    // Sync upload blocks to tokens present in textarea:
-    // - Create upload block for tokens with no corresponding upload block
-    // - Remove upload blocks that have no token in textarea
-    // Also reconcile captions (if token has caption it will set caption input)
-    function syncUploadsFromTextarea(section) {
-        const ta = document.querySelector(`#tab-${section} .section-textarea`);
-        if (!ta) return;
-        const text = ta.value;
-        const tokenRe = /\[\[image:(tmp-[a-z0-9]+)(?:\|([^\]]*))?\]\]/g;
-        const found = {};
-        let m;
-        while ((m = tokenRe.exec(text)) !== null) {
-            const tmp = m[1];
-            const caption = m[2] || '';
-            found[tmp] = caption;
-            // ensure an upload block exists for this tmp
-            const container = document.getElementById('section-uploads-' + section);
-            if (container && !container.querySelector(`[data-tmp-id="${tmp}"], [data-tmp-id='${tmp}']`) && !container.querySelector(`div[data-tmp-id="${tmp}"]`)) {
-                // double-check no wrapper exists by dataset
-                // we built wrappers with dataset.tmpId; query by attribute:
-                if (!container.querySelector(`div[data-tmp-id="${tmp}"]`)) {
-                    addUploadBlock(section, tmp, caption);
-                }
-            } else {
-                // if exists, update caption input to match token caption if different
-                const wrapper = document.querySelector(`#section-uploads-${section} [data-tmp-id="${tmp}"]`);
-                if (wrapper) {
-                    const capInput = wrapper.querySelector('.caption-input');
-                    if (capInput && capInput.value !== caption) capInput.value = caption;
-                } else {
-                    // also try find by name attribute input
-                    const inputByName = document.querySelector(`#section-uploads-${section} input[name="sections[${section}][uploads][${tmp}]"]`);
-                    if (inputByName) {
-                        const parent = inputByName.closest('div');
-                        if (parent) {
-                            const wrapper2 = parent.closest('div');
-                            if (wrapper2 && wrapper2.dataset) wrapper2.dataset.tmpId = tmp;
-                        }
-                    }
-                }
-            }
+            <div contenteditable="true"
+                 data-block-type="text"
+                 data-index="${idx}"
+                 data-placeholder="Write your paragraph here..."
+                 class="paragraph-editor w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
+                 onfocus="setCurrentEditor(this)"
+                 onclick="setCurrentEditor(this)"
+                 onkeyup="saveSelection()"
+                 onmouseup="saveSelection()"
+                 oninput="syncContent(this,${idx})"></div>
+            <input type="hidden" name="blocks[${idx}][content]" id="content-${idx}">`;
         }
 
-        // Remove upload blocks for tmp ids not present
-        const container = document.getElementById('section-uploads-' + section);
-        if (!container) return;
-        Array.from(container.querySelectorAll('div[data-tmp-id]')).forEach(w => {
-            const t = w.dataset.tmpId;
-            if (!found[t]) w.remove();
-        });
+        if (type === 'image') {
+            blockFiles[idx] = [];
+            // ✅ FIX: img-file-input-${idx} is a REAL persistent input in the DOM.
+            // We rebuild its FileList via DataTransfer every time files change,
+            // but the input itself always lives in the DOM so the browser submits it.
+            inner += `
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    Images <span id="img-count-${idx}" class="text-blue-500"></span>
+                </span>
+                <button type="button" onclick="removeBlock(this)" class="text-xs text-red-500 hover:text-red-700">Remove</button>
+            </div>
+            <div id="img-grid-${idx}" class="grid grid-cols-3 gap-3 mb-3"></div>
+
+            {{-- ✅ This is the REAL file input that gets submitted with the form --}}
+            <input type="file"
+                   id="img-file-input-${idx}"
+                   name="blocks[${idx}][images][]"
+                   multiple
+                   accept="image/jpeg,image/png,image/webp"
+                   style="display:none">
+
+            <label class="block w-full border-2 border-dashed border-gray-300 rounded-xl p-5 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition">
+                <input type="file" class="hidden" accept="image/jpeg,image/png,image/webp" multiple
+                       onchange="accumulateImages(this,${idx})">
+                <p class="text-gray-500 text-sm">Click to add images</p>
+                <p class="text-gray-400 text-xs mt-1">Click multiple times to add more</p>
+            </label>`;
+        }
+
+        if (type === 'list') {
+            inner += `
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">📋 List</span>
+                <button type="button" onclick="removeBlock(this)" class="text-xs text-red-500 hover:text-red-700">Remove</button>
+            </div>
+            <div class="flex gap-3 mb-3">
+                <div class="w-36">
+                    <label class="block text-xs text-gray-500 mb-1">Type</label>
+                    <select name="blocks[${idx}][list_type]" class="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm">
+                        <option value="ul">Bullet List</option>
+                        <option value="ol">Numbered List</option>
+                    </select>
+                </div>
+            </div>
+            <div contenteditable="true"
+                 data-block-type="list"
+                 data-index="${idx}"
+                 class="paragraph-editor w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 min-h-[120px]"
+                 onfocus="setCurrentEditor(this)"
+                 onclick="setCurrentEditor(this)"
+                 onkeyup="saveSelection()"
+                 onmouseup="saveSelection()"
+                 oninput="syncContent(this,${idx})"
+                 placeholder="• Item 1&#10;• Item 2&#10;• Item 3"></div>
+            <input type="hidden" name="blocks[${idx}][content]" id="content-${idx}">`;
+        }
+
+        // Insert block controls
+        inner += `
+        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+            <span class="text-xs text-gray-400">Insert below:</span>
+            <button type="button" onclick="insertBlockAfter('heading',this)"
+                    class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100 font-bold">H</button>
+            <button type="button" onclick="insertBlockAfter('text',this)"
+                    class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">¶</button>
+            <button type="button" onclick="insertBlockAfter('image',this)"
+                    class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">🖼️</button>
+            <button type="button" onclick="insertBlockAfter('list',this)"
+                    class="text-xs px-2 py-1 rounded border border-gray-200 hover:bg-gray-100">📋</button>
+        </div>`;
+
+        div.innerHTML = inner;
+        return div;
     }
 
-    // After changing upload captions we want to reflect any differences back into textarea tokens
-    function syncPlaceholdersWithUploads(section) {
-        const ta = document.querySelector(`#tab-${section} .section-textarea`);
-        const container = document.getElementById('section-uploads-' + section);
-        if (!ta || !container) return;
-        let text = ta.value;
-        Array.from(container.querySelectorAll('div[data-tmp-id]')).forEach(w => {
-            const tmp = w.dataset.tmpId;
-            const capInput = w.querySelector('.caption-input');
-            const caption = capInput ? capInput.value : '';
-            // replace any image token for this tmp with updated caption
-            const tokenRe = new RegExp(`\\[\\[image:${tmp}(?:\\|[^\\]]*)?\\]\\]`, 'g');
-            text = text.replace(tokenRe, `[[image:${tmp}|${caption}]]`);
-        });
-        ta.value = text;
-    }
+    // ── ADD / INSERT / REMOVE ──────────────────────────────
+    window.addBlock = function(type) {
+        document.getElementById('blocks-empty-msg')?.remove();
+        const newBlock = buildBlock(type, blockIndex++);
+        document.getElementById('blocks-container').appendChild(newBlock);
+        if (type === 'text' || type === 'list') {
+            const editor = newBlock.querySelector('.paragraph-editor');
+            if (editor) {
+                editor.focus();
+                currentEditorForLink = editor;
+            }
+        }
+    };
 
-    // Utility to find all tokens in textarea and return array of {tmpId, caption}
-    function parseImageTokensFromText(text) {
-        const tokens = [];
-        const re = /\[\[image:(tmp-[a-z0-9]+)(?:\|([^\]]*))?\]\]/g;
-        let m;
-        while ((m = re.exec(text)) !== null) tokens.push({ tmp: m[1], caption: m[2] || '' });
-        return tokens;
-    }
+    window.insertBlockAfter = function(type, btn) {
+        document.getElementById('blocks-empty-msg')?.remove();
+        const ref = btn.closest('.block-item');
+        const div = buildBlock(type, blockIndex++);
+        if (ref) {
+            ref.insertAdjacentElement('afterend', div);
+        } else {
+            document.getElementById('blocks-container').appendChild(div);
+        }
+        if (type === 'text' || type === 'list') {
+            const editor = div.querySelector('.paragraph-editor');
+            if (editor) editor.focus();
+        }
+    };
 
-    // ---------- autosave (localStorage) ----------
-    const AUTO_KEY = 'destination_create_draft_v1';
-    function gatherFormState() {
-        const state = {
-            meta: {},
-            sections: {}
+    window.removeBlock = function(btn) {
+        const block = btn.closest('.block-item');
+        delete blockFiles[block.dataset.index];
+        block.remove();
+        if (!document.querySelector('.block-item')) {
+            document.getElementById('blocks-container').innerHTML = `
+                <div id="blocks-empty-msg" class="text-center py-10 text-gray-400 border-2 border-dashed border-gray-200 rounded-lg">
+                    <p class="text-sm">Your page is empty.</p>
+                    <p class="text-xs mt-1">Use the toolbar at the bottom to add content blocks.</p>
+                </div>`;
+        }
+    };
+
+    // ── CONTENT SYNC ────────────────────────────────────────
+    window.syncContent = function(el, idx) {
+        const h = document.getElementById('content-' + idx);
+        if (h) h.value = el.innerHTML;
+    };
+
+    // ── HEADING PREVIEW ──────────────────────────────────────
+    window.updateHeadingPreview = function(el) {
+        const block  = el.closest('.block-item');
+        const level  = block.querySelector('select').value;
+        const text   = block.querySelector('.heading-text').value || 'Preview appears here...';
+        const styles = {
+            h1: 'text-3xl font-bold text-gray-900',
+            h2: 'text-2xl font-bold text-gray-800',
+            h3: 'text-xl font-semibold text-gray-800',
+            h4: 'text-lg font-semibold text-gray-700',
+            h5: 'text-base font-semibold text-gray-700',
+            h6: 'text-sm font-semibold text-gray-600'
         };
-        // gather basic fields
-        ['name','slug','description','country_id','type','sort_order','is_active','is_popular'].forEach(k => {
-            const el = document.querySelector(`[name="${k}"]`);
-            if (el) {
-                if (el.type === 'checkbox') state.meta[k] = el.checked;
-                else state.meta[k] = el.value;
+        block.querySelector('.heading-preview').innerHTML =
+            `<${level} class="${styles[level]} not-italic">${escapeHtml(text)}</${level}>`;
+    };
+
+    // ── IMAGES ──────────────────────────────────────────────
+
+    // ✅ FIX: accumulateImages stores files in blockFiles[idx],
+    // then calls syncFilesToInput() which assigns them to the REAL
+    // persistent <input type="file"> via DataTransfer.
+    // The key difference from the old code: the input already exists
+    // in the DOM before we assign files, so the browser will include
+    // it in the multipart form submission.
+    window.accumulateImages = function(input, idx) {
+        if (!blockFiles[idx]) blockFiles[idx] = [];
+        Array.from(input.files).forEach(f => {
+            if (!blockFiles[idx].some(x => x.name === f.name && x.size === f.size)) {
+                blockFiles[idx].push(f);
             }
         });
-        // section textareas
-        document.querySelectorAll('.section-textarea').forEach(ta => {
-            state.sections[ta.id] = ta.value;
-        });
-        // gallery filenames not stored (files cannot store), but we can store info about image placeholders
-        return state;
+        input.value = ''; // reset the picker so same file can be picked again
+        renderImageGrid(idx);
+        syncFilesToInput(idx); // ✅ keep the real input in sync
+    };
+
+    // ✅ FIX: Assign accumulated files to the persistent DOM input.
+    // This input was created in buildBlock() and lives in the DOM permanently.
+    function syncFilesToInput(idx) {
+        const realInput = document.getElementById('img-file-input-' + idx);
+        if (!realInput) return;
+
+        const dt = new DataTransfer();
+        (blockFiles[idx] || []).forEach(f => dt.items.add(f));
+        realInput.files = dt.files;
     }
 
-    function restoreFormState() {
-        try {
-            const raw = localStorage.getItem(AUTO_KEY);
-            if (!raw) return;
-            const state = JSON.parse(raw);
-            if (!state) return;
-            // restore meta
-            Object.keys(state.meta || {}).forEach(k => {
-                const el = document.querySelector(`[name="${k}"]`);
-                if (el) {
-                    if (el.type === 'checkbox') el.checked = !!state.meta[k];
-                    else el.value = state.meta[k];
-                }
-            });
-            // restore textareas
-            Object.keys(state.sections || {}).forEach(id => {
-                const ta = document.getElementById(id);
-                if (ta) {
-                    ta.value = state.sections[id];
-                    // sync uploads for each section according to tokens found
-                    const sectionKey = ta.closest('.tab-content').id.replace(/^tab-/, '');
-                    parseImageTokensFromText(ta.value).forEach(t => {
-                        // create upload block if none
-                        const container = document.getElementById('section-uploads-' + sectionKey);
-                        if (container && !container.querySelector(`div[data-tmp-id="${t.tmp}"]`)) {
-                            addUploadBlock(sectionKey, t.tmp, t.caption);
-                        }
-                    });
-                }
-            });
-        } catch (e) {
-            console.error('restore failed', e);
+    function renderImageGrid(idx) {
+        const grid  = document.getElementById('img-grid-' + idx);
+        const count = document.getElementById('img-count-' + idx);
+        const files = blockFiles[idx] || [];
+
+        if (count) count.textContent = files.length ? `(${files.length})` : '';
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        files.forEach((file, i) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'border border-gray-200 rounded-lg overflow-hidden bg-white';
+
+            const imgWrapper = document.createElement('div');
+            imgWrapper.className = 'relative';
+
+            const img      = document.createElement('img');
+            img.src        = URL.createObjectURL(file);
+            img.className  = 'w-full object-cover';
+            img.style.height = '100px';
+
+            const removeBtn       = document.createElement('button');
+            removeBtn.type        = 'button';
+            removeBtn.className   = 'absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center hover:bg-red-600';
+            removeBtn.innerHTML   = '&times;';
+            removeBtn.onclick     = () => {
+                blockFiles[idx].splice(i, 1);
+                renderImageGrid(idx);
+                syncFilesToInput(idx); // ✅ keep real input in sync after removal
+            };
+
+            const altWrapper  = document.createElement('div');
+            altWrapper.className = 'p-2 bg-gray-50';
+
+            const altInput        = document.createElement('input');
+            altInput.type         = 'text';
+            altInput.name         = `blocks[${idx}][alts][${i}]`;
+            altInput.placeholder  = 'Alt text for this image';
+            altInput.className    = 'w-full border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500';
+
+            imgWrapper.appendChild(img);
+            imgWrapper.appendChild(removeBtn);
+            altWrapper.appendChild(altInput);
+            wrapper.appendChild(imgWrapper);
+            wrapper.appendChild(altWrapper);
+            grid.appendChild(wrapper);
+        });
+    }
+
+    // ── LINK HANDLING ────────────────────────────────────────
+    window.saveSelection = function() {
+        const sel = window.getSelection();
+        if (sel && !sel.isCollapsed && sel.toString().trim()) {
+            savedSelectionRange = sel.getRangeAt(0).cloneRange();
+            const editor = sel.anchorNode?.nodeType === 3
+                ? sel.anchorNode.parentElement?.closest('[data-block-type="text"], [data-block-type="list"]')
+                : sel.anchorNode?.closest('[data-block-type="text"], [data-block-type="list"]');
+            if (editor) currentEditorForLink = editor;
+        } else {
+            savedSelectionRange = null;
+        }
+    };
+
+    window.setCurrentEditor = function(el) {
+        currentEditorForLink = el;
+    };
+
+    function openLinkModal() {
+        if (!currentEditorForLink) {
+            alert('Please click inside a paragraph or list first, then click Add Link.');
+            return;
+        }
+        currentEditorForLink.focus();
+        const sel          = window.getSelection();
+        const selectedText = sel && !sel.isCollapsed ? sel.toString().trim() : '';
+
+        document.getElementById('modal-link-text').value = selectedText || '';
+        document.getElementById('modal-link-url').value  = '';
+        document.getElementById('modal-link-error').classList.add('hidden');
+
+        const m = document.getElementById('link-modal');
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+
+        if (!selectedText) {
+            document.getElementById('modal-link-text').focus();
+        } else {
+            document.getElementById('modal-link-url').focus();
         }
     }
 
-    function triggerAutoSave() {
-        const data = gatherFormState();
-        localStorage.setItem(AUTO_KEY, JSON.stringify(data));
-    }
+    window.closeLinkModal = function() {
+        const m = document.getElementById('link-modal');
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+        savedSelectionRange = null;
+    };
 
-    // attach auto-save listeners
-    document.querySelectorAll('input, textarea, select').forEach(el => {
-        el.addEventListener('input', triggerAutoSave);
-        el.addEventListener('change', triggerAutoSave);
-    });
+    window.insertInlineLink = function() {
+        const linkText = document.getElementById('modal-link-text').value.trim();
+        const linkUrl  = document.getElementById('modal-link-url').value.trim();
 
-    // sync uploads when textarea changes (tokens may have been edited)
-    document.querySelectorAll('.section-textarea').forEach(ta => {
-        ta.addEventListener('input', function(){
-            const sectionKey = this.closest('.tab-content').id.replace(/^tab-/, '');
-            syncUploadsFromTextarea(sectionKey);
-            triggerAutoSave();
-        });
-    });
+        if (!linkText || !linkUrl) {
+            document.getElementById('modal-link-error').classList.remove('hidden');
+            return;
+        }
+        if (!currentEditorForLink) { closeLinkModal(); return; }
 
-    // restore from localStorage on load
-    restoreFormState();
+        currentEditorForLink.focus();
+        if (savedSelectionRange) {
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(savedSelectionRange);
+        }
 
-    // ---------- Save Draft via fetch ----------
-    const saveDraftBtn = document.getElementById('saveDraftBtn');
-    saveDraftBtn && saveDraftBtn.addEventListener('click', async function(){
-        // build content_blocks for each section and add to a FormData
-        buildAndAttachSectionContentBlocks(); // populates hidden inputs
-        const formEl = document.getElementById('destinationCreateForm');
-        const fd = new FormData(formEl);
-        fd.append('draft', '1');
+        const linkHtml = `<a href="${escapeHtml(linkUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(linkText)}</a>`;
+        document.execCommand('insertHTML', false, linkHtml);
 
-        // also include any upload files that are in section upload containers
-        document.querySelectorAll('[name^="sections"][name$="uploads"]').forEach(el => {
-            // this selector won't find dynamic inputs; instead gather file inputs inside upload containers
-        });
-        // gather all file inputs inside section-uploads containers and main images
-        document.querySelectorAll('#destinationCreateForm input[type="file"]').forEach(f => {
-            if (f.files && f.files[0]) fd.set(f.name, f.files[0]); // overrides if needed
-        });
+        const idx         = currentEditorForLink.dataset.index;
+        const hiddenInput = document.getElementById('content-' + idx);
+        if (hiddenInput) hiddenInput.value = currentEditorForLink.innerHTML;
 
-        // show feedback
-        saveDraftBtn.disabled = true;
-        const orig = saveDraftBtn.innerHTML;
-        saveDraftBtn.innerHTML = 'Saving...';
+        savedSelectionRange = null;
+        closeLinkModal();
+    };
 
-        try {
-            const resp = await fetch('{{ route("admin.destinations.store") }}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: fd
-            });
-            const json = await resp.json().catch(() => null);
-            if (resp.ok && json && json.success) {
-                alert('Draft saved successfully.');
-                // do not clear localStorage so you can continue editing
-            } else {
-                // show validation errors or fallback
-                if (json && json.errors) {
-                    let msg = 'Please fix these errors:\\n';
-                    Object.values(json.errors).forEach(e => { msg += '• ' + e[0] + '\\n'; });
-                    alert(msg);
-                } else {
-                    alert('Failed to save draft. Check the console for details.');
-                }
-            }
-        } catch (err) {
-            console.error('draft save error', err);
-            alert('Network or server error when saving draft. Please try again.');
-        } finally {
-            saveDraftBtn.disabled = false;
-            saveDraftBtn.innerHTML = orig;
+    window.closeEditLinkModal = function() {
+        const m = document.getElementById('edit-link-modal');
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+        currentEditingLink   = null;
+        currentEditingEditor = null;
+    };
+
+    window.saveEditedLink = function() {
+        if (!currentEditingLink || !currentEditingEditor) return;
+        const newText = document.getElementById('edit-link-text').value.trim();
+        const newUrl  = document.getElementById('edit-link-url').value.trim();
+        if (!newText || !newUrl) return;
+
+        const newLink       = document.createElement('a');
+        newLink.href        = newUrl;
+        newLink.target      = '_blank';
+        newLink.rel         = 'noopener noreferrer';
+        newLink.textContent = newText;
+        currentEditingLink.parentNode.replaceChild(newLink, currentEditingLink);
+
+        const idx         = currentEditingEditor.dataset.index;
+        const hiddenInput = document.getElementById('content-' + idx);
+        if (hiddenInput) hiddenInput.value = currentEditingEditor.innerHTML;
+
+        closeEditLinkModal();
+    };
+
+    window.removeCurrentLink = function() {
+        if (!currentEditingLink || !currentEditingEditor) return;
+        const text = document.createTextNode(currentEditingLink.textContent);
+        currentEditingLink.parentNode.replaceChild(text, currentEditingLink);
+
+        const idx         = currentEditingEditor.dataset.index;
+        const hiddenInput = document.getElementById('content-' + idx);
+        if (hiddenInput) hiddenInput.value = currentEditingEditor.innerHTML;
+
+        closeEditLinkModal();
+    };
+
+    document.addEventListener('dblclick', function(e) {
+        const link = e.target.closest('a');
+        if (link && link.closest('[data-block-type="text"], [data-block-type="list"]')) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            currentEditingLink   = link;
+            currentEditingEditor = link.closest('[data-block-type="text"], [data-block-type="list"]');
+
+            document.getElementById('edit-link-text').value = link.textContent;
+            document.getElementById('edit-link-url').value  = link.href;
+
+            const m = document.getElementById('edit-link-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
         }
     });
 
-    // ---------- Before full submit: build content_blocks JSON for each section ----------
-    function buildAndAttachSectionContentBlocks() {
-        // parse headings, subheadings, paragraphs, image tokens in the textarea
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            const sectionKey = tab.id.replace(/^tab-/, '');
-            if (!sectionKey) return;
-            const ta = tab.querySelector('.section-textarea');
-            if (!ta) return;
-            const blocks = [];
-            const text = ta.value || '';
-            // We'll parse by lines, grouping paragraphs. Headings (# ) and subheadings (## ) are explicit.
-            const lines = text.replace(/\r\n/g, '\n').split('\n');
-            let paragraphBuffer = [];
-            function flushParagraph() {
-                const joined = paragraphBuffer.join('\n').trim();
-                if (joined) blocks.push({ id: 'blk-' + uuid(), type: 'text', text: joined });
-                paragraphBuffer = [];
-            }
-            const tokenRe = /\[\[image:(tmp-[a-z0-9]+)(?:\|([^\]]*))?\]\]/i;
-            lines.forEach(line => {
-                const l = line.trim();
-                if (l === '') {
-                    flushParagraph();
-                    return;
+    // ── MODAL BACKDROP CLOSE ─────────────────────────────────
+    document.getElementById('link-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeLinkModal();
+    });
+    document.getElementById('edit-link-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeEditLinkModal();
+    });
+
+    // ── ADD LINK BUTTON ──────────────────────────────────────
+    document.getElementById('global-add-link-btn').addEventListener('click', openLinkModal);
+
+    // ── SLUG GENERATION ──────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function() {
+        const nameInput = document.getElementById('name-input');
+        const slugInput = document.getElementById('slug-input');
+        if (nameInput && slugInput) {
+            nameInput.addEventListener('input', function() {
+                if (slugInput.dataset.manual !== 'true') {
+                    slugInput.value = this.value.toLowerCase().trim()
+                        .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
                 }
-                // heading
-                if (l.startsWith('# ')) {
-                    flushParagraph();
-                    blocks.push({ id: 'blk-' + uuid(), type: 'heading', text: l.slice(2).trim() });
-                    return;
-                }
-                if (l.startsWith('## ')) {
-                    flushParagraph();
-                    blocks.push({ id: 'blk-' + uuid(), type: 'subheading', text: l.slice(3).trim() });
-                    return;
-                }
-                // image token?
-                const m = l.match(tokenRe);
-                if (m) {
-                    flushParagraph();
-                    const tmp = m[1];
-                    const caption = m[2] || '';
-                    blocks.push({ id: 'blk-' + uuid(), type: 'image', temp_media_id: tmp, caption: caption });
-                    return;
-                }
-                // otherwise a normal paragraph line -> buffer
-                paragraphBuffer.push(line);
             });
-            flushParagraph();
-
-            // attach JSON into hidden input
-            const hidden = tab.querySelector('input[data-contentblock-input]');
-            if (hidden) hidden.value = JSON.stringify(blocks);
-            // also sync uploads: remove upload blocks that don't have tokens
-            removeOrphanUploads(sectionKey, blocks);
-        });
-    }
-
-    // Remove upload blocks that no longer have a matching token
-    function removeOrphanUploads(sectionKey, blocks) {
-        const container = document.getElementById('section-uploads-' + sectionKey);
-        if (!container) return;
-        const presentTmp = new Set(blocks.filter(b => b.type === 'image' && b.temp_media_id).map(b => b.temp_media_id));
-        Array.from(container.querySelectorAll('div[data-tmp-id]')).forEach(w => {
-            const tmp = w.dataset.tmpId;
-            if (!presentTmp.has(tmp)) w.remove();
-        });
-    }
-
-    // Ensure upload blocks created earlier have dataset.tmpId attribute to be found by removal code
-    // (When addUploadBlock creates wrappers we must set data-tmp-id)
-    // We need to set that; but earlier addUploadBlock created wrapper.dataset.tmpId - verify.
-
-    // ---------- previews for top-level images ----------
-    const mainImage = document.getElementById('image');
-    mainImage && mainImage.addEventListener('change', function(e){
-        const f = this.files[0]; const preview = document.getElementById('image-preview');
-        if (!f) { preview.innerHTML = ''; return; }
-        if (f.size > 2*1024*1024) { preview.innerHTML = '<div class="text-red-500">File too large</div>'; this.value=''; return; }
-        const r = new FileReader(); r.onload = e=> preview.innerHTML = `<img src="${e.target.result}" class="w-64 h-40 object-cover rounded">`; r.readAsDataURL(f);
+            slugInput.addEventListener('input', function() {
+                this.dataset.manual = 'true';
+            });
+        }
     });
 
-    const featured = document.getElementById('featured_image');
-    featured && featured.addEventListener('change', function(e){
-        const f = this.files[0]; const preview = document.getElementById('featured-preview');
-        if (!f) { preview.innerHTML = ''; return; }
-        if (f.size > 5*1024*1024) { preview.innerHTML = '<div class="text-red-500">File too large</div>'; this.value=''; return; }
-        const r = new FileReader(); r.onload = e=> preview.innerHTML = `<img src="${e.target.result}" class="w-96 h-64 object-cover rounded">`; r.readAsDataURL(f);
+    // ── IMAGE PREVIEWS (sidebar) ─────────────────────────────
+    window.previewFeaturedImage = function(input) {
+        if (!input.files[0]) return;
+        document.getElementById('featured-preview-img').src = URL.createObjectURL(input.files[0]);
+        document.getElementById('featured-preview').classList.remove('hidden');
+        document.getElementById('featured-upload-prompt').classList.add('hidden');
+    };
+    window.removeFeaturedImage = function() {
+        document.getElementById('featured-image-input').value = '';
+        document.getElementById('featured-preview').classList.add('hidden');
+        document.getElementById('featured-upload-prompt').classList.remove('hidden');
+    };
+    window.previewMainImage = function(input) {
+        if (!input.files[0]) return;
+        document.getElementById('main-preview-img').src = URL.createObjectURL(input.files[0]);
+        document.getElementById('main-preview').classList.remove('hidden');
+        document.getElementById('main-upload-prompt').classList.add('hidden');
+    };
+    window.removeMainImage = function() {
+        document.getElementById('main-image-input').value = '';
+        document.getElementById('main-preview').classList.add('hidden');
+        document.getElementById('main-upload-prompt').classList.remove('hidden');
+    };
+
+    // ── PASTE CLEANUP ────────────────────────────────────────
+    document.addEventListener('paste', function(e) {
+        const target = e.target;
+        if (target && target.matches && target.matches('[data-block-type="text"], [data-block-type="list"]')) {
+            e.preventDefault();
+            const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+            document.execCommand('insertText', false, text);
+        }
     });
 
-    const gallery = document.getElementById('gallery_images');
-    gallery && gallery.addEventListener('change', function(e){
-        const files = Array.from(this.files || []); const preview = document.getElementById('gallery-preview'); preview.innerHTML = '';
-        files.forEach((f,idx)=>{
-            if (f.size > 2*1024*1024) return;
-            const r = new FileReader(); r.onload = ev=> {
-                const div = document.createElement('div'); div.className='relative'; div.innerHTML = `<img src="${ev.target.result}" class="w-full h-32 object-cover rounded"><div class="absolute top-1 right-1 bg-blue-500 text-white px-2 py-1 rounded text-xs">${idx+1}</div>`; preview.appendChild(div);
-            }; r.readAsDataURL(f);
+    // ── FORM SUBMIT ──────────────────────────────────────────
+    // ✅ FIX: Re-sync all real file inputs AND all contenteditable hidden inputs
+    // just before the browser serializes the form for submission.
+    document.getElementById('destination-form').addEventListener('submit', function(e) {
+        // Re-sync all image blocks — ensures DataTransfer FileList is current
+        Object.keys(blockFiles).forEach(idx => {
+            syncFilesToInput(idx);
+        });
+
+        // Sync all paragraph/list editors to their hidden inputs
+        document.querySelectorAll('.paragraph-editor').forEach(el => {
+            const idx = el.dataset.index;
+            const h   = document.getElementById('content-' + idx);
+            if (h) h.value = el.innerHTML;
         });
     });
 
-    // ---------- keep local draft on failure: DO NOT clear localStorage on submit ----------
-    // On real successful creation you may want to clear storage in the controller redirect.
-    // For now we preserve drafts until the user manually clears them or we add a 'clear' action.
+    // ── HELPER ───────────────────────────────────────────────
+    window.escapeHtml = function(str) {
+        if (!str) return '';
+        return str.replace(/[&<>"']/g, function(m) {
+            return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'": '&#39;' }[m];
+        });
+    };
 
-    // Optionally, restore first visible tab
-    document.querySelector('.tab-button.active').click();
-});
+})();
 </script>
-
-<style>
-.tab-button.active { border-color: #10b981; color: #10b981; }
-.tab-button:not(.active) { border-color: transparent; color: #6b7280; }
-.tab-button:not(.active):hover { color: #374151; border-color: #d1d5db; }
-</style>
 @endpush
 @endsection

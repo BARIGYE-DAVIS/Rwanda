@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 {{-- ============================================================
@@ -88,34 +87,42 @@
     {{-- Slide track --}}
     <div class="rbs-track absolute inset-0 overflow-hidden">
 
+        {{-- SLIDE 1 — separated image + overlay layers --}}
         <div class="rbs-slide absolute inset-0 opacity-100 transition-opacity duration-1000"
              aria-hidden="true">
+            {{-- Image layer --}}
             <div class="rbs-bg absolute inset-0"
-                 style="background:linear-gradient(rgba(10,30,10,.5),rgba(10,30,10,.6)),url('{{ asset('images/aasaa.jpg') }}') center/cover;
-                        background-attachment:fixed;"></div>
+                 style="background: url('{{ asset('images/aasaa.jpg') }}') center/cover no-repeat;
+                        background-attachment: fixed;"></div>
+            {{-- Overlay layer — independently controlled --}}
+            <div class="rbs-overlay absolute inset-0 bg-green-950"
+                 style="opacity: 0.52;"></div>
         </div>
 
+        {{-- SLIDE 2 --}}
         <div class="rbs-slide absolute inset-0 opacity-0 transition-opacity duration-1000"
              aria-hidden="true">
             <div class="rbs-bg absolute inset-0"
-                 style="background:linear-gradient(rgba(10,30,10,.5),rgba(10,30,10,.6)),url('{{ asset('images/GORILLA.jpg') }}') center/cover;
-                        background-attachment:fixed;"></div>
+                 style="background: url('{{ asset('images/hero.webp') }}') center/cover no-repeat;
+                        background-attachment: fixed;"></div>
+            <div class="rbs-overlay absolute inset-0 bg-green-950"
+                 style="opacity: 0.52;"></div>
         </div>
 
+        {{-- SLIDE 3 --}}
         <div class="rbs-slide absolute inset-0 opacity-0 transition-opacity duration-1000"
              aria-hidden="true">
             <div class="rbs-bg absolute inset-0"
-                 style="background:linear-gradient(rgba(10,30,10,.5),rgba(10,30,10,.6)),url('{{ asset('images/sun.webp') }}') center/cover;
-                        background-attachment:fixed;"></div>
+                 style="background: url('{{ asset('images/game drive.png') }}') center/cover no-repeat;
+                        background-attachment: fixed;"></div>
+            <div class="rbs-overlay absolute inset-0 bg-green-950"
+                 style="opacity: 0.52;"></div>
         </div>
+
     </div>
 
     {{-- Hero copy --}}
     <div class="absolute inset-0 flex flex-col items-center justify-center pb-36 px-4 sm:px-6 lg:px-8 z-10 text-center text-white">
-
-        <span class="rbs-fade-1 inline-block border border-green-400/60 bg-green-900/40 text-green-300 text-xs sm:text-sm font-semibold tracking-[.18em] uppercase px-5 py-2 rounded-full mb-5 opacity-0">
-            Kampala-Based · Est. Uganda &amp; Rwanda
-        </span>
 
         <h1 class="rbs-fade-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[4.5rem] font-black leading-[1.08] mb-5 max-w-5xl opacity-0">
             Trek Mountain Gorillas<br>
@@ -139,12 +146,10 @@
                class="border-2 border-white/70 hover:border-white text-white hover:bg-white/10 font-bold px-8 py-4 rounded-xl text-base sm:text-lg transition-all text-center scroll-to">
                 Uganda vs Rwanda  Which Suits Me?
             </a>
-
             <a href="{{ route('contact') }}"
                class="bg-red-600 hover:bg-red-500 text-white font-bold px-8 py-4 rounded-xl text-base sm:text-lg transition-all text-center">
                 Request a quote for a trip
             </a>
-
         </div>
     </div>
 
@@ -153,19 +158,6 @@
          style="transform:translate(-50%,60px);">
         <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 px-4 sm:px-8 py-4 sm:py-5
                     flex flex-wrap justify-center sm:justify-between items-center gap-4">
-
-            <div class="flex items-center gap-3 min-w-0 hidden">
-                <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
-                    <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                    </svg>
-                </div>
-            </div>
-
-                </div>
-            </div>
-
-            <div class="hidden sm:block w-px h-9 bg-gray-200"></div>
 
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center shrink-0">
@@ -241,7 +233,6 @@
     <div class="max-w-7xl mx-auto flex flex-wrap justify-center gap-5 sm:gap-10 font-medium">
         <span>🇺🇬 Uganda Bwindi permit — $800 p/p (we handle the booking)</span>
         <span>🇷🇼 Rwanda Volcanoes permit — $1,500 p/p (direct from RDB)</span>
-        
     </div>
 </div>
 
@@ -302,7 +293,6 @@
                 </div>
             </div>
         </div>
-
 
     </div>
 </section>
@@ -589,7 +579,7 @@
      ============================================================ --}}
 <section class="relative py-20 sm:py-28 overflow-hidden">
     <div class="absolute inset-0">
-        <img src="{{ asset('images/sun.webp') }}"
+        <img src="{{ asset('images/Chimpanzee.jpg') }}"
              alt="Uganda Rwanda safari sunset"
              class="w-full h-full object-cover object-center" loading="lazy">
         <div class="absolute inset-0 bg-gradient-to-br from-green-950/85 via-green-900/70 to-gray-900/80"></div>
@@ -616,10 +606,10 @@
         </p>
 
         <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
-            <a href="{{ route('custom-tour-requests.create') }}"
+            <a href="{{ route('contact') }}"
                class="w-full sm:w-auto bg-white hover:bg-green-50 text-green-900 font-black px-8 py-4
                       rounded-xl text-base sm:text-lg transition-all hover:scale-[1.02] shadow-2xl text-center">
-                Get My Free Itinerary
+                Get Instant Quote
             </a>
             <a href="tel:+256781282344"
                class="w-full sm:w-auto border-2 border-white/60 hover:border-white text-white
@@ -646,9 +636,26 @@
     html { scroll-behavior: smooth; }
     .rbs-hero { overflow: visible; }
 
-    /* Parallax */
-    .rbs-bg { background-attachment: fixed; will-change: background-position; }
-    @media (max-width:768px),(hover:none) { .rbs-bg { background-attachment: scroll; } }
+    /* ─── Background image parallax (desktop only) ─── */
+    .rbs-bg {
+        background-attachment: fixed;
+        will-change: background-position;
+    }
+
+    /*
+     * FIX: On mobile, background-attachment:fixed breaks compositing and
+     * makes images appear very dim/invisible. Switch to scroll on touch
+     * devices and narrow screens, and lighten the overlay layer.
+     */
+    @media (max-width: 768px), (hover: none) {
+        .rbs-bg {
+            background-attachment: scroll !important;
+        }
+        /* Lighten the dark green overlay on mobile so images are clearly visible */
+        .rbs-overlay {
+            opacity: 0.38 !important;
+        }
+    }
 
     /* Hero entrance */
     @keyframes rbsFadeUp {

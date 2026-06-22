@@ -66,14 +66,14 @@
 
     <nav class="bg-white shadow-lg">
         <div class="container mx-auto px-4 lg:px-8">
-            <div class="flex justify-between items-center h-16 lg:h-20">
+            <div class="flex justify-between items-center h-16 lg:h-20 gap-2">
 
                 {{-- LOGO --}}
-                <a href="{{ route('index') }}" class="flex items-center gap-3 shrink-0">
-                    <img class="h-14 lg:h-16 w-auto object-contain" src="{{ asset('images/logo.jpeg') }}" alt="Rwanda Budget Safaris">
-                    <div class="flex flex-col leading-tight">
-                        <span class="text-lg lg:text-xl font-bold text-green-700">Uganda & Rwanda Budget Safaris</span>
-                        <span class="text-xs font-medium text-gray-500 -mt-0.5">NextGen Safaris</span>
+                <a href="{{ route('index') }}" class="flex items-center gap-2 lg:gap-3 min-w-0 flex-1 lg:flex-initial">
+                    <img class="h-10 lg:h-16 w-auto object-contain shrink-0" src="{{ asset('images/logo.jpeg') }}" alt="Rwanda Budget Safaris">
+                    <div class="flex flex-col leading-tight min-w-0">
+                        <span class="text-sm sm:text-base lg:text-xl font-bold text-green-700 truncate">Uganda & Rwanda Budget Safaris</span>
+                        <span class="hidden sm:block text-xs font-medium text-gray-500 -mt-0.5 truncate">NextGen Safaris</span>
                     </div>
                 </a>
 
@@ -259,7 +259,7 @@
 
                 {{-- HAMBURGER (shown below lg) --}}
                 <button id="mobile-toggle"
-                        class="lg:hidden flex flex-col justify-center items-center w-9 h-9 gap-1.5  hover:bg-gray-100 transition-colors focus:outline-none"
+                        class="lg:hidden flex flex-col justify-center items-center w-9 h-9 gap-1.5 shrink-0 hover:bg-gray-100 transition-colors focus:outline-none"
                         aria-label="Toggle menu" aria-expanded="false">
                     <span class="ham-line block w-6 h-0.5 bg-gray-800 transition-all duration-300"></span>
                     <span class="ham-line block w-6 h-0.5 bg-gray-800 transition-all duration-300"></span>

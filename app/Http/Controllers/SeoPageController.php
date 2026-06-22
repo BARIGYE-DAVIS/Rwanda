@@ -61,6 +61,7 @@ class SeoPageController extends Controller
             'title'            => $request->title,
             'slug'             => $slug,
             'meta_description' => $request->meta_description,
+            'seo_title'        => $request->seo_title,
             'focus_keyword'    => $request->focus_keyword,
             'featured_image'   => $featuredImagePath,
             'status'           => $request->status,
@@ -92,6 +93,7 @@ class SeoPageController extends Controller
             'title'            => $request->title,
             'slug'             => $slug,
             'meta_description' => $request->meta_description,
+            'seo_title'         => $request->seo_title,
             'focus_keyword'    => $request->focus_keyword,
             'featured_image'   => $featuredImagePath,
             'status'           => $request->status,
@@ -99,7 +101,7 @@ class SeoPageController extends Controller
 
         $this->syncBlocks($seoPage, $request->blocks ?? []);
 
-        return redirect()->route('admin.seo-pages.index')
+        return redirect()->route('admin.seo-pages.edit', $seoPage->id)
             ->with('success', 'SEO page updated successfully.');
     }
 
@@ -158,6 +160,7 @@ class SeoPageController extends Controller
             'title'                     => 'required|string|max:255',
             'slug'                      => 'nullable|string|max:255|' . $slugUnique,
             'meta_description'          => 'nullable|string|max:320',
+            'seo_title'                 => 'nullable|string|max:255',
             'focus_keyword'             => 'nullable|string|max:255',
             'featured_image'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3048',
             'status'                    => 'required|in:draft,published,archived',
@@ -179,6 +182,7 @@ class SeoPageController extends Controller
             'blocks.*.link_urls'        => 'nullable|array',
             'blocks.*.link_texts.*'     => 'nullable|string|max:255',
             'blocks.*.link_urls.*'      => 'nullable|url|max:500',
+            'blocks.*.new_images_alt' => 'nullable|string|max:255',
         ]);
     }
 
@@ -195,41 +199,45 @@ class SeoPageController extends Controller
         return $this->storeImage($request->file('featured_image'), 'seo_pages/featured');
     }
 
-    private function saveBlocks(int $pageId, array $blocksData): void
-    {
-        foreach ($blocksData as $sortOrder => $blockData) {
-            $this->createBlock($pageId, $blockData, $sortOrder);
+private function saveBlocks(int $pageId, array $blocksData): void
+{
+    $sortOrder = 0;
+    foreach ($blocksData as $blockData) {
+        $this->createBlock($pageId, $blockData, $sortOrder);
+        $sortOrder++;
+    }
+}
+
+private function syncBlocks(SeoPage $page, array $blocksData): void
+{
+    $existingBlockIds = $page->blocks->pluck('id')->toArray();
+    $newBlockIds = [];
+    $sortOrder = 0;
+
+    foreach ($blocksData as $blockData) {
+        $blockId = $blockData['id'] ?? null;
+
+        if ($blockId && in_array($blockId, $existingBlockIds)) {
+            $this->updateBlock($page, $blockId, $blockData, $sortOrder);
+            $newBlockIds[] = $blockId;
+        } else {
+            $block = $this->createBlock($page->id, $blockData, $sortOrder);
+            $newBlockIds[] = $block->id;
         }
+        $sortOrder++;
     }
 
-    private function syncBlocks(SeoPage $page, array $blocksData): void
-    {
-        $existingBlockIds = $page->blocks->pluck('id')->toArray();
-        $newBlockIds = [];
-
-        foreach ($blocksData as $sortOrder => $blockData) {
-            $blockId = $blockData['id'] ?? null;
-
-            if ($blockId && in_array($blockId, $existingBlockIds)) {
-                $this->updateBlock($page, $blockId, $blockData, $sortOrder);
-                $newBlockIds[] = $blockId;
-            } else {
-                $block = $this->createBlock($page->id, $blockData, $sortOrder);
-                $newBlockIds[] = $block->id;
+    $blocksToDelete = array_diff($existingBlockIds, $newBlockIds);
+    foreach ($blocksToDelete as $blockId) {
+        $block = SeoPageBlock::find($blockId);
+        if ($block) {
+            foreach ($block->images as $image) {
+                $this->deleteImage($image->image_path);
             }
-        }
-
-        $blocksToDelete = array_diff($existingBlockIds, $newBlockIds);
-        foreach ($blocksToDelete as $blockId) {
-            $block = SeoPageBlock::find($blockId);
-            if ($block) {
-                foreach ($block->images as $image) {
-                    $this->deleteImage($image->image_path);
-                }
-                $block->delete();
-            }
+            $block->delete();
         }
     }
+}
 
     private function createBlock(int $pageId, array $blockData, int $sortOrder): SeoPageBlock
     {
@@ -289,70 +297,73 @@ class SeoPageController extends Controller
         }
     }
 
-    private function syncBlockImages(SeoPageBlock $block, array $blockData): void
-    {
-        $existingImageIds = $block->images->pluck('id')->toArray();
-        $deleteImageIds = $blockData['delete_images'] ?? [];
-        $deleteImageIds = array_filter($deleteImageIds);
-        $remainingImageIds = [];
+   private function syncBlockImages(SeoPageBlock $block, array $blockData): void
+{
+    $existingImageIds = $block->images->pluck('id')->toArray();
+    $deleteImageIds = $blockData['delete_images'] ?? [];
+    $deleteImageIds = array_filter($deleteImageIds);
+    $remainingImageIds = [];
 
-        $existingImagesData = $blockData['existing_images'] ?? [];
-        $replaceImagesData = $blockData['replace_images'] ?? [];
-        $altTextsData = $blockData['alts'] ?? [];
+    $existingImagesData = $blockData['existing_images'] ?? [];
+    $replaceImagesData = $blockData['replace_images'] ?? [];
+    $altTextsData = $blockData['alts'] ?? [];
 
-        foreach ($existingImagesData as $imageId => $imageIdentifier) {
-            if (in_array($imageId, $deleteImageIds)) {
-                continue;
-            }
-
-            $image = SeoPageImage::find($imageId);
-            if (!$image) {
-                continue;
-            }
-
-            $replacementFile = $replaceImagesData[$imageId] ?? null;
-            if ($replacementFile && $replacementFile instanceof UploadedFile) {
-                $this->deleteImage($image->image_path);
-                $newPath = $this->storeImage($replacementFile, 'seo_pages/blocks');
-                $image->image_path = $newPath;
-            }
-
-            $altText = $altTextsData[$imageId] ?? null;
-            if ($altText !== null) {
-                $image->alt_text = $altText;
-            }
-
-            $image->save();
-            $remainingImageIds[] = $imageId;
+    foreach ($existingImagesData as $imageId => $imageIdentifier) {
+        if (in_array($imageId, $deleteImageIds)) {
+            continue;
         }
 
-        foreach ($deleteImageIds as $imageId) {
-            $image = SeoPageImage::find($imageId);
-            if ($image) {
-                $this->deleteImage($image->image_path);
-                $image->delete();
-            }
+        $image = SeoPageImage::find($imageId);
+        if (!$image) {
+            continue;
         }
 
-        $newImages = $blockData['images'] ?? [];
-        if (!empty($newImages) && is_array($newImages)) {
-            $currentMaxOrder = $block->images()->max('sort_order') ?? 0;
-            $orderCounter = $currentMaxOrder + 1;
+        $replacementFile = $replaceImagesData[$imageId] ?? null;
+        if ($replacementFile && $replacementFile instanceof UploadedFile) {
+            $this->deleteImage($image->image_path);
+            $newPath = $this->storeImage($replacementFile, 'seo_pages/blocks');
+            $image->image_path = $newPath;
+        }
 
-            foreach ($newImages as $newImage) {
-                if ($newImage && $newImage instanceof UploadedFile && $newImage->isValid()) {
-                    $path = $this->storeImage($newImage, 'seo_pages/blocks');
-                    SeoPageImage::create([
-                        'block_id'   => $block->id,
-                        'image_path' => $path,
-                        'alt_text'   => $altTextsData['new_' . $orderCounter] ?? null,
-                        'sort_order' => $orderCounter++,
-                    ]);
-                }
-            }
+        $altText = $altTextsData[$imageId] ?? null;
+        if ($altText !== null) {
+            $image->alt_text = $altText;
+        }
+
+        $image->save();
+        $remainingImageIds[] = $imageId;
+    }
+
+    foreach ($deleteImageIds as $imageId) {
+        $image = SeoPageImage::find($imageId);
+        if ($image) {
+            $this->deleteImage($image->image_path);
+            $image->delete();
         }
     }
 
+    $newImages = $blockData['images'] ?? [];
+    if (!empty($newImages) && is_array($newImages)) {
+        $currentMaxOrder = $block->images()->max('sort_order') ?? 0;
+        $orderCounter = $currentMaxOrder + 1;
+
+        foreach ($newImages as $i => $newImage) {
+            if ($newImage && $newImage instanceof UploadedFile && $newImage->isValid()) {
+                $path = $this->storeImage($newImage, 'seo_pages/blocks');
+
+                // create page sends alts[i], edit page sends alts[new_i]
+                $altText = $altTextsData[$i] ?? ($altTextsData['new_' . $i] ?? null);
+
+                SeoPageImage::create([
+                    'block_id'   => $block->id,
+                    'image_path' => $path,
+                    'alt_text'   => $altText,
+                    'sort_order' => $orderCounter++,
+                ]);
+            }
+        }
+    }
+}
     private function syncBlockLinks(SeoPageBlock $block, array $blockData): void
     {
         $block->links()->delete();

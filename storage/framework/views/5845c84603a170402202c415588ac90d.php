@@ -1,1 +1,0 @@
-<?php /**PATH C:\xampp\htdocs\Rwanda\resources\views\pdf\tourist-information.blade.php ENDPATH**/ ?>

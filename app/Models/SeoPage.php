@@ -10,6 +10,7 @@ class SeoPage extends Model
         'title',
         'slug',
         'meta_description',
+        'seo_title',
         'focus_keyword',
         'featured_image',
         'status',

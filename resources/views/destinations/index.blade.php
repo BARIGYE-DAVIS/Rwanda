@@ -625,7 +625,7 @@
                                 {{ $destination->name }}
                             </h3>
                             <p class="text-gray-500 text-xs leading-relaxed line-clamp-3 mb-3 flex-1">
-                                {{ Str::limit($destination->description, 95) }}
+                                {{ Str::limit($destination->meta_description, 95) }}
                             </p>
                             <div class="flex items-center text-green-600 font-bold text-xs sm:text-sm
                                         pt-3 border-t border-gray-100 mt-auto gap-1.5">
